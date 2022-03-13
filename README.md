@@ -2,17 +2,21 @@
 
 [Escreva um ou dois  parágrafo resumindo o objetivo do seu projeto.]
 
+<span style=" text-align: justify; ">
+
+O seguinte projeto tem como objetivo principal auxiliar desenvolvedores a produzirem códigos mais seguros e com maior garantia de testes automatizados, afetando positivamente o fator de manutenibilidade do software. Além disso, propõe a geração de arquivos padronizados para geração de pipeline no GitHub e script de pre-*push* e pre-*commit*, com o intuito de manter a qualidade do software.
+
+<span>
+
 ## Alunos integrantes da equipe
 
-* [Nome completo do aluno 1]
-* [Nome completo do aluno 2]
-* [Nome completo do aluno 3]
-* [Nome completo do aluno 4]
+* Arthur Rocha Amaral
+* Guilherme Oliveira Antônio
 
 ## Professores responsáveis
 
-* [Nome completo do professor 1]
-* [Nome completo do professor 2]
+* Jose Laerte Pires Xavier Junior
+* Marco Rodrigo Costa
 
 ## Instruções de utilização
 
