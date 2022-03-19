@@ -5,7 +5,7 @@ skinparam packageStyle rectangle
 
 "Desenvolvedor" as Dev
 
-package "Extensão (VS Code) - eXAMPLE" {
+package "Extensão (VS Code) - Example" {
 "Localizar o arquivo de relatório de cobertura para interpretação \n de forma automática sem necessidade de receber o caminho para esse arquivo" as (UC01)
 "Exibir no editor o status de cobertura de cada linha" as (UC02)
 "Exibir no menu lateral um item referente à aba de cobertura de código" as (UC03)
