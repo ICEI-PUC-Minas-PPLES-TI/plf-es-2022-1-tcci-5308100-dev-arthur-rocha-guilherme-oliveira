@@ -6,7 +6,7 @@ skinparam packageStyle rectangle
 "Desenvolvedor" as Dev
 "Visual Studio Code" as VSCode
 
-package "Extensão (VS Code) - Example" {
+package "Extensão (VS Code) - Covering" {
   "Inicializa a extensão" as (UC00)
   "Ler o arquivo de o arquivo de relatório de \n cobertura" as (UC01)
   "Localizar o arquivo de relatório de cobertura" as (UC02)
