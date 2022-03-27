@@ -3,58 +3,57 @@
 left to right direction
 skinparam packageStyle rectangle
 
-
-"Desenvolvedor" as Dev
+"Desenvolvedor" as Dev #white;line:grey;line.bold;text:black
 
 package "Extensão (VS Code) - Covering" {
-  "UC01 Abrir a aba no menu lateral do VS Code referente à extensão" as (UC01)
+  "UC01 Abrir a aba no menu lateral do VS Code referente à extensão" as (UC01) #LightGray;line:black;text:black
   
-  "UC02 Alternar a visualização do status de cada linha no editor" as (UC02)
-  "UC03 Alternar a visualização da porcentagem de cobertura entre total e em relação ao arquivo aberto" as (UC03)
-  "UC04 Alternar a visualização da porcentagem de cobertura entre somente para as linhas criadas e alteradas na branch atual e para todo o código" as (UC04)
+  "UC02 Alternar a visualização do status de cada linha no editor" as (UC02) #LightGray;line:black;text:black
+  "UC03 Alternar a visualização da porcentagem de cobertura entre total e em relação ao arquivo aberto" as (UC03) #LightGray;line:black;text:black
+  "UC04 Alternar a visualização da porcentagem de cobertura entre somente para as linhas criadas e alteradas na branch atual e para todo o código" as (UC04) #LightGray;line:black;text:black
   
-  "UC05 Solicitar geração do arquivo de configuração" as (UC05)
-  "UC06 Criar na raiz do projeto o arquivo de configuração" as (UC06)
-  "UC07 Editar o arquivo de configuração na raiz do projeto" as (UC07)
+  "UC05 Solicitar geração do arquivo de configuração" as (UC05) #LightGray;line:black;text:black
+  "UC06 Criar na raiz do projeto o arquivo de configuração" as (UC06) #LightGray;line:black;text:black
+  "UC07 Editar o arquivo de configuração na raiz do projeto" as (UC07) #LightGray;line:black;text:black
   
-  "UC08 Adicionar ao arquivo de configuração a branch de referência" as (UC08)
-  "UC09 Adicionar ao arquivo de configuração um valor mínimo de cobertura" as (UC09)
-  "UC10 Adicionar ao arquivo de configuração o caminho para o arquivo de relatório de cobertura" as (UC10)
-  "UC11 Adicionar ao arquivo de configuração um comando para execução dos testes" as (UC11)
-  "UC12 Adicionar ao arquivo de configuração um comando para execução dos testes em modo de recarregamento automático após edição de algum arquivo" as (UC12)
+  "UC08 Adicionar ao arquivo de configuração a branch de referência" as (UC08) #LightGray;line:black;text:black
+  "UC09 Adicionar ao arquivo de configuração um valor mínimo de cobertura" as (UC09) #LightGray;line:black;text:black
+  "UC10 Adicionar ao arquivo de configuração o caminho para o arquivo de relatório de cobertura" as (UC10) #LightGray;line:black;text:black
+  "UC11 Adicionar ao arquivo de configuração um comando para execução dos testes" as (UC11) #LightGray;line:black;text:black
+  "UC12 Adicionar ao arquivo de configuração um comando para execução dos testes em modo de recarregamento automático após edição de algum arquivo" as (UC12) #LightGray;line:black;text:black
   
-  "UC13 Selecionar uma das linhas listadas como sem cobertura" as (UC13)
+  "UC13 Selecionar uma das linhas listadas como sem cobertura" as (UC13) #LightGray;line:black;text:black
 
-  "UC14 Executar testes através da interface da extensão" as (UC14)
-  "UC15 Executar testes em modo de recarregamento automático através da interface da extensão" as (UC15)
+  "UC14 Executar testes através da interface da extensão" as (UC14) #LightGray;line:black;text:black
+  "UC15 Executar testes em modo de recarregamento automático através da interface da extensão" as (UC15) #LightGray;line:black;text:black
 
-  "UC16 Recarregar os dados da extensão" as (UC16)
+  "UC16 Recarregar os dados da extensão" as (UC16) #LightGray;line:black;text:black
 }
  
-Dev --- (UC01) 
+Dev ---> (UC01) #line:black
 
-Dev --- (UC02) 
-Dev --- (UC03) 
-Dev --- (UC04)
+Dev ---> (UC02) #line:black
+Dev ---> (UC03) #line:black
+Dev ---> (UC04) #line:black
 
-Dev --- (UC05) 
-Dev --- (UC06) 
-Dev --- (UC07) 
+Dev ---> (UC05) #line:black
+Dev ---> (UC06) #line:black
+Dev ---> (UC07) #line:black
 
-(UC07) ..down..> (UC08) : extends
-(UC07) ..down..> (UC09) : extends
-(UC07) ..down..> (UC10) : extends
-(UC07) ..down..> (UC11) : extends
-(UC07) ..down..> (UC12) : extends
+(UC07) ..down..> (UC08) #line:black : extends 
+(UC07) ..down..> (UC09) #line:black : extends 
+(UC07) ..down..> (UC10) #line:black : extends 
+(UC07) ..down..> (UC11) #line:black : extends 
+(UC07) ..down..> (UC12) #line:black : extends 
  
  
-Dev --- (UC13) 
+Dev ---> (UC13) #line:black
  
-Dev --- (UC14) 
-Dev --- (UC15) 
-(UC14) ..down..> (UC11) : include 
-(UC15) ..down..> (UC12) : include 
+Dev ---> (UC14) #line:black
+Dev ---> (UC15) #line:black
+(UC14) ..down..> (UC11) #line:black : include  
+(UC15) ..down..> (UC12) #line:black : include 
  
-Dev --- (UC16) 
+Dev ---> (UC16) #line:black
  
 @enduml

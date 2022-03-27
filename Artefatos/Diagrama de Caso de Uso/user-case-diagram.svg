@@ -1,246 +1,89 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="1882px" preserveAspectRatio="none" style="width:2797px;height:1882px;background:#FFFFFF;" version="1.1" viewBox="0 0 2797 1882" width="2797px" zoomAndPan="magnify"><defs><filter height="300%" id="fg1jw06of1gmp" width="300%" x="-1" y="-1"><feGaussianBlur result="blurOut" stdDeviation="2.0"/><feColorMatrix in="blurOut" result="blurOut2" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"/><feOffset dx="4.0" dy="4.0" in="blurOut2" result="blurOut3"/><feBlend in="SourceGraphic" in2="blurOut3" mode="normal"/></filter></defs><g><!--MD5=[354055cd6488b9b338c7e270d264712e]
-cluster Extensão (VS Code) - Covering--><rect fill="#FFFFFF" filter="url(#fg1jw06of1gmp)" height="1721" style="stroke:#000000;stroke-width:1.5;" width="2456" x="329" y="117"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="216" x="1449" y="133.5332">Extensão (VS Code) - Covering</text><ellipse cx="1128.4267" cy="278.7853" fill="#FEFECE" filter="url(#fg1jw06of1gmp)" rx="84.4267" ry="19.2853" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="125" x="1065.9267" y="282.5139">Inicializa a extensão</text><ellipse cx="1638.4621" cy="278.9924" fill="#FEFECE" filter="url(#fg1jw06of1gmp)" rx="167.9621" ry="35.9924" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="263" x="1504.9621" y="273.9163">Ler o arquivo de o arquivo de relatório de</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="61" x="1609.9621" y="291.5256">cobertura</text><ellipse cx="2130.9928" cy="329.9986" fill="#FEFECE" filter="url(#fg1jw06of1gmp)" rx="155.4928" ry="33.4986" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="280" x="1990.9928" y="333.7271">Localizar o arquivo de relatório de cobertura</text><ellipse cx="2597.1173" cy="329.8235" fill="#FEFECE" filter="url(#fg1jw06of1gmp)" rx="167.1173" ry="35.8235" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="261" x="2464.6173" y="324.7473">Localizar de forma recursiva o arquivo de</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="137" x="2530.6173" y="342.3567">relatório de cobertura</text><ellipse cx="2596.7846" cy="786.7569" fill="#FEFECE" filter="url(#fg1jw06of1gmp)" rx="171.7846" ry="36.7569" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="272" x="2458.7846" y="781.6808">Localizar o relatório de cobertura utilizando</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="242" x="2477.7846" y="799.2901">o caminho do arquivo de configuração</text><ellipse cx="1128.5369" cy="189.2074" fill="#FEFECE" filter="url(#fg1jw06of1gmp)" rx="166.5369" ry="35.7074" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="303" x="977.0369" y="192.9359">Selecionar um arquivo para ser aberto no editor</text><ellipse cx="2131.1595" cy="223.1319" fill="#FEFECE" filter="url(#fg1jw06of1gmp)" rx="178.6595" ry="38.1319" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="288" x="1985.1595" y="218.0557">Exibir no editor o status de cobertura de cada</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="30" x="2118.1595" y="235.6651">linha</text><ellipse cx="581.0221" cy="417.9044" fill="#FEFECE" filter="url(#fg1jw06of1gmp)" rx="190.0221" ry="40.4044" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="314" x="422.0221" y="412.8282">Abrir a aba no menu lateral do VS Code referente</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="69" x="548.5221" y="430.4376">à extensão</text><ellipse cx="1128.459" cy="483.8918" fill="#FEFECE" filter="url(#fg1jw06of1gmp)" rx="179.959" ry="38.3918" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="291" x="980.959" y="478.8156">Exibir no menu lateral um item referente à aba</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="77" x="1091.959" y="496.425">da extensão</text><ellipse cx="1128.4317" cy="595.7863" fill="#FEFECE" filter="url(#fg1jw06of1gmp)" rx="176.9317" ry="37.7863" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="284" x="984.4317" y="590.7102">Exibir a porcentagem de cobertura de código</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="118" x="1071.4317" y="608.3196">total na aba lateral</text><ellipse cx="581.0142" cy="526.9028" fill="#FEFECE" filter="url(#fg1jw06of1gmp)" rx="155.0142" ry="33.4028" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="279" x="441.5142" y="530.6314">Ativar a visualização do status de cada linha</text><ellipse cx="581.0369" cy="631.2074" fill="#FEFECE" filter="url(#fg1jw06of1gmp)" rx="166.5369" ry="35.7074" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="303" x="429.5369" y="634.9359">Desativar a visualização do status de cada linha</text><ellipse cx="580.9874" cy="742.8975" fill="#FEFECE" filter="url(#fg1jw06of1gmp)" rx="194.9874" ry="41.3975" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="261" x="445.4874" y="729.8047">Trocar a visualização da porcentagem de</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="244" x="455.9874" y="747.4141">cobertura total para a porcentagem de</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="177" x="491.4874" y="765.0235">cobertura do arquivo aberto</text><ellipse cx="580.9569" cy="865.1914" fill="#FEFECE" filter="url(#fg1jw06of1gmp)" rx="213.9569" ry="45.1914" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="261" x="448.4569" y="851.3105">Trocar a visualização da porcentagem de</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="309" x="426.4569" y="868.9199">cobertura do arquivo aberto para a porcentagem</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="116" x="524.9569" y="886.5293">de cobertura  total</text><ellipse cx="580.9049" cy="986.081" fill="#FEFECE" filter="url(#fg1jw06of1gmp)" rx="190.9049" ry="40.581" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="316" x="420.9049" y="981.0048">Adicionar ao arquivo de configuração a branch de</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="64" x="550.9049" y="998.6142">referência</text><ellipse cx="2131.1774" cy="424.0355" fill="#FEFECE" filter="url(#fg1jw06of1gmp)" rx="113.1774" ry="25.0355" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="190" x="2036.1774" y="427.764">Ler o arquivo de configuração</text><ellipse cx="581.108" cy="1105.1216" fill="#FEFECE" filter="url(#fg1jw06of1gmp)" rx="203.608" ry="43.1216" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="255" x="451.608" y="1091.2407">Ativar a visualização da porcentagem de</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="282" x="440.108" y="1108.8501">cobertura de código para as linhas criadas e</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="162" x="502.108" y="1126.4595">alteradas na branch atual</text><ellipse cx="580.9419" cy="1226.1884" fill="#FEFECE" filter="url(#fg1jw06of1gmp)" rx="201.4419" ry="42.6884" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="279" x="436.4419" y="1213.0956">Desativar a visualização da porcentagem de</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="270" x="442.9419" y="1230.705">cobertura de código para as linhas criadas</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="174" x="492.9419" y="1248.3143">e alteradas na branch atual</text><ellipse cx="1128.7387" cy="1002.8477" fill="#FEFECE" filter="url(#fg1jw06of1gmp)" rx="124.7387" ry="27.3477" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="215" x="1021.2387" y="1006.5763">Verificar diferença entre branches</text><ellipse cx="1638.2696" cy="1003.0539" fill="#FEFECE" filter="url(#fg1jw06of1gmp)" rx="203.2696" ry="43.0539" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="284" x="1491.2696" y="989.9612">Exibir no editor apenas o status de cobertura</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="217" x="1526.7696" y="1007.5705">das linhas criadas ou alteradas na</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="107" x="1583.7696" y="1025.1799">ramificação atual</text><ellipse cx="580.9296" cy="1337.7859" fill="#FEFECE" filter="url(#fg1jw06of1gmp)" rx="156.9296" ry="33.7859" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="283" x="439.4296" y="1341.5144">Solicitar geração do arquivo de configuração</text><ellipse cx="580.8403" cy="1443.7681" fill="#FEFECE" filter="url(#fg1jw06of1gmp)" rx="171.8403" ry="36.7681" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="314" x="423.8403" y="1447.4966">Criar na raiz do projeto o arquivo de configuração</text><ellipse cx="580.7618" cy="1555.1524" fill="#FEFECE" filter="url(#fg1jw06of1gmp)" rx="181.2618" ry="38.6524" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="294" x="431.7618" y="1550.0762">Adicionar ao arquivo de configuração um valor</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="129" x="518.2618" y="1567.6856">mínimo de cobertura</text><ellipse cx="2131.0642" cy="1137.1128" fill="#FEFECE" filter="url(#fg1jw06of1gmp)" rx="186.0642" ry="39.6128" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="305" x="1976.5642" y="1132.0367">Adicionar ao arquivo de configuração o caminho</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="253" x="2006.5642" y="1149.646">para o arquivo de relatório de cobertura</text><ellipse cx="1128.7114" cy="1225.8423" fill="#FEFECE" filter="url(#fg1jw06of1gmp)" rx="172.2114" ry="36.8423" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="273" x="990.2114" y="1220.7661">Exibir todas as linhas da aplicação que não</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="95" x="1083.2114" y="1238.3755">foram cobertas</text><ellipse cx="1128.6369" cy="1109.1274" fill="#FEFECE" filter="url(#fg1jw06of1gmp)" rx="203.6369" ry="43.1274" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="285" x="981.1369" y="1096.0346">Exibir apenas as linhas da aplicação que não</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="217" x="1017.1369" y="1113.644">foram cobertas e foram criadas ou</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="190" x="1032.6369" y="1131.2534">alteradas na ramificação atual</text><ellipse cx="580.7949" cy="1666.959" fill="#FEFECE" filter="url(#fg1jw06of1gmp)" rx="177.7949" ry="37.959" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="286" x="435.7949" y="1661.8828">Selecionar uma das linhas listadas como sem</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="61" x="552.2949" y="1679.4922">cobertura</text><ellipse cx="1128.727" cy="1667.0454" fill="#FEFECE" filter="url(#fg1jw06of1gmp)" rx="178.227" ry="38.0454" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="287" x="983.227" y="1661.9692">Redirecionar o editor para o arquivo na exata</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="110" x="1075.727" y="1679.5786">linha selecionada</text><ellipse cx="581.1171" cy="1781.0234" fill="#FEFECE" filter="url(#fg1jw06of1gmp)" rx="193.1171" ry="41.0234" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="321" x="418.6171" y="1775.9472">Adicionar ao arquivo de configuração um comando</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="162" x="502.1171" y="1793.5566">para execução dos testes</text><ellipse cx="1128.446" cy="1781.1892" fill="#FEFECE" filter="url(#fg1jw06of1gmp)" rx="168.946" ry="36.1892" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="308" x="974.446" y="1784.9177">Executar testes através da interface da extensão</text><ellipse cx="581.0377" cy="293.1075" fill="#FEFECE" filter="url(#fg1jw06of1gmp)" rx="236.0377" ry="49.6075" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="321" x="418.5377" y="279.2267">Adicionar ao arquivo de configuração um comando</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="244" x="459.0377" y="296.8361">para execução dos testes em modo de</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="368" x="399.0377" y="314.4454">recarregamento automático após edição de algum arquivo</text><ellipse cx="1128.4317" cy="371.7863" fill="#FEFECE" filter="url(#fg1jw06of1gmp)" rx="176.9317" ry="37.7863" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="284" x="984.4317" y="366.7102">Executar testes em modo de recarregamento</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="280" x="990.4317" y="384.3196">automático através da interface da extensão</text><ellipse cx="581.2387" cy="180.8477" fill="#FEFECE" filter="url(#fg1jw06of1gmp)" rx="124.7387" ry="27.3477" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="215" x="473.7387" y="184.5763">Recarregar os dados da extensão</text><!--MD5=[4166c2533998e538f16711cc7763c23c]
-entity Dev--><ellipse cx="53.5" cy="954" fill="#FEFECE" filter="url(#fg1jw06of1gmp)" rx="8" ry="8" style="stroke:#A80036;stroke-width:1.5;"/><path d="M53.5,962 L53.5,989 M40.5,970 L66.5,970 M53.5,989 L40.5,1004 M53.5,989 L66.5,1004 " fill="none" filter="url(#fg1jw06of1gmp)" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="95" x="6" y="1024.0332">Desenvolvedor</text><!--MD5=[4410a6497a77038ffb56c75e6ffafee9]
-entity VSCode--><ellipse cx="222" cy="14" fill="#FEFECE" filter="url(#fg1jw06of1gmp)" rx="8" ry="8" style="stroke:#A80036;stroke-width:1.5;"/><path d="M222,22 L222,49 M209,30 L235,30 M222,49 L209,64 M222,49 L235,64 " fill="none" filter="url(#fg1jw06of1gmp)" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="120" x="162" y="84.0332">Visual Studio Code</text><!--MD5=[0121815b969964407dd4701e3e965a67]
-link VSCode to UC00--><path d="M282.22,43.28 C393.3,40.63 637.84,46.52 817,136 C877.17,166.05 865.29,211.04 925,242 C961.96,261.17 1007.22,270.55 1045.57,275.09 " fill="none" id="VSCode-UC00" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[dbc611c4db940728f21283c5e1f4a142]
-link UC00 to UC01--><path d="M1213.1,279 C1281.38,279 1380.14,279 1465.22,279 " fill="none" id="UC00-to-UC01" style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#A80036" points="1470.28,279,1461.28,275,1465.28,279,1461.28,283,1470.28,279" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="41" x="1363" y="275.4951">include</text><!--MD5=[206e5e90d3a72ee7e96ffd4553b1a31c]
-link UC01 to UC13--><path d="M1725.08,309.97 C1785.96,331.41 1869.93,359.8 1945,381 C1976.93,390.02 2012.34,398.59 2043.56,405.67 " fill="none" id="UC01-to-UC13" style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#A80036" points="2048.53,406.8,2040.6321,400.9159,2043.6528,405.6987,2038.87,408.7194,2048.53,406.8" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="41" x="1873" y="357.4951">include</text><!--MD5=[4edfcb15f14d2689dd380d576ce9bcd8]
-link Dev to UC03--><path d="M53.99,944.13 C53.92,841.02 60.92,567.72 131,354 C171.05,231.87 202.57,185.92 321,136 C565.22,33.06 888.08,110.87 1040.6,158.75 " fill="none" id="Dev-UC03" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[3bafa740e8a8cfcc82384573e8e314db]
-link UC03 to UC01--><path d="M1257.03,211.59 C1332.24,224.92 1427.3,241.76 1503.59,255.28 " fill="none" id="UC03-to-UC01" style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#A80036" points="1508.59,256.16,1500.4267,250.65,1503.6668,255.287,1499.0298,258.5271,1508.59,256.16" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="41" x="1363" y="228.4951">include</text><!--MD5=[c3b5ada4215443151d7a3bd42000129a]
-link UC01 to UC04--><path d="M1787,262.16 C1844.1,255.64 1909.65,248.16 1968.06,241.49 " fill="none" id="UC01-to-UC04" style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#A80036" points="1973.32,240.89,1963.9211,237.947,1968.3529,241.4626,1964.8373,245.8943,1973.32,240.89" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="41" x="1873" y="244.4951">include</text><!--MD5=[9e376f390b93d807b16bf3e1d843f92b]
-link UC01 to UC02--><path d="M1782.34,297.71 C1811.95,301.34 1842.97,304.95 1872,308 C1906.73,311.65 1944.14,315.1 1979.4,318.15 " fill="none" id="UC01-to-UC02" style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#A80036" points="1984.59,318.6,1975.9668,313.8418,1979.6085,318.1706,1975.2797,321.8122,1984.59,318.6" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="41" x="1873" y="304.4951">include</text><!--MD5=[7fa6a0b55a3714977f7c29892247c517]
-link UC02 to UC02.1--><path d="M2286.51,330 C2330.8,330 2379.36,330 2424.6,330 " fill="none" id="UC02-to-UC02.1" style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#A80036" points="2429.82,330,2420.82,326,2424.82,330,2420.82,334,2429.82,330" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="46" x="2348" y="326.4951">extends</text><!--MD5=[418bb2ab8f835f17abbe9ccd36f01e3d]
-link UC02 to UC02.2--><path d="M2253.95,350.54 C2276.2,357.81 2298.28,367.66 2317,381 C2452.75,477.68 2543.5,662.42 2579.09,745.14 " fill="none" id="UC02-to-UC02.2" style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#A80036" points="2581.15,749.96,2581.3072,740.1124,2579.1925,745.3591,2573.9458,743.2444,2581.15,749.96" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="46" x="2348" y="402.4951">extends</text><!--MD5=[cd97047f1b974c03197c3c2d7583cd21]
-link Dev to UC05--><path d="M61.37,944.45 C73.73,877.67 104.01,743.94 162,645 C214.15,556.03 231.41,527.07 321,476 C350.42,459.23 384.3,447.31 417.65,438.83 " fill="none" id="Dev-UC05" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[ecd10f517b8a231d4f79af415e7607b7]
-link UC05 to UC06--><path d="M746.78,437.94 C816.46,446.37 897.35,456.15 966.61,464.53 " fill="none" id="UC05-to-UC06" style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#A80036" points="971.58,465.13,963.1259,460.0775,966.6162,464.5292,962.1646,468.0196,971.58,465.13" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="41" x="850.5" y="447.4951">include</text><!--MD5=[c6af764ed8eb0a9e9463bc669afad3a4]
-link UC05 to UC07--><path d="M721.47,445.28 C753.43,453.48 786.86,463.66 817,476 C868.64,497.13 873.66,518.15 925,540 C949.33,550.35 976.12,559.33 1002.02,566.89 " fill="none" id="UC05-to-UC07" style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#A80036" points="1006.84,568.28,999.3149,561.926,1002.0389,566.8838,997.0811,569.6078,1006.84,568.28" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="41" x="850.5" y="488.4951">include</text><!--MD5=[5cb439d5ea9c6f54d11e792eba3179ca]
-link Dev to UC08--><path d="M66.83,944.21 C95.11,856.98 173.81,657.09 321,578 C356.32,559.02 397.76,547.06 437,539.53 " fill="none" id="Dev-UC08" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[b318c44de749cc79e9b74864fd3e5282]
-link Dev to UC09--><path d="M77.33,944.33 C116.96,876.57 205.42,744.03 321,684 C354.91,666.39 394.15,654.63 431.68,646.77 " fill="none" id="Dev-UC09" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[00463c38cd3c6c338733029821989cc6]
-link Dev to UC10--><path d="M101.24,945.39 C152,903.39 237.1,838.88 321,802 C353.72,787.62 390.37,776.54 425.56,768.08 " fill="none" id="Dev-UC10" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[7d390cfef227644f4397bca03f0a0f50]
-link Dev to UC11--><path d="M101.16,969.16 C110.95,965.9 121.26,962.68 131,960 C225.41,934.07 332.63,911.14 418.61,894.31 " fill="none" id="Dev-UC11" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[68bc85664c4f0b6c06459738a018ba92]
-link Dev to UC12--><path d="M101.13,986 C165.63,986 285.86,986 389.71,986 " fill="none" id="Dev-UC12" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[38131ed45a863bc4f1a20f0d4e89030e]
-link Dev to UC20--><path d="M57,1027.68 C63.37,1103.89 85.61,1268.18 162,1380 C222.19,1468.1 335.93,1511.97 429.58,1533.75 " fill="none" id="Dev-UC20" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[c3f567869f01a08f80e49fc6f0f6d04f]
-link Dev to UC21--><path d="M57.82,1027.69 C72.37,1203.44 133.66,1875 221,1875 C221,1875 221,1875 1639.5,1875 C1977.95,1875 2096.94,1329.97 2123.71,1176.68 " fill="none" id="Dev-UC21" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[2a380938638f90c81adf98a198df2ad9]
-link Dev to UC26--><path d="M57.69,1027.92 C67.63,1150.52 101.15,1505.92 162,1603 C217.34,1691.3 326.9,1735.87 419.97,1758.33 " fill="none" id="Dev-UC26" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[b3fcab8f485bcc903063f2ea5c170378]
-link Dev to UC28--><path d="M56.95,944.4 C65.01,814.29 92.36,421.27 131,380 C186.22,321.02 268.47,295.18 347.55,285.46 " fill="none" id="Dev-UC28" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[d6afd5211794d29c499daa4b4bb53f39]
-link UC21 to UC02.2--><path d="M2182.54,1098.88 C2271.44,1031.82 2454.85,893.47 2544.46,825.88 " fill="none" id="UC21-to-UC02.2" style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#A80036" points="2548.65,822.72,2539.0538,824.9365,2544.6552,825.7269,2543.8648,831.3282,2548.65,822.72" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="46" x="2348" y="938.4951">extends</text><!--MD5=[df31a729803a8a644492b8162efff1d9]
-link Dev to UC14--><path d="M101.13,996.56 C176.74,1013.68 328.96,1048.15 441.57,1073.65 " fill="none" id="Dev-UC14" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[eee79d3131584dbc0f71ffed8b97c901]
-link Dev to UC15--><path d="M101.02,1024.95 C151.93,1065.65 237.48,1128.56 321,1165 C353.5,1179.18 389.79,1190.34 424.68,1199.01 " fill="none" id="Dev-UC15" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[3db46a4b3379dd4386b00f74624ee5ab]
-link UC14 to UC16--><path d="M733.95,1076.59 C827.73,1059.05 945.38,1037.05 1027.51,1021.7 " fill="none" id="UC14-to-UC16" style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#A80036" points="1032.87,1020.69,1023.2838,1018.4306,1027.9569,1021.6183,1024.7692,1026.2915,1032.87,1020.69" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="41" x="850.5" y="1044.4951">include</text><!--MD5=[1e1286adc09d7e5e75ab24d0433baca6]
-link UC16 to UC17--><path d="M1253.12,1003 C1306.25,1003 1369.83,1003 1429.83,1003 " fill="none" id="UC16-to-UC17" style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#A80036" points="1434.89,1003,1425.89,999,1429.89,1003,1425.89,1007,1434.89,1003" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="41" x="1363" y="999.4951">include</text><!--MD5=[7e09438330c8c5715545689302762e8e]
-link UC14 to UC23--><path d="M784.74,1106.49 C828.8,1106.81 875.48,1107.15 919.74,1107.48 " fill="none" id="UC14-to-UC23" style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#A80036" points="924.84,1107.51,915.863,1103.4586,919.8401,1107.4814,915.8173,1111.4585,924.84,1107.51" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="41" x="850.5" y="1103.4951">include</text><!--MD5=[9448c8fd3b9a080ad5f387fe419b5ad7]
-link Dev to UC18--><path d="M76.17,1027.76 C95.86,1063.59 127.1,1115.54 162,1155 C222.66,1223.59 238.3,1246.7 321,1286 C357.87,1303.52 400.4,1315.14 440.21,1322.85 " fill="none" id="Dev-UC18" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[e0d0114cd3e9f5decfae8e1171f126e6]
-link Dev to UC19--><path d="M62.12,1027.87 C74.62,1087.48 104.11,1198 162,1274 C214.85,1343.38 241.29,1353.62 321,1389 C356.61,1404.8 397.03,1416.17 435.17,1424.31 " fill="none" id="Dev-UC19" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[ffe7774cdc0c47217211018ef8617010]
-link UC15 to UC22--><path d="M782.8,1226 C837.98,1226 897.39,1226 951.09,1226 " fill="none" id="UC15-to-UC22" style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#A80036" points="956.27,1226,947.27,1222,951.27,1226,947.27,1230,956.27,1226" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="41" x="850.5" y="1222.4951">include</text><!--MD5=[9226e1fe4d0e820d72da257154a3b626]
-link Dev to UC24--><path d="M53.93,1027.81 C54.61,1119.05 66.76,1339.84 162,1490 C219.72,1581.01 335.05,1625.29 429.97,1646.8 " fill="none" id="Dev-UC24" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[e544d611d3d2ed610e919987b197a1e7]
-link UC24 to UC25--><path d="M759.11,1667 C818.72,1667 885.31,1667 945.3,1667 " fill="none" id="UC24-to-UC25" style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#A80036" points="950.35,1667,941.35,1663,945.35,1667,941.35,1671,950.35,1667" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="41" x="850.5" y="1663.4951">include</text><!--MD5=[95defa7fa47dc1d1ca93fecb7c125520]
-link UC26 to UC27--><path d="M774.32,1781 C832.83,1781 896.76,1781 953.96,1781 " fill="none" id="UC26-to-UC27" style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#A80036" points="959.12,1781,950.12,1777,954.12,1781,950.12,1785,959.12,1781" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="46" x="848" y="1777.4951">extends</text><!--MD5=[289a017b698557ec6723d1ee1a3c5637]
-link UC28 to UC29--><path d="M775.86,321.07 C841.69,330.61 914.22,341.11 976.23,350.09 " fill="none" id="UC28-to-UC29" style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#A80036" points="981.43,350.85,973.1095,345.5803,976.4834,350.1209,971.9429,353.4948,981.43,350.85" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="46" x="848" y="329.4951">extends</text><!--MD5=[45e1c222748a3216c075bfbeaad3d21b]
-link Dev to UC30--><path d="M54.33,944.42 C56.29,812.95 82.1,404.41 321,226 C359.49,197.26 410.11,184.54 456.38,179.53 " fill="none" id="Dev-UC30" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[bcd65e2f02187af13dae11e87d379df5]
-link UC30 to UC00--><path d="M678.27,198.29 C781.18,216.78 942.82,245.82 1041.57,263.56 " fill="none" id="UC30-to-UC00" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="none" points="1042.9,256.69,1061.34,267.11,1040.42,270.47,1042.9,256.69" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[36ec40c933c9375bae74222ef3c051f4]
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="1619px" preserveAspectRatio="none" style="width:2612px;height:1619px;background:#FFFFFF;" version="1.1" viewBox="0 0 2612 1619" width="2612px" zoomAndPan="magnify"><defs><filter height="300%" id="fk56dog930phu" width="300%" x="-1" y="-1"><feGaussianBlur result="blurOut" stdDeviation="2.0"/><feColorMatrix in="blurOut" result="blurOut2" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"/><feOffset dx="4.0" dy="4.0" in="blurOut2" result="blurOut3"/><feBlend in="SourceGraphic" in2="blurOut3" mode="normal"/></filter></defs><g><!--MD5=[354055cd6488b9b338c7e270d264712e]
+cluster Extensão (VS Code) - Covering--><rect fill="#FFFFFF" filter="url(#fk56dog930phu)" height="1600" style="stroke:#000000;stroke-width:1.5;" width="2381" x="219" y="7"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="243" x="1288" y="21.9951">Extensão (VS Code) - Covering</text><ellipse cx="745.0056" cy="93.2011" fill="#D3D3D3" filter="url(#fk56dog930phu)" rx="241.5056" ry="50.7011" style="stroke:#000000;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="458" x="516.0056" y="96.0478">UC01 Abrir a aba no menu lateral do VS Code referente à extensão</text><ellipse cx="744.783" cy="225.7566" fill="#D3D3D3" filter="url(#fk56dog930phu)" rx="224.283" ry="47.2566" style="stroke:#000000;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="423" x="533.283" y="228.6033">UC02 Alternar a visualização do status de cada linha no editor</text><ellipse cx="744.8368" cy="382.7674" fill="#D3D3D3" filter="url(#fk56dog930phu)" rx="359.3368" ry="74.2674" style="stroke:#000000;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="696" x="396.8368" y="385.614">UC03 Alternar a visualização da porcentagem de cobertura entre total e em relação ao arquivo aberto</text><ellipse cx="745.1392" cy="596.9278" fill="#D3D3D3" filter="url(#fk56dog930phu)" rx="510.1392" ry="104.4278" style="stroke:#000000;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="999" x="245.6392" y="599.7745">UC04 Alternar a visualização da porcentagem de cobertura entre somente para as linhas criadas e alteradas na branch atual e para todo o código</text><ellipse cx="745.0781" cy="776.2156" fill="#D3D3D3" filter="url(#fk56dog930phu)" rx="186.5781" ry="39.7156" style="stroke:#000000;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="346" x="572.0781" y="779.0623">UC05 Solicitar geração do arquivo de configuração</text><ellipse cx="745.2002" cy="893.94" fill="#D3D3D3" filter="url(#fk56dog930phu)" rx="202.7002" ry="42.94" style="stroke:#000000;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="379" x="555.7002" y="896.7867">UC06 Criar na raiz do projeto o arquivo de configuração</text><ellipse cx="745.1177" cy="1016.2235" fill="#D3D3D3" filter="url(#fk56dog930phu)" rx="206.6177" ry="43.7235" style="stroke:#000000;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="387" x="551.6177" y="1019.0702">UC07 Editar o arquivo de configuração na raiz do projeto</text><ellipse cx="2038.0353" cy="741.8071" fill="#D3D3D3" filter="url(#fk56dog930phu)" rx="239.5353" ry="50.3071" style="stroke:#000000;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="454" x="1811.0353" y="744.6537">UC08 Adicionar ao arquivo de configuração a branch de referência</text><ellipse cx="2038.1971" cy="1057.2394" fill="#D3D3D3" filter="url(#fk56dog930phu)" rx="264.1971" ry="55.2394" style="stroke:#000000;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="504" x="1786.1971" y="1060.0861">UC09 Adicionar ao arquivo de configuração um valor mínimo de cobertura</text><ellipse cx="2038.0093" cy="896.9019" fill="#D3D3D3" filter="url(#fk56dog930phu)" rx="335.0093" ry="69.4019" style="stroke:#000000;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="647" x="1714.5093" y="899.7485">UC10 Adicionar ao arquivo de configuração o caminho para o arquivo de relatório de cobertura</text><ellipse cx="2037.8238" cy="1209.0648" fill="#D3D3D3" filter="url(#fk56dog930phu)" rx="298.3238" ry="62.0648" style="stroke:#000000;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="573" x="1751.3238" y="1211.9114">UC11 Adicionar ao arquivo de configuração um comando para execução dos testes</text><ellipse cx="2038.0305" cy="1418.1061" fill="#D3D3D3" filter="url(#fk56dog930phu)" rx="546.0305" ry="111.6061" style="stroke:#000000;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="1071" x="1502.5305" y="1420.9528">UC12 Adicionar ao arquivo de configuração um comando para execução dos testes em modo de recarregamento automático após edição de algum arquivo</text><ellipse cx="744.766" cy="1141.9532" fill="#D3D3D3" filter="url(#fk56dog930phu)" rx="225.266" ry="47.4532" style="stroke:#000000;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="425" x="532.266" y="1144.7999">UC13 Selecionar uma das linhas listadas como sem cobertura</text><ellipse cx="745.2108" cy="1267.8422" fill="#D3D3D3" filter="url(#fk56dog930phu)" rx="202.2108" ry="42.8422" style="stroke:#000000;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="378" x="556.2108" y="1270.6888">UC14 Executar testes através da interface da extensão</text><ellipse cx="744.9395" cy="1417.7879" fill="#D3D3D3" filter="url(#fk56dog930phu)" rx="344.4395" ry="71.2879" style="stroke:#000000;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="666" x="411.9395" y="1420.6346">UC15 Executar testes em modo de recarregamento automático através da interface da extensão</text><ellipse cx="745.1716" cy="1557.8343" fill="#D3D3D3" filter="url(#fk56dog930phu)" rx="152.1716" ry="32.8343" style="stroke:#000000;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="275" x="607.6716" y="1560.681">UC16 Recarregar os dados da extensão</text><!--MD5=[4166c2533998e538f16711cc7763c23c]
+entity Dev--><ellipse cx="58" cy="863" fill="#FFFFFF" filter="url(#fk56dog930phu)" rx="8" ry="8" style="stroke:#808080;stroke-width:2.0;"/><path d="M58,871 L58,898 M45,879 L71,879 M58,898 L45,913 M58,898 L71,913 " fill="none" filter="url(#fk56dog930phu)" style="stroke:#808080;stroke-width:2.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="104" x="6" y="931.9951">Desenvolvedor</text><!--MD5=[f550f7d400eeb68a21bb7ba7818a1006]
+link Dev to UC01--><path d="M61.16,852.59 C69.46,711.35 104.36,252.26 211,161 C297.08,87.34 421.44,68.27 528.39,68.56 " fill="none" id="Dev-to-UC01" style="stroke:#000000;stroke-width:1.0;"/><polygon fill="#000000" points="533.47,68.59,524.493,64.5386,528.4701,68.5614,524.4473,72.5385,533.47,68.59" style="stroke:#000000;stroke-width:1.0;"/><!--MD5=[ae4610af301800f46c975f4fb62d3b93]
+link Dev to UC02--><path d="M63.25,852.82 C76.9,729.15 123.91,365.03 211,291 C302.86,212.92 437.92,197.14 549.1,200.64 " fill="none" id="Dev-to-UC02" style="stroke:#000000;stroke-width:1.0;"/><polygon fill="#000000" points="554.38,200.82,545.5223,196.514,549.3829,200.6487,545.2482,204.5093,554.38,200.82" style="stroke:#000000;stroke-width:1.0;"/><!--MD5=[4edfcb15f14d2689dd380d576ce9bcd8]
+link Dev to UC03--><path d="M60.9,852.76 C67.17,767.72 94.25,572.71 211,475 C259.86,434.1 320.27,408.42 382.67,392.77 " fill="none" id="Dev-to-UC03" style="stroke:#000000;stroke-width:1.0;"/><polygon fill="#000000" points="387.55,391.56,377.8533,389.8354,382.6959,392.7592,379.7721,397.6019,387.55,391.56" style="stroke:#000000;stroke-width:1.0;"/><!--MD5=[73811c78f98b3414f9ab5e645f1d1e17]
+link Dev to UC04--><path d="M83.55,852.98 C109.93,812.58 155.61,752.23 211,719 C249.29,696.03 291.5,677.38 334.9,662.25 " fill="none" id="Dev-to-UC04" style="stroke:#000000;stroke-width:1.0;"/><polygon fill="#000000" points="339.65,660.61,329.838,659.7588,334.9225,662.2382,332.4431,667.3227,339.65,660.61" style="stroke:#000000;stroke-width:1.0;"/><!--MD5=[cd97047f1b974c03197c3c2d7583cd21]
+link Dev to UC05--><path d="M110.23,869.33 C139.17,856.45 176.37,841.62 211,833 C323.67,804.94 453.12,790.69 556.23,783.46 " fill="none" id="Dev-to-UC05" style="stroke:#000000;stroke-width:1.0;"/><polygon fill="#000000" points="561.43,783.1,552.1672,779.7533,556.4428,783.4573,552.7388,787.7328,561.43,783.1" style="stroke:#000000;stroke-width:1.0;"/><!--MD5=[baad476171aa4b18990754da87e035f4]
+link Dev to UC06--><path d="M110.21,894 C199.53,894 388.47,894 536.94,894 " fill="none" id="Dev-to-UC06" style="stroke:#000000;stroke-width:1.0;"/><polygon fill="#000000" points="542.21,894,533.21,890,537.21,894,533.21,898,542.21,894" style="stroke:#000000;stroke-width:1.0;"/><!--MD5=[01a5098ab1d0d81d52ca00a29328bf2d]
+link Dev to UC07--><path d="M110.3,918.12 C139.26,930.74 176.47,945.33 211,954 C317.74,980.79 439.46,996.05 539.61,1004.73 " fill="none" id="Dev-to-UC07" style="stroke:#000000;stroke-width:1.0;"/><polygon fill="#000000" points="544.67,1005.16,536.0456,1000.4039,539.6884,1004.7318,535.3605,1008.3745,544.67,1005.16" style="stroke:#000000;stroke-width:1.0;"/><!--MD5=[2ebddb04d3c9f5f0bd7522e3b5ca314f]
+link UC07 to UC08--><path d="M950.18,1010.87 C1045,1003.54 1157.95,987.63 1255,954 C1371.46,913.64 1375.6,850.53 1492,810 C1588.32,776.46 1699.29,759.08 1795.86,750.21 " fill="none" id="UC07-to-UC08" style="stroke:#000000;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#000000" points="1801.03,749.74,1791.7015,746.5809,1796.051,750.1978,1792.4341,754.5473,1801.03,749.74" style="stroke:#000000;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="51" x="1348" y="857.0669">extends</text><!--MD5=[5c761ef509868fc6756a381d551b3dfd]
+link UC07 to UC09--><path d="M949.49,1022.46 C1171.63,1029.52 1528.11,1040.84 1771.96,1048.58 " fill="none" id="UC07-to-UC09" style="stroke:#000000;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#000000" points="1776.98,1048.74,1768.1101,1044.4593,1771.9825,1048.5829,1767.8588,1052.4553,1776.98,1048.74" style="stroke:#000000;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="51" x="1348" y="1032.0669">extends</text><!--MD5=[a923cb3d861ed91c377f3297bb2d77ce]
+link UC07 to UC10--><path d="M934.41,998.63 C1142.15,979.48 1479.61,948.38 1726.55,925.62 " fill="none" id="UC07-to-UC10" style="stroke:#000000;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#000000" points="1731.64,925.15,1722.3124,921.9885,1726.6609,925.6065,1723.0428,929.9551,1731.64,925.15" style="stroke:#000000;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="51" x="1348" y="952.0669">extends</text><!--MD5=[5daf67820b4faa2a4f81669ff05ad57f]
+link UC07 to UC11--><path d="M933.07,1034.04 C1029.55,1044.45 1148.93,1059.05 1255,1077 C1361.33,1094.99 1385.92,1109.6 1492,1129 C1585.71,1146.14 1689.02,1162.05 1780.26,1175.1 " fill="none" id="UC07-to-UC11" style="stroke:#000000;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#000000" points="1785.42,1175.83,1777.0846,1170.5839,1780.4714,1175.1149,1775.9404,1178.5017,1785.42,1175.83" style="stroke:#000000;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="51" x="1348" y="1092.0669">extends</text><!--MD5=[93a28fb6fcec599cd6f864cdafbafa1b]
+link UC07 to UC12--><path d="M930.89,996.96 C1034.94,995.69 1162.19,1010.94 1255,1077 C1331.11,1131.17 1273.62,1208.18 1347,1266 C1404.51,1311.31 1472.72,1343.76 1543.51,1366.88 " fill="none" id="UC07-to-UC12" style="stroke:#000000;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#000000" points="1548.61,1368.52,1541.2651,1361.9585,1543.8497,1366.9904,1538.8178,1369.575,1548.61,1368.52" style="stroke:#000000;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="51" x="1348" y="1262.0669">extends</text><!--MD5=[30cbd28b32960e2170d4790c231da7ab]
+link Dev to UC13--><path d="M80.75,935.35 C105.88,978.58 151.54,1044.56 211,1077 C303.84,1127.66 419.09,1146.19 518.64,1151.11 " fill="none" id="Dev-to-UC13" style="stroke:#000000;stroke-width:1.0;"/><polygon fill="#000000" points="523.67,1151.34,514.8621,1146.9332,518.6752,1151.1117,514.4967,1154.9248,523.67,1151.34" style="stroke:#000000;stroke-width:1.0;"/><!--MD5=[df31a729803a8a644492b8162efff1d9]
+link Dev to UC14--><path d="M65.97,935.17 C80,1004.06 118.57,1141.53 211,1207 C311.91,1278.48 451.51,1292.22 562.53,1288.89 " fill="none" id="Dev-to-UC14" style="stroke:#000000;stroke-width:1.0;"/><polygon fill="#000000" points="567.79,1288.72,558.6685,1285.0055,562.7925,1288.8775,558.9205,1293.0015,567.79,1288.72" style="stroke:#000000;stroke-width:1.0;"/><!--MD5=[eee79d3131584dbc0f71ffed8b97c901]
+link Dev to UC15--><path d="M60.07,935.27 C64.76,1022.87 88.93,1227.57 211,1328 C263.53,1371.22 329.04,1397.18 395.98,1412.19 " fill="none" id="Dev-to-UC15" style="stroke:#000000;stroke-width:1.0;"/><polygon fill="#000000" points="401.21,1413.34,393.292,1407.4829,396.3291,1412.2553,391.5566,1415.2924,401.21,1413.34" style="stroke:#000000;stroke-width:1.0;"/><!--MD5=[901165f40959f6aff952005c627ca22d]
+link UC14 to UC11--><path d="M942.78,1259.01 C1155.37,1249.29 1496.48,1233.7 1741.34,1222.51 " fill="none" id="UC14-to-UC11" style="stroke:#000000;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#000000" points="1746.39,1222.28,1737.2167,1218.6952,1741.3952,1222.5083,1737.5821,1226.6868,1746.39,1222.28" style="stroke:#000000;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="45" x="1351" y="1235.0669">include</text><!--MD5=[2625fffa67532a4e7b8d12fd44c62ff8]
+link UC15 to UC12--><path d="M1089.84,1418 C1211.71,1418 1352.09,1418 1486.8,1418 " fill="none" id="UC15-to-UC12" style="stroke:#000000;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#000000" points="1492,1418,1483,1414,1487,1418,1483,1422,1492,1418" style="stroke:#000000;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="45" x="1351" y="1414.0669">include</text><!--MD5=[a7a54ae2fe6ac9359d154ccf10d379a2]
+link Dev to UC16--><path d="M62.98,935.05 C76.01,1060.09 121.76,1432.32 211,1507 C326.81,1603.92 510.29,1598.37 628.91,1581.37 " fill="none" id="Dev-to-UC16" style="stroke:#000000;stroke-width:1.0;"/><polygon fill="#000000" points="634.15,1580.6,624.664,1577.9512,629.2031,1581.3271,625.8273,1585.8662,634.15,1580.6" style="stroke:#000000;stroke-width:1.0;"/><!--MD5=[d1223685795fc457f91d7efd4fb6b8f3]
 @startuml
 
 left to right direction
 skinparam packageStyle rectangle
 
-"Desenvolvedor" as Dev
-"Visual Studio Code" as VSCode
+"Desenvolvedor" as Dev #white;line:grey;line.bold;text:black
 
 package "Extensão (VS Code) - Covering" {
-  "Inicializa a extensão" as (UC00)
-  "Ler o arquivo de o arquivo de relatório de \n cobertura" as (UC01)
-  "Localizar o arquivo de relatório de cobertura" as (UC02)
-  "Localizar de forma recursiva o arquivo de \n relatório de cobertura" as (UC02.1)
-  "Localizar o relatório de cobertura utilizando \n o caminho do arquivo de configuração" as (UC02.2)
-  "Selecionar um arquivo para ser aberto no editor" as (UC03)
-  "Exibir no editor o status de cobertura de cada \n linha" as (UC04)
-  "Abrir a aba no menu lateral do VS Code referente \n à extensão" as (UC05)
-  "Exibir no menu lateral um item referente à aba \n da extensão" as (UC06)
-  "Exibir a porcentagem de cobertura de código \n total na aba lateral" as (UC07)
-  "Ativar a visualização do status de cada linha" as (UC08)
-  "Desativar a visualização do status de cada linha" as (UC09)
-  "Trocar a visualização da porcentagem de \n cobertura total para a porcentagem de \n cobertura do arquivo aberto" as (UC10)
-  "Trocar a visualização da porcentagem de \n cobertura do arquivo aberto para a porcentagem \n de cobertura  total" as (UC11)
-  "Adicionar ao arquivo de configuração a branch de \n referência" as (UC12)
-  "Ler o arquivo de configuração" as (UC13)
-  "Ativar a visualização da porcentagem de \n cobertura de código para as linhas criadas e \n alteradas na branch atual" as (UC14)
-  "Desativar a visualização da porcentagem de \n cobertura de código para as linhas criadas \n e alteradas na branch atual" as (UC15)
-  "Verificar diferença entre branches" as (UC16)
-  "Exibir no editor apenas o status de cobertura \n das linhas criadas ou alteradas na \n ramificação atual" as (UC17)
-  "Solicitar geração do arquivo de configuração" as (UC18)
-  "Criar na raiz do projeto o arquivo de configuração" as (UC19)
-  "Adicionar ao arquivo de configuração um valor \n mínimo de cobertura" as (UC20)
-  "Adicionar ao arquivo de configuração o caminho \n para o arquivo de relatório de cobertura" as (UC21)
-  "Exibir todas as linhas da aplicação que não \n foram cobertas" as (UC22)
-  "Exibir apenas as linhas da aplicação que não \n foram cobertas e foram criadas ou \n alteradas na ramificação atual" as (UC23)
-  "Selecionar uma das linhas listadas como sem \n cobertura" as (UC24)
-  "Redirecionar o editor para o arquivo na exata \n linha selecionada" as (UC25)
-  "Adicionar ao arquivo de configuração um comando \n para execução dos testes" as (UC26)
-  "Executar testes através da interface da extensão" as (UC27)
-  "Adicionar ao arquivo de configuração um comando \n para execução dos testes em modo de \n recarregamento automático após edição de algum arquivo" as (UC28)
-  "Executar testes em modo de recarregamento \n automático através da interface da extensão" as (UC29)
-  "Recarregar os dados da extensão" as (UC30)
+  "UC01 Abrir a aba no menu lateral do VS Code referente à extensão" as (UC01) #LightGray;line:black;text:black
+  
+  "UC02 Alternar a visualização do status de cada linha no editor" as (UC02) #LightGray;line:black;text:black
+  "UC03 Alternar a visualização da porcentagem de cobertura entre total e em relação ao arquivo aberto" as (UC03) #LightGray;line:black;text:black
+  "UC04 Alternar a visualização da porcentagem de cobertura entre somente para as linhas criadas e alteradas na branch atual e para todo o código" as (UC04) #LightGray;line:black;text:black
+  
+  "UC05 Solicitar geração do arquivo de configuração" as (UC05) #LightGray;line:black;text:black
+  "UC06 Criar na raiz do projeto o arquivo de configuração" as (UC06) #LightGray;line:black;text:black
+  "UC07 Editar o arquivo de configuração na raiz do projeto" as (UC07) #LightGray;line:black;text:black
+  
+  "UC08 Adicionar ao arquivo de configuração a branch de referência" as (UC08) #LightGray;line:black;text:black
+  "UC09 Adicionar ao arquivo de configuração um valor mínimo de cobertura" as (UC09) #LightGray;line:black;text:black
+  "UC10 Adicionar ao arquivo de configuração o caminho para o arquivo de relatório de cobertura" as (UC10) #LightGray;line:black;text:black
+  "UC11 Adicionar ao arquivo de configuração um comando para execução dos testes" as (UC11) #LightGray;line:black;text:black
+  "UC12 Adicionar ao arquivo de configuração um comando para execução dos testes em modo de recarregamento automático após edição de algum arquivo" as (UC12) #LightGray;line:black;text:black
+  
+  "UC13 Selecionar uma das linhas listadas como sem cobertura" as (UC13) #LightGray;line:black;text:black
+
+  "UC14 Executar testes através da interface da extensão" as (UC14) #LightGray;line:black;text:black
+  "UC15 Executar testes em modo de recarregamento automático através da interface da extensão" as (UC15) #LightGray;line:black;text:black
+
+  "UC16 Recarregar os dados da extensão" as (UC16) #LightGray;line:black;text:black
 }
+ 
+Dev - - -> (UC01) #line:black
 
-VSCode - - - (UC00)
-(UC00) ..> (UC01) : include
+Dev - - -> (UC02) #line:black
+Dev - - -> (UC03) #line:black
+Dev - - -> (UC04) #line:black
 
-(UC01) ..> (UC13) : include
+Dev - - -> (UC05) #line:black
+Dev - - -> (UC06) #line:black
+Dev - - -> (UC07) #line:black
 
-Dev - - - (UC03)
-(UC03) ..> (UC01) : include
-(UC01) ..> (UC04) : include
-(UC01) ..> (UC02) : include
-
-(UC02) ..> (UC02.1) : extends
-(UC02) ..> (UC02.2) : extends
-
-Dev - - - (UC05)
-(UC05) ..> (UC06) : include
-(UC05) ..> (UC07) : include
-
-Dev - - - (UC08)
-Dev - - - (UC09)
-
-Dev - - - (UC10)
-Dev - - - (UC11)
-
-Dev - - - (UC12)
-Dev - - - (UC20)
-Dev - - - (UC21)
-Dev - - - (UC26)
-Dev - - - (UC28)
-
-(UC21) ..> (UC02.2) : extends
-
-Dev - - - (UC14)
-Dev - - - (UC15)
-
-(UC14) ..> (UC16) : include
-(UC16) ..> (UC17) : include
-(UC14) ..> (UC23) : include
-
-Dev - - - (UC18)
-Dev - - - (UC19)
-
-(UC15) ..> (UC22) : include
-
-Dev - - - (UC24)
-(UC24) ..> (UC25) : include
-
-(UC26) ..> (UC27) : extends
-(UC28) ..> (UC29) : extends
-
-Dev - - - (UC30)
-(UC30) - -|> (UC00)
-' (UC01) .> (UC02) : include
-' (UC03) .> (UC01) : extends
-
-@enduml
-
-@startuml
-
-left to right direction
-skinparam packageStyle rectangle
-
-"Desenvolvedor" as Dev
-"Visual Studio Code" as VSCode
-
-package "Extensão (VS Code) - Covering" {
-  "Inicializa a extensão" as (UC00)
-  "Ler o arquivo de o arquivo de relatório de \n cobertura" as (UC01)
-  "Localizar o arquivo de relatório de cobertura" as (UC02)
-  "Localizar de forma recursiva o arquivo de \n relatório de cobertura" as (UC02.1)
-  "Localizar o relatório de cobertura utilizando \n o caminho do arquivo de configuração" as (UC02.2)
-  "Selecionar um arquivo para ser aberto no editor" as (UC03)
-  "Exibir no editor o status de cobertura de cada \n linha" as (UC04)
-  "Abrir a aba no menu lateral do VS Code referente \n à extensão" as (UC05)
-  "Exibir no menu lateral um item referente à aba \n da extensão" as (UC06)
-  "Exibir a porcentagem de cobertura de código \n total na aba lateral" as (UC07)
-  "Ativar a visualização do status de cada linha" as (UC08)
-  "Desativar a visualização do status de cada linha" as (UC09)
-  "Trocar a visualização da porcentagem de \n cobertura total para a porcentagem de \n cobertura do arquivo aberto" as (UC10)
-  "Trocar a visualização da porcentagem de \n cobertura do arquivo aberto para a porcentagem \n de cobertura  total" as (UC11)
-  "Adicionar ao arquivo de configuração a branch de \n referência" as (UC12)
-  "Ler o arquivo de configuração" as (UC13)
-  "Ativar a visualização da porcentagem de \n cobertura de código para as linhas criadas e \n alteradas na branch atual" as (UC14)
-  "Desativar a visualização da porcentagem de \n cobertura de código para as linhas criadas \n e alteradas na branch atual" as (UC15)
-  "Verificar diferença entre branches" as (UC16)
-  "Exibir no editor apenas o status de cobertura \n das linhas criadas ou alteradas na \n ramificação atual" as (UC17)
-  "Solicitar geração do arquivo de configuração" as (UC18)
-  "Criar na raiz do projeto o arquivo de configuração" as (UC19)
-  "Adicionar ao arquivo de configuração um valor \n mínimo de cobertura" as (UC20)
-  "Adicionar ao arquivo de configuração o caminho \n para o arquivo de relatório de cobertura" as (UC21)
-  "Exibir todas as linhas da aplicação que não \n foram cobertas" as (UC22)
-  "Exibir apenas as linhas da aplicação que não \n foram cobertas e foram criadas ou \n alteradas na ramificação atual" as (UC23)
-  "Selecionar uma das linhas listadas como sem \n cobertura" as (UC24)
-  "Redirecionar o editor para o arquivo na exata \n linha selecionada" as (UC25)
-  "Adicionar ao arquivo de configuração um comando \n para execução dos testes" as (UC26)
-  "Executar testes através da interface da extensão" as (UC27)
-  "Adicionar ao arquivo de configuração um comando \n para execução dos testes em modo de \n recarregamento automático após edição de algum arquivo" as (UC28)
-  "Executar testes em modo de recarregamento \n automático através da interface da extensão" as (UC29)
-  "Recarregar os dados da extensão" as (UC30)
-}
-
-VSCode - - - (UC00)
-(UC00) ..> (UC01) : include
-
-(UC01) ..> (UC13) : include
-
-Dev - - - (UC03)
-(UC03) ..> (UC01) : include
-(UC01) ..> (UC04) : include
-(UC01) ..> (UC02) : include
-
-(UC02) ..> (UC02.1) : extends
-(UC02) ..> (UC02.2) : extends
-
-Dev - - - (UC05)
-(UC05) ..> (UC06) : include
-(UC05) ..> (UC07) : include
-
-Dev - - - (UC08)
-Dev - - - (UC09)
-
-Dev - - - (UC10)
-Dev - - - (UC11)
-
-Dev - - - (UC12)
-Dev - - - (UC20)
-Dev - - - (UC21)
-Dev - - - (UC26)
-Dev - - - (UC28)
-
-(UC21) ..> (UC02.2) : extends
-
-Dev - - - (UC14)
-Dev - - - (UC15)
-
-(UC14) ..> (UC16) : include
-(UC16) ..> (UC17) : include
-(UC14) ..> (UC23) : include
-
-Dev - - - (UC18)
-Dev - - - (UC19)
-
-(UC15) ..> (UC22) : include
-
-Dev - - - (UC24)
-(UC24) ..> (UC25) : include
-
-(UC26) ..> (UC27) : extends
-(UC28) ..> (UC29) : extends
-
-Dev - - - (UC30)
-(UC30) - -|> (UC00)
-
+(UC07) ..down..> (UC08) #line:black : extends 
+(UC07) ..down..> (UC09) #line:black : extends 
+(UC07) ..down..> (UC10) #line:black : extends 
+(UC07) ..down..> (UC11) #line:black : extends 
+(UC07) ..down..> (UC12) #line:black : extends 
+ 
+ 
+Dev - - -> (UC13) #line:black
+ 
+Dev - - -> (UC14) #line:black
+Dev - - -> (UC15) #line:black
+(UC14) ..down..> (UC11) #line:black : include  
+(UC15) ..down..> (UC12) #line:black : include 
+ 
+Dev - - -> (UC16) #line:black
+ 
 @enduml
 
 PlantUML version 1.2022.0(Tue Jan 11 13:16:42 BRT 2022)
 (GPL source distribution)
-Java Runtime: Java(TM) SE Runtime Environment
-JVM: Java HotSpot(TM) 64-Bit Server VM
-Default Encoding: Cp1252
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Default Encoding: UTF-8
 Language: pt
 Country: BR
 --></g></svg>
