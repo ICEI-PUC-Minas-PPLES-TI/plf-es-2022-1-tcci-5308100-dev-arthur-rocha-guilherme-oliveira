@@ -4,96 +4,103 @@ left to right direction
 skinparam packageStyle rectangle
 
 "Desenvolvedor" as Dev
-"Visual Studio Code" as VSCode
+' "Visual Studio Code" as VSCode
 
 package "Extensão (VS Code) - Covering" {
-  "Inicializa a extensão" as (UC00)
-  "Ler o arquivo de o arquivo de relatório de \n cobertura" as (UC01)
-  "Localizar o arquivo de relatório de cobertura" as (UC02)
-  "Localizar de forma recursiva o arquivo de \n relatório de cobertura" as (UC02.1)
-  "Localizar o relatório de cobertura utilizando \n o caminho do arquivo de configuração" as (UC02.2)
-  "Selecionar um arquivo para ser aberto no editor" as (UC03)
-  "Exibir no editor o status de cobertura de cada \n linha" as (UC04)
-  "Abrir a aba no menu lateral do VS Code referente \n à extensão" as (UC05)
-  "Exibir no menu lateral um item referente à aba \n da extensão" as (UC06)
-  "Exibir a porcentagem de cobertura de código \n total na aba lateral" as (UC07)
-  "Ativar a visualização do status de cada linha" as (UC08)
-  "Desativar a visualização do status de cada linha" as (UC09)
-  "Trocar a visualização da porcentagem de \n cobertura total para a porcentagem de \n cobertura do arquivo aberto" as (UC10)
-  "Trocar a visualização da porcentagem de \n cobertura do arquivo aberto para a porcentagem \n de cobertura  total" as (UC11)
-  "Adicionar ao arquivo de configuração a branch de \n referência" as (UC12)
-  "Ler o arquivo de configuração" as (UC13)
-  "Ativar a visualização da porcentagem de \n cobertura de código para as linhas criadas e \n alteradas na branch atual" as (UC14)
-  "Desativar a visualização da porcentagem de \n cobertura de código para as linhas criadas \n e alteradas na branch atual" as (UC15)
-  "Verificar diferença entre branches" as (UC16)
-  "Exibir no editor apenas o status de cobertura \n das linhas criadas ou alteradas na \n ramificação atual" as (UC17)
-  "Solicitar geração do arquivo de configuração" as (UC18)
-  "Criar na raiz do projeto o arquivo de configuração" as (UC19)
-  "Adicionar ao arquivo de configuração um valor \n mínimo de cobertura" as (UC20)
-  "Adicionar ao arquivo de configuração o caminho \n para o arquivo de relatório de cobertura" as (UC21)
-  "Exibir todas as linhas da aplicação que não \n foram cobertas" as (UC22)
-  "Exibir apenas as linhas da aplicação que não \n foram cobertas e foram criadas ou \n alteradas na ramificação atual" as (UC23)
-  "Selecionar uma das linhas listadas como sem \n cobertura" as (UC24)
-  "Redirecionar o editor para o arquivo na exata \n linha selecionada" as (UC25)
-  "Adicionar ao arquivo de configuração um comando \n para execução dos testes" as (UC26)
-  "Executar testes através da interface da extensão" as (UC27)
-  "Adicionar ao arquivo de configuração um comando \n para execução dos testes em modo de \n recarregamento automático após edição de algum arquivo" as (UC28)
-  "Executar testes em modo de recarregamento \n automático através da interface da extensão" as (UC29)
-  "Recarregar os dados da extensão" as (UC30)
+  ' "Inicializa a extensão" as (UC00)
+  ' "Ler o arquivo de o arquivo de relatório de \n cobertura" as (UC01)
+  ' "Localizar o arquivo de relatório de cobertura" as (UC02)
+  ' "Localizar de forma recursiva o arquivo de \n relatório de cobertura" as (UC02.1)
+  ' "Localizar o relatório de cobertura utilizando \n o caminho do arquivo de configuração" as (UC02.2)
+  "Ler e Localizar o arquivo de o arquivo de relatório de \n cobertura" as (UC01)
+  "Selecionar um arquivo para ser aberto no editor" as (UC02)
+  "Exibir no editor o status de cobertura de cada \n linha" as (UC03)
+  "Abrir a aba no menu lateral do VS Code referente \n à extensão" as (UC04)
+  "Exibir no menu lateral um item referente à aba \n da extensão" as (UC05)
+  "Exibir a porcentagem de cobertura de código \n total na aba lateral" as (UC06)
+  ' "Ativar a visualização do status de cada linha" as (UC07)
+  ' "Desativar a visualização do status de cada linha" as (UC09)
+  "Trocar a visualização do status de cada linha" as (UC07)
+  ' "Trocar a visualização da porcentagem de \n cobertura total para a porcentagem de \n cobertura do arquivo aberto" as (UC08)
+  "Trocar a visualização da porcentagem de \n cobertura total" as (UC08)
+  ' "Trocar a visualização da porcentagem de \n cobertura do arquivo aberto para a porcentagem \n de cobertura  total" as (UC09)
+  "Trocar a visualização da porcentagem de \n cobertura do arquivo aberto" as (UC09)
+  "Adicionar ao arquivo de configuração a branch de \n referência" as (UC10)
+  "Ler o arquivo de configuração" as (UC11)
+  ' "Ativar a visualização da porcentagem de \n cobertura de código para as linhas criadas e \n alteradas na branch atual" as (UC14)
+  ' "Desativar a visualização da porcentagem de \n cobertura de código para as linhas criadas \n e alteradas na branch atual" as (UC12)
+  "Trocar a visualização da porcentagem de \n cobertura de código" as (UC12)
+  "Verificar diferença entre branches" as (UC14)
+  "Exibir no editor apenas o status de cobertura \n das linhas criadas ou alteradas na \n ramificação atual" as (UC15)
+  "Solicitar/Criar geração do arquivo de configuração" as (UC16)
+  ' "Criar na raiz do projeto o arquivo de configuração" as (UC19)
+  ' "Adicionar ao arquivo de configuração um valor \n mínimo de cobertura" as (UC20)
+  ' "Adicionar ao arquivo de configuração o caminho \n para o arquivo de relatório de cobertura" as (UC17)
+  "Adicionar ao arquivo de configurações permitidas no arquivo de configuração" as (UC17)
+  "Exibir todas as linhas da aplicação que não \n foram cobertas" as (UC18)
+  "Exibir apenas as linhas da aplicação que não \n foram cobertas e foram criadas ou \n alteradas na ramificação atual" as (UC19)
+  "Selecionar uma das linhas listadas como sem \n cobertura" as (UC20)
+  "Redirecionar o editor para o arquivo na exata \n linha selecionada" as (UC21)
+  "Adicionar ao arquivo de configuração um comando \n para execução dos testes" as (UC22)
+  "Executar testes através da interface da extensão" as (UC23)
+  ' "Adicionar ao arquivo de configuração um comando \n para execução dos testes em modo de \n recarregamento automático após edição de algum arquivo" as (UC24)
+  "Adicionar ao arquivo de configuração um comando" as (UC24)
+  "Executar testes em modo de recarregamento \n automático através da interface da extensão" as (UC25)
+  "Recarregar os dados da extensão" as (UC26)
 }
 
-VSCode --- (UC00)
-(UC00) ..> (UC01) : include
+' VSCode --- (UC00)
+' (UC00) ..> (UC01) : include
 
-(UC01) ..> (UC13) : include
+(UC01) ..> (UC11) : include
 
-Dev --- (UC03)
-(UC03) ..> (UC01) : include
-(UC01) ..> (UC04) : include
-(UC01) ..> (UC02) : include
+Dev --- (UC02)
+(UC02) ..> (UC01) : include
+(UC01) ..> (UC03) : include
+' (UC01) ..> (UC02) : include
 
-(UC02) ..> (UC02.1) : extends
-(UC02) ..> (UC02.2) : extends
+' (UC02) ..> (UC02.1) : extends
+' (UC02) ..> (UC02.2) : extends
 
-Dev --- (UC05)
-(UC05) ..> (UC06) : include
-(UC05) ..> (UC07) : include
+Dev --- (UC04)
+(UC04) ..> (UC05) : include
+(UC04) ..> (UC06) : include
+
+Dev --- (UC07)
+' Dev --- (UC09)
 
 Dev --- (UC08)
 Dev --- (UC09)
 
 Dev --- (UC10)
-Dev --- (UC11)
-
-Dev --- (UC12)
-Dev --- (UC20)
-Dev --- (UC21)
-Dev --- (UC26)
-Dev --- (UC28)
-
-(UC21) ..> (UC02.2) : extends
-
-Dev --- (UC14)
-Dev --- (UC15)
-
-(UC14) ..> (UC16) : include
-(UC16) ..> (UC17) : include
-(UC14) ..> (UC23) : include
-
-Dev --- (UC18)
-Dev --- (UC19)
-
-(UC15) ..> (UC22) : include
-
+' Dev --- (UC20)
+Dev --- (UC17)
+Dev --- (UC22)
 Dev --- (UC24)
-(UC24) ..> (UC25) : include
 
-(UC26) ..> (UC27) : extends
-(UC28) ..> (UC29) : extends
+(UC17) ..> (UC01) : extends
 
-Dev --- (UC30)
-(UC30) --|> (UC00)
+' Dev --- (UC14)
+Dev --- (UC12)
+
+' (UC12) ..> (UC14) : include
+(UC14) ..> (UC15) : include
+(UC12) ..> (UC19) : include
+
+Dev --- (UC16)
+' Dev --- (UC19)
+
+(UC12) ..> (UC18) : include
+
+Dev --- (UC20)
+(UC20) ..> (UC21) : include
+
+(UC22) ..> (UC23) : extends
+(UC24) ..> (UC25) : extends
+
+Dev --- (UC26)
+' (UC26) --|> (UC00)
 ' (UC01) .> (UC02) : include
-' (UC03) .> (UC01) : extends
+' (UC02) .> (UC01) : extends
 
 @enduml
