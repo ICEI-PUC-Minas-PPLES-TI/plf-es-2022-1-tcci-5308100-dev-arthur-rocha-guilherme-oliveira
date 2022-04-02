@@ -1,4 +1,4 @@
-# Diagrama de Caso de Uso
+# Diagram de Sequência de Sistema
 
 - [../](../README.md)
 - [Imagens](./Imagens)
