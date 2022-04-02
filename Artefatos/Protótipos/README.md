@@ -1,5 +1,6 @@
 # Protótipos
 
+- [../](../README.md)
 - [Visão geral](./visao_geral.svg): Uma imagem com todas os protótipos para uma melhor visualização completa das telas.
 - [Modelo de linhas no editor](./linhas_no_editor.svg): Modelo de destaque dos status de cobertura de cada linha no editor de texto.
 - [Modelo da aba lateral](./resumo_geral_aba_lateral.svg): Modelo da aba lateral da extensão, onde são exibidos os principais dados.
