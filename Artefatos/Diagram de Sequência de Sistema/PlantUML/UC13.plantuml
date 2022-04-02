@@ -7,7 +7,7 @@ mainframe SSD **UC13**
 actor       Desenvolvedor as Dev
 participant Sistema       as System
 
-Dev -> System: selectUncoveredLine(fileName, lineNumber)
+Dev -> System: selectUncoveredLine(path, fileName, lineNumber)
 Dev <-- System: Redireciona para a linha sem cobertura selecionada
 
 @enduml
