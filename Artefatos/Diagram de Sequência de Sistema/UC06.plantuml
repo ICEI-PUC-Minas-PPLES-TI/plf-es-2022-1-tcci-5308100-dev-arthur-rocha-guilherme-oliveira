@@ -1,0 +1,13 @@
+@startuml
+
+mainframe SSD **UC06** 
+
+'UC06: Como desenvolvedor,  desejo criar na raiz do projeto o arquivo de configuração.
+
+actor       Desenvolvedor as Dev
+participant Sistema       as System
+
+Dev -> System: cria na raiz do projeto um arquivo de configuração
+Dev <-- System: Recalcula os dados de acordo as configurações
+
+@enduml

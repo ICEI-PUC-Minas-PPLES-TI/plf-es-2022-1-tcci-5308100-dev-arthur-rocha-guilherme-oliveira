@@ -1,0 +1,22 @@
+@startuml
+
+mainframe SSD **UC03** 
+
+'UC03: Como desenvolvedor, desejo alterar a visualização da porcentagem de cobertura entre total e em relação ao arquivo aberto.
+
+actor       Desenvolvedor as Dev
+participant Sistema       as System
+
+Dev -> System: toggleCoveragePercentageMode()
+
+alt está exibindo a porcentagem para todos os arquivos
+
+  Dev <-- System: Recalcular porcentagem de cobertura somente para o arquivo em foco no editor
+
+else está exibindo a porcentagem somente para o arquivo em foco no editor
+
+  Dev <-- System: Recalcular porcentagem de cobertura para todos arquivos do projeto
+
+end
+
+@enduml

@@ -1,0 +1,37 @@
+@startuml
+
+mainframe SSD **UC05** 
+
+'UC05: Como desenvolvedor, desejo solicitar a geração do arquivo de configuração.
+
+actor       Desenvolvedor as Dev
+participant Sistema       as System
+
+Dev -> System: requireConfigFileGeneration()
+
+alt o arquivo já existir
+
+  Dev <-- System: Caixa de dialogo para confirmar sobrescrita
+  
+  alt confirmar sobrescrita
+
+    Dev -> System: confirmOverwrite(true)
+    Dev <-- System: Criar o arquivo de template na raiz 
+
+  else não confirma sobrescrita
+
+    Dev -> System: confirmOverwrite(false)
+    Dev <-- System: Redireciona para o arquivo existente
+  
+  end
+
+else o arquivo não exite
+
+  Dev <-- System: Criar o arquivo de template na raiz 
+
+end
+
+Dev -> System: changeToCoveringTab()
+Dev <-- System: Renderiza os dados de acordo as configurações
+
+@enduml

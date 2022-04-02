@@ -1,0 +1,13 @@
+@startuml
+
+mainframe SSD **UC13** 
+
+'UC13: Como desenvolvedor, desejo selecionar uma das linhas listadas como sem cobertura.
+
+actor       Desenvolvedor as Dev
+participant Sistema       as System
+
+Dev -> System: selectUncoveredLine(fileName, lineNumber)
+Dev <-- System: Redireciona para a linha sem cobertura selecionada
+
+@enduml

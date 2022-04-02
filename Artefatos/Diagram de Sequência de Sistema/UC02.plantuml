@@ -1,0 +1,22 @@
+@startuml
+
+mainframe SSD **UC02** 
+
+'UC02: Como desenvolvedor, desejo alternar a visualização do status de cada linha no editor.
+
+actor       Desenvolvedor as Dev
+participant Sistema       as System
+
+Dev -> System: toggleLineStatusVisibility()
+
+alt está exibindo o status de cada linha no editor
+
+  Dev <-- System: Remove a visualização o status de cada linha no editor
+
+else não está exibindo o status de cada linha no editor
+
+  Dev <-- System: Exibe o status de cada linha no editor
+
+end
+
+@enduml

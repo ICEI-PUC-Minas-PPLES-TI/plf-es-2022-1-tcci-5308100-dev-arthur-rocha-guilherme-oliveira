@@ -1,0 +1,13 @@
+@startuml
+
+mainframe SSD **UC16** 
+
+'UC16: Como gerente de projeto, desejo recarregar os dados da extensão.
+
+actor       Desenvolvedor as Dev
+participant Sistema       as System
+
+Dev -> System: reloadTab()
+Dev <-- System: Renderiza os dados de acordo as configurações
+
+@enduml

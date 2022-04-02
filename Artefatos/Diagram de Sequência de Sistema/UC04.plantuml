@@ -1,0 +1,24 @@
+@startuml
+
+mainframe SSD **UC04** 
+
+'UC04: Como desenvolvedor, desejo alternar a visualização da porcentagem de cobertura entre somente para as linhas criadas e alteradas na branch atual e para todo o código.
+
+actor       Desenvolvedor as Dev
+participant Sistema       as System
+
+Dev -> System: toggleCoverageBaseReferenceMode()
+
+alt está exibindo os dados de cobertura com base em todo o código
+
+  Dev <-- System: Recalcular porcentagem de cobertura somente para as linhas alteradas
+  Dev <-- System: Exibir linhas sem cobertura somente dos arquivos que foram alterados
+
+else está exibindo os dados de cobertura com base na diferença da branch atual com a branch de base
+
+  Dev <-- System: Recalcular porcentagem de cobertura para todos os arquivos
+  Dev <-- System: Exibir todas as linhas sem cobertura
+
+end
+
+@enduml

@@ -1,0 +1,57 @@
+@startuml
+
+mainframe SSD **UC14, UC15** 
+
+'UC14: Como desenvolvedor, desejo executar testes através da interface da extensão.
+'UC15: Como desenvolvedor, desejo executar testes em modo de recarregamento automático através da interface da extensão.
+
+actor       Desenvolvedor as Dev
+participant Sistema       as System
+
+Dev -> System: changeToCoveringTab()
+
+alt caso tenha pelo menos um script execução de testes configurado
+  alt caso tenha os dois scripts de execução de testes configurados
+    
+    Dev <-- System: Renderiza o botão de execução de testes com duas opções
+
+    loop enquanto trocar
+      Dev -> System: changeDefaultTestExecution(testType)
+      Dev <-- System: Altera o botão de execução de testes
+    end
+    
+  else caso tenha somente um dos scripts
+    
+    Dev <-- System: Renderiza unicamente o botão de execução de testes
+
+  end
+
+  Dev -> System: runTest()
+  
+  alt caso não haja nenhum error
+
+    Dev <-- System: Executa os testes para gerar o arquivo relatório de cobertura
+
+    loop enquanto o script rodar
+      
+      alt quando o arquivo de relatório for alterado
+        
+        Dev <-- System: Recalcula os dados e atualiza a exibição
+      
+      end
+
+    end
+  
+  else caso haja error
+
+    Dev <-- System: Exibe mensagem de error
+  
+  end
+
+else caso não tenha nenhum dos scripts
+
+  Dev <-- System: Não renderiza o botão de execução de testes
+
+end
+
+@enduml

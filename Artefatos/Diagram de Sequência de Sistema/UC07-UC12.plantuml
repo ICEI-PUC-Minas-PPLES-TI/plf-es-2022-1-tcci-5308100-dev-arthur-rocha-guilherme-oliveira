@@ -1,0 +1,18 @@
+@startuml
+
+mainframe SSD **UC07, UC08, UC09, UC10, UC11, UC12** 
+
+'UC07: Como desenvolvedor, desejo editar o arquivo de configuração na raiz do projeto.
+'UC08: Como desenvolvedor, desejo adicionar ao arquivo de configuração a branch de referência.
+'UC09: Como desenvolvedor, desejo adicionar ao arquivo de configuração um valor mínimo de cobertura.
+'UC10: Como desenvolvedor, desejo adicionar ao arquivo de configuração o caminho para o arquivo de relatório de cobertura.
+'UC11: Como desenvolvedor, desejo adicionar ao arquivo de configuração um comando para execução dos testes.
+'UC12: Como desenvolvedor, desejo adicionar ao arquivo de configuração um comando para execução dos testes em modo de recarregamento automático após edição de algum arquivo.
+
+actor       Desenvolvedor as Dev
+participant Sistema       as System
+
+Dev -> System: alterar o arquivo de configuração 
+Dev <-- System: Recalcula os dados de acordo as configurações
+
+@enduml

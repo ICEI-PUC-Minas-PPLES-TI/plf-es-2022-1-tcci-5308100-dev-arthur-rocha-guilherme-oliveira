@@ -1,0 +1,13 @@
+@startuml
+
+mainframe SSD **UC01** 
+
+'UC01: Como desenvolvedor, desejo abrir a aba no menu lateral do VS Code, trazendo informações pertinentes à extensão.
+
+actor       Desenvolvedor as Dev
+participant Sistema       as System
+
+Dev -> System: changeToCoveringTab()
+Dev <-- System: Renderiza os dados de acordo as configurações
+
+@enduml
