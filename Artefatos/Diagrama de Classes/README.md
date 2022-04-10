@@ -1,4 +1,4 @@
-# Diagram Classes
+# Diagrama Classes
 
 - [../](../README.md)
 - [Imagens](./Imagens)
