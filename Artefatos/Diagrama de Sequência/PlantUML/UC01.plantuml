@@ -71,7 +71,7 @@ activate UncoveredLinesTree
 ExtensionOrchestrationService <-- UncoveredLinesTree: screenFragmentReference
 deactivate UncoveredLinesTree
 
-VSCode <-- ExtensionOrchestrationService: returnCalculatedView()
+VSCode <-- ExtensionOrchestrationService: returnCalculatedView
 deactivate ExtensionOrchestrationService
 
 Dev <-- VSCode: Renderiza os dados de acordo as configurações

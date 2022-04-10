@@ -1,0 +1,86 @@
+@startuml
+
+mainframe SD **UC07, UC08, UC09, UC10, UC11, UC12** 
+
+'UC07: Como desenvolvedor, desejo editar o arquivo de configuração na raiz do projeto.
+'UC08: Como desenvolvedor, desejo adicionar ao arquivo de configuração a branch de referência.
+'UC09: Como desenvolvedor, desejo adicionar ao arquivo de configuração um valor mínimo de cobertura.
+'UC10: Como desenvolvedor, desejo adicionar ao arquivo de configuração o caminho para o arquivo de relatório de cobertura.
+'UC11: Como desenvolvedor, desejo adicionar ao arquivo de configuração um comando para execução dos testes.
+'UC12: Como desenvolvedor, desejo adicionar ao arquivo de configuração um comando para execução dos testes em modo de recarregamento automático após edição de algum arquivo.
+
+actor       Desenvolvedor as Dev
+participant "Visual Studio Code"       as VSCode
+participant "Project Configuration Service" as ProjectConfigurationService
+participant "Project Configuration" as ProjectConfiguration
+participant "Extension Orchestration Service" as ExtensionOrchestrationService
+participant "Coverage Service" as CoverageService
+participant "Coverage Data" as CoverageData
+participant "Coverage View" as CoverageView
+participant "Uncovered Lines Service" as UncoveredLinesService
+participant "Uncovered Lines Data" as UncoveredLinesData
+participant "Uncovered Lines Tree" as UncoveredLinesTree
+
+Dev -> VSCode: alterar o arquivo de configuração activate Dev
+activate VSCode
+
+VSCode -> ProjectConfigurationService: emitFileChanged()
+activate ProjectConfigurationService
+
+ProjectConfigurationService -> ProjectConfiguration: createNewConfiguration()
+activate ProjectConfiguration
+ProjectConfigurationService <-- ProjectConfiguration: newProjectConfiguration: ProjectConfiguration
+deactivate ProjectConfiguration
+
+ProjectConfigurationService -> ExtensionOrchestrationService: emitNewFileCreated()
+deactivate ProjectConfigurationService
+activate ExtensionOrchestrationService
+
+ExtensionOrchestrationService -> CoverageService: calculateCoverage()
+activate CoverageService
+
+CoverageService -> CoverageData: updateCoverageData()
+activate CoverageData
+
+CoverageService <-- CoverageData: newCoverageData: CoverageData
+deactivate CoverageData
+
+CoverageService -> CoverageView: emitNewCoverageData(newCoverageData: CoverageData)
+activate CoverageView
+
+CoverageService <-- CoverageView
+deactivate CoverageView
+
+CoverageService -> VSCode: changeEditoreDecoration()
+CoverageService <-- VSCode: update editor decoration
+
+ExtensionOrchestrationService <-- CoverageService
+deactivate CoverageService
+
+ExtensionOrchestrationService -> UncoveredLinesService: setCurrentUncoveredLines()
+activate UncoveredLinesService
+
+UncoveredLinesService -> UncoveredLinesData: updateUncoveredLinesData()
+activate UncoveredLinesData
+
+UncoveredLinesService <-- UncoveredLinesData: newUncoveredLinesData: UncoveredLinesData
+deactivate UncoveredLinesData
+
+UncoveredLinesService -> UncoveredLinesTree: emitNewUncoveredLinesData(newUncoveredLinesData: UncoveredLinesData)
+activate UncoveredLinesTree
+
+UncoveredLinesService <-- UncoveredLinesTree
+deactivate UncoveredLinesTree
+
+ExtensionOrchestrationService <-- UncoveredLinesService
+deactivate UncoveredLinesService
+
+VSCode <-- ExtensionOrchestrationService: returnCalculatedView
+deactivate ExtensionOrchestrationService
+
+Dev <-- VSCode: Renderiza os dados de acordo as configurações
+deactivate VSCode
+deactivate ExtensionOrchestrationService
+deactivate Dev
+
+@enduml
