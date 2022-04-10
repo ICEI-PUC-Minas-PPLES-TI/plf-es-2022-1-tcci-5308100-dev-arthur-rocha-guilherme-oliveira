@@ -4,11 +4,11 @@
 - [Imagens](./Imagens)
   - [UC01](./Imagens/SD-UC01.png)
   - [UC02](./Imagens/SD-UC02.png)
+  - [UC03](./Imagens/SD-UC03.png)
+  - [UC04](./Imagens/SD-UC04.png)
 
   <!--
 
-  - [UC03](./Imagens/SD-UC03.png)
-  - [UC04](./Imagens/SD-UC04.png)
   - [UC05](./Imagens/SD-UC05.png)
   - [UC06](./Imagens/SD-UC06.png)
   - [UC07 até o UC12](./Imagens/SD-UC07-UC12.png)
@@ -22,10 +22,10 @@
   - [UC01](./PlantUML/UC01.plantuml)
   - [UC02](./PlantUML/UC02.plantuml)
   - [UC03](./PlantUML/UC03.plantuml)
+  - [UC04](./PlantUML/UC04.plantuml)
 
   <!-- 
 
-  - [UC04](./PlantUML/UC04.plantuml)
   - [UC05](./PlantUML/UC05.plantuml)
   - [UC06](./PlantUML/UC06.plantuml)
   - [UC07 até o UC12](./PlantUML/UC07-UC12.plantuml)
