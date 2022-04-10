@@ -9,11 +9,11 @@ participant "Configuration View" as ConfigurationView
 participant "Extension Configuration Service" as ExtensionConfigurationService
 participant "Extension Configuration Data" as ExtensionConfigurationData
 participant "Extension Orchestration Service" as ExtensionOrchestrationService
-participant "VS Code Source Control Api" as VSCodeSourceControlAPI
+participant "Source Control API" as VSCodeSourceControlAPI
 participant "Coverage Service" as CoverageService
 participant "Coverage Data" as CoverageData
 participant "Coverage View" as CoverageView
-participant "VS Code" as VSCode
+participant "Visual Studio Code" as VSCode
 participant "Uncovered Lines Service" as UncoveredLinesService
 participant "Uncovered Lines Data" as UncoveredLinesData
 participant "Uncovered Lines Tree" as UncoveredLinesTree
