@@ -4,14 +4,14 @@ mainframe SD **UC06**
 
 'UC06: Como desenvolvedor, desejo criar na raiz do projeto o arquivo de configuração.
 
-actor       Desenvolvedor        as Dev
-participant "Visual Studio Code" as VSCode
-participant "Project Configuration Service" as ProjectConfigurationService
-participant "Project Configuration" as ProjectConfiguration
+actor       Desenvolvedor                     as Dev
+participant "Visual Studio Code"              as VSCode
+participant "Project Configuration Service"   as ProjectConfigurationService
+participant "Project Configuration"           as ProjectConfiguration
 participant "Extension Orchestration Service" as ExtensionOrchestrationService
-participant "Configuration View" as ConfigurationView
-participant "Coverage View" as CoverageView
-participant "Uncovered Lines Tree" as UncoveredLinesTree
+participant "Configuration View"              as ConfigurationView
+participant "Coverage View"                   as CoverageView
+participant "Uncovered Lines Tree"            as UncoveredLinesTree
 
 Dev -> VSCode: cria na raiz do projeto um arquivo de configuração
 activate Dev

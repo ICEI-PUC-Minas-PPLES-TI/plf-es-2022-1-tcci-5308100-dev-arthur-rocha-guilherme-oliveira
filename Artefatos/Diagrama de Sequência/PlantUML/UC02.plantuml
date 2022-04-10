@@ -4,13 +4,13 @@ mainframe SD **UC02**
 
 'UC02: Como desenvolvedor, desejo alternar a visualização do status de cada linha no editor.
 
-actor       Desenvolvedor        as Dev
-participant "Configuration View" as ConfigurationView
+actor       Desenvolvedor                     as Dev
+participant "Configuration View"              as ConfigurationView
 participant "Extension Configuration Service" as ExtensionConfigurationService
-participant "Extension Configuration Data" as ExtensionConfigurationData
+participant "Extension Configuration Data"    as ExtensionConfigurationData
 participant "Extension Orchestration Service" as ExtensionOrchestrationService
-participant "Coverage Service" as CoverageService
-participant "Visual Studio Code" as VSCode
+participant "Coverage Service"                as CoverageService
+participant "Visual Studio Code"              as VSCode
 
 Dev -> ConfigurationView: toggleLineStatusVisibility()
 activate Dev

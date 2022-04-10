@@ -4,15 +4,15 @@ mainframe SD **UC03**
 
 'UC03: Como desenvolvedor, desejo alterar a visualização da porcentagem de cobertura entre total e em relação ao arquivo aberto.
 
-actor       Desenvolvedor as Dev
-participant "Configuration View" as ConfigurationView
+actor       Desenvolvedor                     as Dev
+participant "Configuration View"              as ConfigurationView
 participant "Extension Configuration Service" as ExtensionConfigurationService
-participant "Extension Configuration Data" as ExtensionConfigurationData
+participant "Extension Configuration Data"    as ExtensionConfigurationData
 participant "Extension Orchestration Service" as ExtensionOrchestrationService
-participant "Coverage Service" as CoverageService
-participant "Coverage Data" as CoverageData
-participant "Coverage View" as CoverageView
-participant "Visual Studio Code" as VSCode
+participant "Coverage Service"                as CoverageService
+participant "Coverage Data"                   as CoverageData
+participant "Coverage View"                   as CoverageView
+participant "Visual Studio Code"              as VSCode
 
 Dev -> ConfigurationView: toggleCoveragePercentageMode()
 

@@ -9,17 +9,17 @@ mainframe SD **UC07, UC08, UC09, UC10, UC11, UC12**
 'UC11: Como desenvolvedor, desejo adicionar ao arquivo de configuração um comando para execução dos testes.
 'UC12: Como desenvolvedor, desejo adicionar ao arquivo de configuração um comando para execução dos testes em modo de recarregamento automático após edição de algum arquivo.
 
-actor       Desenvolvedor as Dev
-participant "Visual Studio Code"       as VSCode
-participant "Project Configuration Service" as ProjectConfigurationService
-participant "Project Configuration" as ProjectConfiguration
+actor       Desenvolvedor                     as Dev
+participant "Visual Studio Code"              as VSCode
+participant "Project Configuration Service"   as ProjectConfigurationService
+participant "Project Configuration"           as ProjectConfiguration
 participant "Extension Orchestration Service" as ExtensionOrchestrationService
-participant "Coverage Service" as CoverageService
-participant "Coverage Data" as CoverageData
-participant "Coverage View" as CoverageView
-participant "Uncovered Lines Service" as UncoveredLinesService
-participant "Uncovered Lines Data" as UncoveredLinesData
-participant "Uncovered Lines Tree" as UncoveredLinesTree
+participant "Coverage Service"                as CoverageService
+participant "Coverage Data"                   as CoverageData
+participant "Coverage View"                   as CoverageView
+participant "Uncovered Lines Service"         as UncoveredLinesService
+participant "Uncovered Lines Data"            as UncoveredLinesData
+participant "Uncovered Lines Tree"            as UncoveredLinesTree
 
 Dev -> VSCode: alterar o arquivo de configuração activate Dev
 activate VSCode

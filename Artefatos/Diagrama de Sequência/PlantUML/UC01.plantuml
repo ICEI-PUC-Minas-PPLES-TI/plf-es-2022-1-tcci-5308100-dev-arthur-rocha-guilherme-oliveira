@@ -4,16 +4,16 @@ mainframe SD **UC01**
 
 'UC01: Como desenvolvedor, desejo abrir a aba no menu lateral do VS Code, trazendo informações pertinentes à extensão.
 
-actor       Desenvolvedor        as Dev
-participant "Visual Studio Code" as VSCode
+actor       Desenvolvedor                     as Dev
+participant "Visual Studio Code"              as VSCode
 participant "Extension Orchestration Service" as ExtensionOrchestrationService
-participant "Project Configuration Service" as ProjectConfigurationService
-participant "Project Configuration" as ProjectConfiguration
-participant "File Coverage Service" as FileCoverageService
-participant "File Coverage" as FileCoverage
-participant "Configuration View" as ConfigurationView
-participant "Coverage View" as CoverageView
-participant "Uncovered Lines Tree" as UncoveredLinesTree
+participant "Project Configuration Service"   as ProjectConfigurationService
+participant "Project Configuration"           as ProjectConfiguration
+participant "File Coverage Service"           as FileCoverageService
+participant "File Coverage"                   as FileCoverage
+participant "Configuration View"              as ConfigurationView
+participant "Coverage View"                   as CoverageView
+participant "Uncovered Lines Tree"            as UncoveredLinesTree
 
 Dev -> VSCode: changeToCoveringTab()
 activate Dev

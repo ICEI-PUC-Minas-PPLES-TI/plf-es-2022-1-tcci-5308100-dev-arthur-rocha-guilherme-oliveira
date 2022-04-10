@@ -4,19 +4,19 @@ mainframe SD **UC04**
 
 'UC04: Como desenvolvedor, desejo alternar a visualização da porcentagem de cobertura entre somente para as linhas criadas e alteradas na branch atual e para todo o código.
 
-actor       Desenvolvedor as Dev
-participant "Configuration View" as ConfigurationView
+actor       Desenvolvedor                     as Dev
+participant "Configuration View"              as ConfigurationView
 participant "Extension Configuration Service" as ExtensionConfigurationService
-participant "Extension Configuration Data" as ExtensionConfigurationData
+participant "Extension Configuration Data"    as ExtensionConfigurationData
 participant "Extension Orchestration Service" as ExtensionOrchestrationService
-participant "Source Control API" as VSCodeSourceControlAPI
-participant "Coverage Service" as CoverageService
-participant "Coverage Data" as CoverageData
-participant "Coverage View" as CoverageView
-participant "Visual Studio Code" as VSCode
-participant "Uncovered Lines Service" as UncoveredLinesService
-participant "Uncovered Lines Data" as UncoveredLinesData
-participant "Uncovered Lines Tree" as UncoveredLinesTree
+participant "Source Control API"              as VSCodeSourceControlAPI
+participant "Coverage Service"                as CoverageService
+participant "Coverage Data"                   as CoverageData
+participant "Coverage View"                   as CoverageView
+participant "Visual Studio Code"              as VSCode
+participant "Uncovered Lines Service"         as UncoveredLinesService
+participant "Uncovered Lines Data"            as UncoveredLinesData
+participant "Uncovered Lines Tree"            as UncoveredLinesTree
 
 Dev -> ConfigurationView: toggleCoverageBaseReferenceMode()
 

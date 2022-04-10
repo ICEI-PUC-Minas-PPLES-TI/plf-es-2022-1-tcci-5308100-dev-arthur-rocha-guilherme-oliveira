@@ -4,8 +4,8 @@ mainframe SD **UC05**
 
 'UC05: Como desenvolvedor, desejo solicitar a geração do arquivo de configuração.
 
-actor       Desenvolvedor as Dev
-participant "Visual Studio Code" as VSCode
+actor       Desenvolvedor                   as Dev
+participant "Visual Studio Code"            as VSCode
 participant "Project Configuration Service" as ProjectConfigurationService
 
 Dev -> ProjectConfigurationService: requireConfigFileGeneration()
