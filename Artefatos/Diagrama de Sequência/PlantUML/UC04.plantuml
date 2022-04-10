@@ -1,6 +1,6 @@
 @startuml
 
-mainframe SSD **UC04** 
+mainframe SD **UC04** 
 
 'UC04: Como desenvolvedor, desejo alternar a visualização da porcentagem de cobertura entre somente para as linhas criadas e alteradas na branch atual e para todo o código.
 

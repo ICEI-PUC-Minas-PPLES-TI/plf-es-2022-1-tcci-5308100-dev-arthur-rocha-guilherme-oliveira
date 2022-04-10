@@ -1,6 +1,6 @@
 @startuml
 
-mainframe SSD **UC05** 
+mainframe SD **UC05** 
 
 'UC05: Como desenvolvedor, desejo solicitar a geração do arquivo de configuração.
 

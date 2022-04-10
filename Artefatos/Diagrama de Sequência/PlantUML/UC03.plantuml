@@ -1,6 +1,6 @@
 @startuml
 
-mainframe SSD **UC03** 
+mainframe SD **UC03** 
 
 'UC03: Como desenvolvedor, desejo alterar a visualização da porcentagem de cobertura entre total e em relação ao arquivo aberto.
 
