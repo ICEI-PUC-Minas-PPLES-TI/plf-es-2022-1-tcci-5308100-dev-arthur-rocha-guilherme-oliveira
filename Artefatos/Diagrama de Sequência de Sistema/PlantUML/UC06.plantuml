@@ -2,7 +2,7 @@
 
 mainframe SSD **UC06** 
 
-'UC06: Como desenvolvedor,  desejo criar na raiz do projeto o arquivo de configuração.
+'UC06: Como desenvolvedor, desejo criar na raiz do projeto o arquivo de configuração.
 
 actor       Desenvolvedor as Dev
 participant Sistema       as System
