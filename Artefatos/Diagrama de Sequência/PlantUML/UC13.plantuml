@@ -4,8 +4,10 @@ mainframe SD **UC13**
 
 'UC13: Como desenvolvedor, desejo selecionar uma das linhas listadas como sem cobertura.
 
-actor       Desenvolvedor          as Dev
-participant "Uncovered Lines Tree" as UncoveredLinesTree
+actor       Desenvolvedor             as Dev
+participant "Uncovered Lines Tree"    as UncoveredLinesTree
+participant "Uncovered Lines Service" as UncoveredLinesService
+participant "Visual Studio Code"      as VSCode
 
 Dev -> UncoveredLinesTree: selectUncoveredLine()
 activate Dev
