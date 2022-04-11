@@ -9,6 +9,7 @@ participant "Configuration View"              as ConfigurationView
 participant "Extension Configuration Service" as ExtensionConfigurationService
 participant "Extension Configuration Data"    as ExtensionConfigurationData
 participant "Extension Orchestration Service" as ExtensionOrchestrationService
+participant "Git Service"                     as GitService
 participant "Source Control API"              as VSCodeSourceControlAPI
 participant "Coverage Service"                as CoverageService
 participant "Coverage Data"                   as CoverageData
@@ -35,10 +36,16 @@ deactivate ExtensionConfigurationData
 ExtensionConfigurationService -> ExtensionOrchestrationService: emitNewConfigurationData(newConfigurationData: ConfigurationData)
 activate ExtensionOrchestrationService
 
-ExtensionOrchestrationService -> VSCodeSourceControlAPI: getCurrentBranchDiff()
+ExtensionOrchestrationService -> GitService: getCurrentBranchDiff()
+activate GitService
+
+GitService -> VSCodeSourceControlAPI: get current branch and code
 activate VSCodeSourceControlAPI
-ExtensionOrchestrationService <-- VSCodeSourceControlAPI: all created and modified rows
+GitService <-- VSCodeSourceControlAPI: branch code
 deactivate VSCodeSourceControlAPI
+
+ExtensionOrchestrationService <-- GitService: all created and modified rows
+deactivate GitService
 
 ExtensionOrchestrationService -> CoverageService: calculateCoverage()
 activate CoverageService
@@ -99,6 +106,5 @@ else está exibindo os dados de cobertura com base na diferença da branch atual
   Dev <-- ConfigurationView: Exibir todas as linhas sem cobertura
 
 end
-
 
 @enduml
