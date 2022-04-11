@@ -52,7 +52,7 @@ CoverageService <-- CoverageView
 deactivate CoverageView
 
 CoverageService -> VSCode: changeEditoreDecoration()
-CoverageService <-- VSCode: update editor decoration
+CoverageService <-- VSCode: Atualiza o estilo do editor
 
 ExtensionOrchestrationService <-- CoverageService
 deactivate CoverageService

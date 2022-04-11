@@ -19,10 +19,8 @@ Dev -> VSCode: changeToCoveringTab()
 activate Dev
 activate VSCode
 
-VSCode -> VSCode: changeWebView()
 VSCode -> ExtensionOrchestrationService: initViewData()
 activate ExtensionOrchestrationService
-
 
 ExtensionOrchestrationService -> ProjectConfigurationService: getConfigurationData()
 activate ProjectConfigurationService
