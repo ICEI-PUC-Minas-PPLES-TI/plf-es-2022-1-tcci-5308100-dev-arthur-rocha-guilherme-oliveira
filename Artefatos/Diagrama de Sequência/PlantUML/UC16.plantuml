@@ -1,0 +1,68 @@
+@startuml
+
+mainframe SD **UC16** 
+
+'UC16: Como gerente de projeto, desejo recarregar os dados da extensão.
+
+actor       Desenvolvedor                     as Dev
+participant "Extension Orchestration Service" as ExtensionOrchestrationService
+participant "Project Configuration Service"   as ProjectConfigurationService
+participant "Project Configuration"           as ProjectConfiguration
+participant "File Coverage Service"           as FileCoverageService
+participant "File Coverage"                   as FileCoverage
+participant "Configuration View"              as ConfigurationView
+participant "Coverage View"                   as CoverageView
+participant "Uncovered Lines Tree"            as UncoveredLinesTree
+
+Dev -> ExtensionOrchestrationService: reloadTab()
+
+activate Dev
+activate ExtensionOrchestrationService
+
+ExtensionOrchestrationService -> ExtensionOrchestrationService: initViewData()
+
+ExtensionOrchestrationService -> ProjectConfigurationService: getConfigurationData()
+activate ProjectConfigurationService
+
+create ProjectConfiguration
+ProjectConfigurationService --> ProjectConfiguration
+
+ExtensionOrchestrationService <-- ProjectConfigurationService: configuration data
+deactivate ProjectConfigurationService
+
+ExtensionOrchestrationService -> FileCoverageService: getCoverageData()
+activate FileCoverageService
+
+create FileCoverage
+FileCoverageService --> FileCoverage
+
+ExtensionOrchestrationService <-- FileCoverageService: coverage data
+deactivate FileCoverageService
+
+create ConfigurationView
+ExtensionOrchestrationService --> ConfigurationView
+create CoverageView
+ExtensionOrchestrationService --> CoverageView
+create UncoveredLinesTree
+ExtensionOrchestrationService --> UncoveredLinesTree
+
+ExtensionOrchestrationService -> ConfigurationView: createView()
+activate ConfigurationView
+ExtensionOrchestrationService <-- ConfigurationView: screenFragmentReference
+deactivate ConfigurationView
+
+ExtensionOrchestrationService -> CoverageView: createView()
+activate CoverageView
+ExtensionOrchestrationService <-- CoverageView: screenFragmentReference
+deactivate CoverageView
+
+ExtensionOrchestrationService -> UncoveredLinesTree: createView()
+activate UncoveredLinesTree
+ExtensionOrchestrationService <-- UncoveredLinesTree: screenFragmentReference
+deactivate UncoveredLinesTree
+
+Dev <-- ExtensionOrchestrationService: Renderiza os dados de acordo as configurações
+deactivate ExtensionOrchestrationService
+deactivate Dev
+
+@enduml
