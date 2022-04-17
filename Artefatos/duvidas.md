@@ -18,3 +18,4 @@
 ## Entrega A5
 
 - Toda seta no diagrama de estado tem que ter uma ação
+- Múltiplos gatilhos
