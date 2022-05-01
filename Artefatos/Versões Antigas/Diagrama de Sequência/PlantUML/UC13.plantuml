@@ -1,0 +1,29 @@
+@startuml
+
+mainframe SD **UC13** 
+
+'UC13: Como desenvolvedor, desejo selecionar uma das linhas listadas como sem cobertura.
+
+actor       Desenvolvedor             as Dev
+participant "Uncovered Lines Tree"    as UncoveredLinesTree
+participant "Uncovered Lines Service" as UncoveredLinesService
+participant "Visual Studio Code"      as VSCode
+
+Dev -> UncoveredLinesTree: selectUncoveredLine()
+activate Dev
+activate UncoveredLinesTree
+
+UncoveredLinesTree -> UncoveredLinesService: selectUncoveredLine(path, fileName, lineNumber)
+activate UncoveredLinesService
+
+UncoveredLinesService -> VSCode: changeFileInFocus()
+UncoveredLinesService <-- VSCode
+
+UncoveredLinesTree <-- UncoveredLinesService
+deactivate UncoveredLinesService
+
+Dev <-- UncoveredLinesTree: Redireciona para a linha sem cobertura selecionada
+deactivate Dev
+deactivate UncoveredLinesTree
+
+@enduml

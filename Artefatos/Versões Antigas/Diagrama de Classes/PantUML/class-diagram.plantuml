@@ -1,0 +1,90 @@
+@startuml
+
+class ExtensionOrchestrationService {}
+
+class ProjectConfigurationService {}
+
+class ProjectConfiguration {} 
+
+class GitService {}
+
+class FileCoverageService {}
+
+class FileCoverage {}
+
+class ExtensionConfigurationService {}
+
+class ConfigurationData {
+  + isGutterActive: boolean
+  + isBasedOnBranchChange: boolean
+  + referenceBranch: string
+  + isJustForFileInFocus: boolean
+}
+
+class ConfigurationView {
+  + toggleLineStatusVisibility()
+  + toggleCoverageBaseReferenceMode()
+  + toggleCoveragePercentageMode()
+}
+
+class CoverageService {}
+
+class CoverageData {
+  + minCoveragePercentage: number
+  + coveragePercentage: number
+  + minCoverageReached: boolean
+}
+
+class CoverageView {}
+
+class StatusBarCoverageItem {}
+
+class UncoveredLinesService {}
+
+class UncoveredLinesData {}
+
+class UncoveredLinesTree {}
+
+class Folder {}
+class File {}
+class Line {
+  + path
+  + fileName
+  + lineNumber
+  + status: LineCoverageStatus
+}
+
+enum LineCoverageStatus {
+  covered
+  partiallyCovered
+  uncovered
+}
+
+ExtensionOrchestrationService       --o          GitService
+ExtensionOrchestrationService       --o          ProjectConfigurationService
+ExtensionOrchestrationService       --o          FileCoverageService
+ExtensionOrchestrationService       --o          ExtensionConfigurationService
+ExtensionOrchestrationService       --o          CoverageService
+ExtensionOrchestrationService       --o          UncoveredLinesService
+
+ProjectConfigurationService         *--          ProjectConfiguration
+FileCoverageService                 *--          FileCoverage
+
+ExtensionConfigurationService       --           ConfigurationData
+ExtensionConfigurationService       o---         ConfigurationView
+
+CoverageService                     --           CoverageData
+CoverageService                     o---         CoverageView
+CoverageService                     o---         StatusBarCoverageItem
+
+UncoveredLinesService               --           UncoveredLinesData
+UncoveredLinesService               o---         UncoveredLinesTree
+
+UncoveredLinesData             "*"  *--          Folder
+Folder                         "*"  *--  "0..1"  Folder
+Folder                         "*"  *--  "1"     File
+Line                           "1"  -*   "*"     File
+
+LineCoverageStatus             "1"  -            Line
+
+@enduml

@@ -1,0 +1,110 @@
+@startuml
+
+mainframe SD **UC04** 
+
+'UC04: Como desenvolvedor, desejo alternar a visualização da porcentagem de cobertura entre somente para as linhas criadas e alteradas na branch atual e para todo o código.
+
+actor       Desenvolvedor                     as Dev
+participant "Configuration View"              as ConfigurationView
+participant "Extension Configuration Service" as ExtensionConfigurationService
+participant "Extension Configuration Data"    as ExtensionConfigurationData
+participant "Extension Orchestration Service" as ExtensionOrchestrationService
+participant "Git Service"                     as GitService
+participant "Source Control API"              as VSCodeSourceControlAPI
+participant "Coverage Service"                as CoverageService
+participant "Coverage Data"                   as CoverageData
+participant "Coverage View"                   as CoverageView
+participant "Visual Studio Code"              as VSCode
+participant "Uncovered Lines Service"         as UncoveredLinesService
+participant "Uncovered Lines Data"            as UncoveredLinesData
+participant "Uncovered Lines Tree"            as UncoveredLinesTree
+
+Dev -> ConfigurationView: toggleCoverageBaseReferenceMode()
+
+activate Dev
+activate ConfigurationView
+
+ConfigurationView -> ExtensionConfigurationService: toggleCoverageBaseReferenceMode()
+activate ExtensionConfigurationService
+
+ExtensionConfigurationService -> ExtensionConfigurationData: updateConfigurationData()
+activate ExtensionConfigurationData
+
+ExtensionConfigurationService <-- ExtensionConfigurationData: newConfigurationData: ConfigurationData
+deactivate ExtensionConfigurationData
+
+ExtensionConfigurationService -> ExtensionOrchestrationService: emitNewConfigurationData(newConfigurationData: ConfigurationData)
+activate ExtensionOrchestrationService
+
+ExtensionOrchestrationService -> GitService: getCurrentBranchDiff()
+activate GitService
+
+GitService -> VSCodeSourceControlAPI: get current branch and code
+activate VSCodeSourceControlAPI
+GitService <-- VSCodeSourceControlAPI: branch code
+deactivate VSCodeSourceControlAPI
+
+ExtensionOrchestrationService <-- GitService: all created and modified rows
+deactivate GitService
+
+ExtensionOrchestrationService -> CoverageService: calculateCoverage()
+activate CoverageService
+
+CoverageService -> CoverageData: updateCoverageData()
+activate CoverageData
+
+CoverageService <-- CoverageData: newCoverageData: CoverageData
+deactivate CoverageData
+
+CoverageService -> CoverageView: emitNewCoverageData(newCoverageData: CoverageData)
+activate CoverageView
+
+CoverageService <-- CoverageView
+deactivate CoverageView
+
+CoverageService -> VSCode: changeEditoreDecoration()
+activate VSCode
+
+CoverageService <-- VSCode: Atualiza o estilo do editor
+deactivate VSCode
+
+ExtensionOrchestrationService <-- CoverageService
+deactivate CoverageService
+
+ExtensionOrchestrationService -> UncoveredLinesService: setCurrentUncoveredLines()
+activate UncoveredLinesService
+
+UncoveredLinesService -> UncoveredLinesData: updateUncoveredLinesData()
+activate UncoveredLinesData
+
+UncoveredLinesService <-- UncoveredLinesData: newUncoveredLinesData: UncoveredLinesData
+deactivate UncoveredLinesData
+
+UncoveredLinesService -> UncoveredLinesTree: emitNewUncoveredLinesData(newUncoveredLinesData: UncoveredLinesData)
+activate UncoveredLinesTree
+
+UncoveredLinesService <-- UncoveredLinesTree
+deactivate UncoveredLinesTree
+
+ExtensionOrchestrationService <-- UncoveredLinesService
+deactivate UncoveredLinesService
+
+ExtensionConfigurationService <-- ExtensionOrchestrationService
+deactivate ExtensionOrchestrationService
+
+ConfigurationView <-- ExtensionConfigurationService
+deactivate ExtensionConfigurationService
+
+alt está exibindo os dados de cobertura com base em todo o código
+
+  Dev <-- ConfigurationView: Recalcular porcentagem de cobertura somente para as linhas alteradas
+  Dev <-- ConfigurationView: Exibir linhas sem cobertura somente dos arquivos que foram alterados
+
+else está exibindo os dados de cobertura com base na diferença da branch atual com a branch de base
+
+  Dev <-- ConfigurationView: Recalcular porcentagem de cobertura para todos os arquivos
+  Dev <-- ConfigurationView: Exibir todas as linhas sem cobertura
+
+end
+
+@enduml
