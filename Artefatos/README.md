@@ -1,5 +1,11 @@
 # Artefatos do projeto
 
+## Entrega TCC 1 - Pré Banca
+
+- [Documentação do Projeto](./Projeto-PreBanca_Atividade_A7.pdf): Documentação de projeto para o sistema Covering.
+
+## Artefatos gerais
+
 - [Diagrama de Caso de Uso](./Projeto%20UML/Diagrama%20de%20Caso%20de%20Uso/Use%20Case%20Diagram.pdf)
 - [Diagrama de Classe](./Projeto%20UML/Diagrama%20de%20Classe/Diagrama%20de%20Classe.pdf)
 - [Diagrama de Componentes](./Projeto%20UML/Diagrama%20de%20Componentes/Diagrama%20de%20Componentes.pdf)
