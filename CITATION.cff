@@ -1,31 +1,23 @@
 cff-version: 1.0.1
 message: Please cite this software using these metadata.
-title: 
+title: Covering
 authors:
-  - family-names: 
-    given-names: 
-  - family-names: 
-    given-names: 
-  - family-names: 
-    given-names: 
-  - family-names: 
-    given-names: 
-  - family-names: 
-    given-names: 
-  - family-names: 
-    given-names:
+  - family-names: Rocha Amaral
+    given-names: Arthur
+  - family-names: Oliveira Antônio
+    given-names: Guilherme
   - name-suffix: Professor
     affiliation: PUC Minas
-    family-names: 
-    given-names: 
+    family-names: Pires Xavier Junior
+    given-names: Jose Laerte
   - name-suffix: Professor
     affiliation: PUC Minas
-    family-names: 
-    given-names: 
+    family-names: Rodrigo Costa
+    given-names: Marco
 keywords:
-  - 
-  - 
-repository-code: 
+  - Coverage
+  - Client side
+repository-code: https://github.com/ICEI-PUC-Minas-PPLES-TI/plf-es-2022-1-tcci-5308100-dev-arthur-rocha-guilherme-oliveira
 license: CC-BY-4.0
 version: 1.0.0
-date-released: 2022-07-14
+date-released: 2022-05-22
