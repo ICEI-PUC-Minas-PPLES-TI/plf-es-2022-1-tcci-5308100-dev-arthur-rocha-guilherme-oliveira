@@ -72,28 +72,28 @@ function removeComments(template: string) {
 }
 
 export function getTemplate(
-  _webview: Webview,
-  _extensionUri: Uri,
+  webview: Webview,
+  extensionUri: Uri,
   templateFileName: fs.PathOrFileDescriptor,
   templateData: TemplateData
 ) {
   const template = fs.readFileSync(templateFileName, "utf8");
-  const globalData = getGlobalTemplateData(_webview, _extensionUri);
+  const globalData = getGlobalTemplateData(webview, extensionUri);
   return parseTemplate(template, globalData, templateData);
 }
 
 function getGlobalTemplateData(
-  _webview: Webview,
-  _extensionUri: Uri
+  webview: Webview,
+  extensionUri: Uri
 ): GlobalTemplateData {
-  const styleResetUri = _webview.asWebviewUri(
-    Uri.joinPath(_extensionUri, "src", "global", "reset.css")
+  const styleResetUri = webview.asWebviewUri(
+    Uri.joinPath(extensionUri, "src", "global", "reset.css")
   );
-  const styleVSCodeUri = _webview.asWebviewUri(
-    Uri.joinPath(_extensionUri, "src", "global", "vscode.css")
+  const styleVSCodeUri = webview.asWebviewUri(
+    Uri.joinPath(extensionUri, "src", "global", "vscode.css")
   );
-  const globalTemplateUri = _webview.asWebviewUri(
-    Uri.joinPath(_extensionUri, "src", "global", "webview-view-template.html")
+  const globalTemplateUri = webview.asWebviewUri(
+    Uri.joinPath(extensionUri, "src", "global", "webview-view-template.html")
   );
   const rawGlobalTemplate = fs.readFileSync(globalTemplateUri.fsPath, "utf8");
   const globalTemplateWithoutComments = removeComments(rawGlobalTemplate);
@@ -112,7 +112,7 @@ function getGlobalTemplateData(
       }
 
       if (key === "webview.cspSource") {
-        return _webview.cspSource;
+        return webview.cspSource;
       }
 
       return _;
