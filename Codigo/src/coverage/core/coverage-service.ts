@@ -1,6 +1,21 @@
+import { injectable } from "inversify";
+import { Observable, ReplaySubject, startWith } from "rxjs";
+import { FileCoverage } from "../../file-coverage/models/file-coverage";
+import { CoverageData } from "../models/coverage-data";
+
+@injectable()
 export class CoverageService {
-  public calculateCoverage(): void {
-    throw new Error("Method not implemented.");
+  private coverageData = new ReplaySubject<CoverageData>();
+  public count = 0;
+
+  public getCoverageData(): Observable<CoverageData> {
+    return this.coverageData.asObservable(); //.pipe(startWith(new CoverageData(0, 0, true)));
+  }
+
+  public calculateCoverage(fileCoverage: FileCoverage): void {
+    const newCoverageData = CoverageData.updateCoverageData(fileCoverage);
+    this.count++;
+    this.coverageData.next(newCoverageData);
   }
 
   public changeEditorVisibility(visibility: boolean): void {

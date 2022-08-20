@@ -65,6 +65,7 @@
   },
   "devDependencies": {
     "@types/glob": "^7.2.0",
+    "@types/lcov-parse": "^1.0.0",
     "@types/mocha": "^9.1.1",
     "@types/node": "16.x",
     "@types/vscode": "^1.68.0",
@@ -80,6 +81,9 @@
     "webpack-cli": "^4.9.2"
   },
   "dependencies": {
-    "rxjs": "^7.5.5"
+    "inversify": "^6.0.1",
+    "lcov-parse": "^1.0.0",
+    "reflect-metadata": "^0.1.13",
+    "rxjs": "^7.5.6"
   }
 }

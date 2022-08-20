@@ -1,19 +1,26 @@
 import {
-  SnippetString,
   Uri,
   WebviewView,
   WebviewViewProvider,
-  window,
+  WebviewViewResolveContext,
 } from "vscode";
+import { appInjector } from "../../inversify.config";
 import { getCoverageHtmlForWebview } from "../core/coverage";
+import { CoverageService } from "../core/coverage-service";
 import { CoverageData } from "../models/coverage-data";
 
 export class CoverageView implements WebviewViewProvider {
-  private _view?: WebviewView;
+  private _view!: WebviewView;
+
+  private coverageService = appInjector.get(CoverageService);
+  private coverageData: CoverageData = new CoverageData(0, 0, true);
 
   constructor(private readonly _extensionUri: Uri) {}
 
-  public resolveWebviewView(webviewView: WebviewView) {
+  public resolveWebviewView(
+    webviewView: WebviewView,
+    context: WebviewViewResolveContext
+  ) {
     this._view = webviewView;
 
     webviewView.webview.options = {
@@ -21,25 +28,18 @@ export class CoverageView implements WebviewViewProvider {
       localResourceRoots: [this._extensionUri],
     };
 
-    webviewView.webview.html = getCoverageHtmlForWebview(
-      webviewView.webview,
+    this._view.webview.html = getCoverageHtmlForWebview(
+      this._view.webview,
       this._extensionUri,
-      {
-        minCoveragePercentage: 0.8,
-        coveragePercentage: 0.9,
-        minCoverageReached: true,
-      }
+      this.coverageData
     );
 
-    webviewView.webview.onDidReceiveMessage((data) => {
-      switch (data.type) {
-        case "colorSelected": {
-          window.activeTextEditor?.insertSnippet(
-            new SnippetString(`#${data.value}`)
-          );
-          break;
-        }
-      }
+    this.coverageService.getCoverageData().subscribe((coverageData) => {
+      this.coverageData = coverageData;
+      this._view.webview.postMessage({
+        type: "coverageData",
+        data: coverageData,
+      });
     });
   }
 

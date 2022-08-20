@@ -1,3 +1,4 @@
+import "reflect-metadata";
 import { ExtensionContext, window, commands } from "vscode";
 import { ExtensionOrchestrationService } from "./ui/core/extension-orchestration-service";
 

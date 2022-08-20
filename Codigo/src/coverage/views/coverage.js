@@ -22,17 +22,15 @@
     vscode.setState(state);
   }
 
-  const oldState = vscode.getState() || { minCoveragePercentage: 0.8, coveragePercentage: 0.9 };
+  window.addEventListener('message', event => {
 
-  updateCoverageData(oldState);
+    const message = event.data;
 
-  percentageElement.addEventListener('click', () => {
-    const state = vscode.getState();
-    if (state.coveragePercentage < state.minCoveragePercentage) {
-      updateCoverageData({ minCoveragePercentage: 0.8, coveragePercentage: 0.9750 });
-    } else {
-      updateCoverageData({ minCoveragePercentage: 0.8, coveragePercentage: 0.3333 });
+    switch (message.type) {
+      case 'coverageData':
+        updateCoverageData(message.data);
+        break;
     }
-  })
+  });
 })();
 
