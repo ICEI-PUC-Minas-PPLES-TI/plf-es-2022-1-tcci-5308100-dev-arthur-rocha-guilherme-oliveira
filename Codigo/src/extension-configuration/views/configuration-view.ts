@@ -1,33 +1,82 @@
 import {
-  EventEmitter,
-  ProviderResult,
-  TreeDataProvider,
-  TreeItem,
-  TreeItemCollapsibleState,
+  CancellationToken,
+  ExtensionContext,
+  Uri,
+  WebviewView,
+  WebviewViewProvider,
+  WebviewViewResolveContext,
+  window,
 } from "vscode";
+import { appInjector } from "../../inversify.config";
+import { getExtensionConfigurationHtmlForWebview } from "../core/extension-configuration";
+import { ExtensionConfigurationService } from "../core/extension-configuration-service";
+import { ConfigurationData } from "../models/configuration-data";
 
-class Node {
-  constructor(public readonly label: string, public value: string) {}
-}
+export class ConfigurationView implements WebviewViewProvider {
+  private _view!: WebviewView;
+  private extensionConfigurationService = appInjector.get(
+    ExtensionConfigurationService
+  );
+  private context = appInjector.get<ExtensionContext>("ExtensionContext");
+  private extensionConfigurationData = new ConfigurationData(
+    false,
+    false,
+    "",
+    false
+  );
 
-export class ConfigurationView implements TreeDataProvider<Node> {
-  private readonly _changeTreeData = new EventEmitter<
-    Node | void | undefined | null
-  >();
+  constructor() {}
 
-  public readonly onDidChangeTreeData = this._changeTreeData.event;
+  public resolveWebviewView(webviewView: WebviewView) {
+    this._view = webviewView;
 
-  getTreeItem(element: Node): TreeItem | Thenable<TreeItem> {
-    const label = element.label;
-    const tree = new TreeItem(label, TreeItemCollapsibleState.None);
-    return tree;
+    webviewView.webview.options = {
+      enableScripts: true,
+      localResourceRoots: [this.context.extensionUri],
+    };
+
+    this._view.webview.html = getExtensionConfigurationHtmlForWebview(
+      this._view.webview,
+      this.context.extensionUri,
+      this.extensionConfigurationData
+    );
+
+    this.extensionConfigurationService
+      .gerConfigurationData()
+      .subscribe((extensionConfigurationData) => {
+        this.extensionConfigurationData = extensionConfigurationData;
+        this._view.webview.postMessage({
+          type: "extensionConfigurationData",
+          data: this.extensionConfigurationData,
+        });
+      });
+
+    this._view.webview.onDidReceiveMessage(
+      (message) => {
+        switch (message.command) {
+          case "toggleIsGutterActive":
+            this.extensionConfigurationService.toggleLineStatusVisibility();
+            return;
+          case "toggleIsBasedOnBranchChange":
+            window.showErrorMessage("not implemented yet");
+            return;
+          case "toggleIsJustForFileInFocus":
+            window.showErrorMessage("not implemented yet");
+            return;
+        }
+      },
+      undefined,
+      this.context.subscriptions
+    );
   }
 
-  getChildren(element?: Node | undefined): ProviderResult<Node[]> {
-    return [new Node("Node 1", "1"), new Node("Node 2", "2")];
+  public static createView(): void {
+    const extensionConfigurationWebViewProvider = new ConfigurationView();
+    window.registerWebviewViewProvider(
+      "covering.config-view",
+      extensionConfigurationWebViewProvider
+    );
   }
-
-  public static createView(): void {}
 
   public toggleLineStatusVisibility(): void {}
 

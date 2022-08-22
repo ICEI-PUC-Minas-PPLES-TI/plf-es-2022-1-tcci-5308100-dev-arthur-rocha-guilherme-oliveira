@@ -1,7 +1,7 @@
-import { inject } from "inversify";
 import { commands, ExtensionContext, window } from "vscode";
 import { CoverageService } from "../../coverage/core/coverage-service";
 import { CoverageView } from "../../coverage/views/coverage-view";
+import { ExtensionConfigurationService } from "../../extension-configuration/core/extension-configuration-service";
 import { ConfigurationData } from "../../extension-configuration/models/configuration-data";
 import { ConfigurationView } from "../../extension-configuration/views/configuration-view";
 import { FileCoverageService } from "../../file-coverage/core/file-coverage-service";
@@ -9,13 +9,17 @@ import { FileCoverage } from "../../file-coverage/models/file-coverage";
 import { appInjector } from "../../inversify.config";
 import { ProjectConfiguration } from "../../project-configuration/models/project-configuration";
 import { UncoveredLinesTree } from "../../uncovered-lines/views/uncovered-lines-tree";
+import { VisualStudioCode } from "../../visual-studio-code/visual-studio-code";
 import { TestType } from "../enums/test-type";
 
 export class ExtensionOrchestrationService {
   private fileCoverageService = appInjector.get(FileCoverageService);
   private coverageService = appInjector.get(CoverageService);
-
-  constructor(private context: ExtensionContext) {}
+  private extensionConfigurationService = appInjector.get(
+    ExtensionConfigurationService
+  );
+  private vsCode = appInjector.get(VisualStudioCode);
+  private context = appInjector.get<ExtensionContext>("ExtensionContext");
 
   public emitNewProjectConfiguration(
     newProjectConfiguration: ProjectConfiguration
@@ -43,8 +47,18 @@ export class ExtensionOrchestrationService {
   public initApp() {
     this.registerCommands();
     this.registerViews();
+
+    this.extensionConfigurationService
+      .gerConfigurationData()
+      .subscribe((configurationData) => {
+        this.coverageService.changeEditorVisibility(
+          configurationData.isGutterActive
+        );
+      });
+
     this.fileCoverageService.getCoverageData().subscribe((fileCoverage) => {
       this.coverageService.calculateCoverage(fileCoverage);
+      this.vsCode.changeEditorDecoration(fileCoverage);
     });
   }
 
@@ -59,16 +73,8 @@ export class ExtensionOrchestrationService {
 
   //TO-DO: Add to UML project
   private registerViews() {
-    const configTreeDataProvider = new ConfigurationView();
-    window.createTreeView("covering.config-view", {
-      treeDataProvider: configTreeDataProvider,
-    });
-
-    const webViewProvider = new CoverageView(this.context.extensionUri);
-    window.registerWebviewViewProvider(
-      "covering.coverage-view",
-      webViewProvider
-    );
+    ConfigurationView.createView();
+    CoverageView.createView();
 
     const uncoveredLinesTreeDataProvider = new UncoveredLinesTree();
     window.createTreeView("covering.uncovered-lines-view", {

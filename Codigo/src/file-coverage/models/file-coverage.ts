@@ -1,12 +1,21 @@
 import { readFile } from "fs";
 import * as glob from "glob";
-import { window, workspace, WorkspaceFolder } from "vscode";
+import { TextEditor, window, workspace, WorkspaceFolder } from "vscode";
 import { LcovFile, source } from "lcov-parse";
+import { appInjector } from "../../inversify.config";
+import { SectionFinder } from "../../visual-studio-code/section-finder";
 
 export class FileCoverage {
+  private sectionFinder = appInjector.get(SectionFinder);
+
   constructor(private lcovFiles: Map<string, LcovFile>) {}
+
   public getLcovFiles(): Map<string, LcovFile> {
     return this.lcovFiles;
+  }
+
+  public getLcovFilesForEditor(textEditor: TextEditor): LcovFile[] {
+    return this.sectionFinder.findSectionsForEditor(textEditor, this.lcovFiles);
   }
 
   public static async createNewCoverageFile(): Promise<FileCoverage> {
@@ -73,7 +82,7 @@ export class FileCoverage {
             // Show any errors if no file was found.
             if (err) {
               window.showWarningMessage(
-                `An error occured while looking for the coverage file ${err}`
+                `An error occurred while looking for the coverage file ${err}`
               );
             }
             return resolve(new Set());
@@ -152,20 +161,20 @@ export class FileCoverage {
   private static async convertLcovFilesToMap(
     data: LcovFile[]
   ): Promise<Map<string, LcovFile>> {
-    const LcovFiles = new Map<string, LcovFile>();
-    const addToLcovFilesMap = async (LcovFile: LcovFile) => {
-      LcovFiles.set(LcovFile.title + "::" + LcovFile.file, LcovFile);
+    const lcovFiles = new Map<string, LcovFile>();
+    const addToLcovFilesMap = async (lcovFile: LcovFile) => {
+      lcovFiles.set(lcovFile.title + "::" + lcovFile.file, lcovFile);
     };
 
     // convert the array of LcovFiles into an unique map
     const addPromises = data.map(addToLcovFilesMap);
     await Promise.all(addPromises);
-    return LcovFiles;
+    return lcovFiles;
   }
 
   private static handleError(system: string, message: string) {
     console.log(
-      `[${Date.now()}][coverageparser][${system}]: Error: ${message}`
+      `[${Date.now()}][coverageParser][${system}]: Error: ${message}`
     );
   }
 }

@@ -1,12 +1,14 @@
 import { injectable } from "inversify";
 import { Observable, ReplaySubject, startWith } from "rxjs";
 import { FileCoverage } from "../../file-coverage/models/file-coverage";
+import { appInjector } from "../../inversify.config";
 import { CoverageData } from "../models/coverage-data";
+import { VisualStudioCode } from "../../visual-studio-code/visual-studio-code";
 
 @injectable()
 export class CoverageService {
+  private vscode = appInjector.get(VisualStudioCode);
   private coverageData = new ReplaySubject<CoverageData>();
-  public count = 0;
 
   public getCoverageData(): Observable<CoverageData> {
     return this.coverageData.asObservable(); //.pipe(startWith(new CoverageData(0, 0, true)));
@@ -14,11 +16,10 @@ export class CoverageService {
 
   public calculateCoverage(fileCoverage: FileCoverage): void {
     const newCoverageData = CoverageData.updateCoverageData(fileCoverage);
-    this.count++;
     this.coverageData.next(newCoverageData);
   }
 
   public changeEditorVisibility(visibility: boolean): void {
-    throw new Error("Method not implemented.");
+    this.vscode.changeEditorDecoration(undefined, visibility);
   }
 }

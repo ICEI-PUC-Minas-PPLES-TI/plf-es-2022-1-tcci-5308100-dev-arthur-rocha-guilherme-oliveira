@@ -1,8 +1,8 @@
 import {
-  Uri,
+  ExtensionContext,
   WebviewView,
   WebviewViewProvider,
-  WebviewViewResolveContext,
+  window,
 } from "vscode";
 import { appInjector } from "../../inversify.config";
 import { getCoverageHtmlForWebview } from "../core/coverage";
@@ -11,26 +11,22 @@ import { CoverageData } from "../models/coverage-data";
 
 export class CoverageView implements WebviewViewProvider {
   private _view!: WebviewView;
+  private context = appInjector.get<ExtensionContext>("ExtensionContext");
 
   private coverageService = appInjector.get(CoverageService);
-  private coverageData: CoverageData = new CoverageData(0, 0, true);
+  private coverageData = new CoverageData(0, 0, true);
 
-  constructor(private readonly _extensionUri: Uri) {}
-
-  public resolveWebviewView(
-    webviewView: WebviewView,
-    context: WebviewViewResolveContext
-  ) {
+  public resolveWebviewView(webviewView: WebviewView) {
     this._view = webviewView;
 
     webviewView.webview.options = {
       enableScripts: true,
-      localResourceRoots: [this._extensionUri],
+      localResourceRoots: [this.context.extensionUri],
     };
 
     this._view.webview.html = getCoverageHtmlForWebview(
       this._view.webview,
-      this._extensionUri,
+      this.context.extensionUri,
       this.coverageData
     );
 
@@ -43,8 +39,12 @@ export class CoverageView implements WebviewViewProvider {
     });
   }
 
-  public createView(): void {
-    throw new Error("Method not implemented.");
+  public static createView(): void {
+    const coverageWebViewProvider = new CoverageView();
+    window.registerWebviewViewProvider(
+      "covering.coverage-view",
+      coverageWebViewProvider
+    );
   }
 
   public emitNewCoverageData(newCoverageData: CoverageData): void {

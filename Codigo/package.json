@@ -10,10 +10,7 @@
     "Other"
   ],
   "activationEvents": [
-    "onView:covering.config-view",
-    "onView:covering.coverage-view",
-    "onView:covering.uncovered-lines-view",
-    "onCommand:covering.helloWorld"
+    "*"
   ],
   "main": "./dist/extension.js",
   "contributes": {
@@ -35,7 +32,7 @@
     "views": {
       "covering-explorer": [
         {
-          "type": "tree",
+          "type": "webview",
           "id": "covering.config-view",
           "name": "Configuration"
         },
@@ -87,3 +84,4 @@
     "rxjs": "^7.5.6"
   }
 }
+
