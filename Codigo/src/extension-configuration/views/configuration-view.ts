@@ -1,10 +1,7 @@
 import {
-  CancellationToken,
   ExtensionContext,
-  Uri,
   WebviewView,
   WebviewViewProvider,
-  WebviewViewResolveContext,
   window,
 } from "vscode";
 import { appInjector } from "../../inversify.config";
