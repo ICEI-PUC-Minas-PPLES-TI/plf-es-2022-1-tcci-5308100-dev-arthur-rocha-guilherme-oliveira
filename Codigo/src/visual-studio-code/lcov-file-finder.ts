@@ -36,6 +36,26 @@ export class LcovFileFinder {
     return foundLcovFiles;
   }
 
+  public findLcovFilesForFile(
+    fsPath: string,
+    lcovFiles: Map<string, LcovFile>
+  ): LcovFile[] {
+    const lcovFilesArray = Array.from(lcovFiles.values());
+    const res = this.calculateRelativePath(fsPath);
+    if (!res) {
+      return [];
+    }
+
+    const foundLcovFiles = lcovFilesArray.filter((lcovFile) =>
+      this.checkLcovFile(lcovFile, res.relativePath, res.workspaceFolder)
+    );
+    if (!foundLcovFiles.length) {
+      return [];
+    }
+
+    return foundLcovFiles;
+  }
+
   /**
    * Checks for a matching lcovFile against the a given fileName
    * @param lcovFile data lcovFile to check against filename
@@ -103,13 +123,32 @@ export class LcovFileFinder {
   private calculateEditorData(
     textEditor: TextEditor
   ): { relativePath: string; workspaceFolder: string } | undefined {
-    // calculate normalize
     const fileName = textEditor.document.fileName;
     const editorFileUri = Uri.file(fileName);
     const workspaceFolder = workspace.getWorkspaceFolder(editorFileUri);
     if (!workspaceFolder) {
       return;
     } // file is not in workspace - skip it
+    const workspaceFsPath = workspaceFolder.uri.fsPath;
+    const editorFileAbs = normalizeFileName(fileName);
+    const workspaceFile = normalizeFileName(workspaceFsPath);
+    const editorFileRelative = editorFileAbs.substring(workspaceFile.length);
+    const workspaceFolderName = normalizeFileName(basename(workspaceFsPath));
+    return {
+      relativePath: editorFileRelative,
+      workspaceFolder: workspaceFolderName,
+    };
+  }
+
+  private calculateRelativePath(
+    fsPath: string
+  ): { relativePath: string; workspaceFolder: string } | undefined {
+    const fileName = fsPath;
+    const editorFileUri = Uri.file(fileName);
+    const workspaceFolder = workspace.getWorkspaceFolder(editorFileUri);
+    if (!workspaceFolder) {
+      return;
+    }
     const workspaceFsPath = workspaceFolder.uri.fsPath;
     const editorFileAbs = normalizeFileName(fileName);
     const workspaceFile = normalizeFileName(workspaceFsPath);

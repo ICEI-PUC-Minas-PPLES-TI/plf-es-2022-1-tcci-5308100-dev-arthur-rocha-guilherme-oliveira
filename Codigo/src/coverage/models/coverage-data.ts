@@ -1,15 +1,27 @@
 import { FileCoverage } from "../../file-coverage/models/file-coverage";
 
 export class CoverageData {
+  public readonly minCoverageReached: boolean;
+
   constructor(
-    public minCoveragePercentage: number,
-    public coveragePercentage: number,
-    public minCoverageReached: boolean
-  ) {}
+    public readonly minCoveragePercentage: number,
+    public readonly coveragePercentage: number
+  ) {
+    this.minCoverageReached =
+      this.coveragePercentage >= this.minCoveragePercentage;
+  }
 
   public static updateCoverageData(fileCoverage: FileCoverage): CoverageData {
-    fileCoverage.getLcovFiles();
+    const coverageLines = fileCoverage.getLcovFiles();
 
-    return new CoverageData(0.5, Math.random(), false);
+    const coveredLines = coverageLines.reduce((acc, curr) => {
+      return acc + curr.lines.hit;
+    }, 0);
+
+    const totalLines = coverageLines.reduce((acc, curr) => {
+      return acc + curr.lines.found;
+    }, 0);
+
+    return new CoverageData(0.8, coveredLines / totalLines);
   }
 }

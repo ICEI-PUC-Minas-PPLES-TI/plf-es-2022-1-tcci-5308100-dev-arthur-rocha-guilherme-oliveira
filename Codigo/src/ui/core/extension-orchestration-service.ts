@@ -74,10 +74,6 @@ export class ExtensionOrchestrationService {
       .subscribe((configurationData) => {
         this.emitNewConfigurationData(configurationData);
       });
-
-    setInterval(() => {
-      this.fileCoverageService.fileChanged();
-    }, 1000);
   }
 
   //TO-DO: Add to UML project

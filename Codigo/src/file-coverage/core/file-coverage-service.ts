@@ -9,6 +9,11 @@ export class FileCoverageService {
   public getFileCoverage(): Observable<FileCoverage> {
     if (!this.fileCoverageSubject) {
       this.fileCoverageSubject = new ReplaySubject<FileCoverage>();
+
+      FileCoverage.initiateLcovFileWatcher().subscribe(() => {
+        this.fileChanged();
+      });
+
       this.fileChanged();
     }
 

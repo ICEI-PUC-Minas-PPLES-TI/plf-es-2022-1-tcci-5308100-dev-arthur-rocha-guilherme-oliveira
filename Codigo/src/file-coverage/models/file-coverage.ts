@@ -1,26 +1,69 @@
 import { readFile } from "fs";
 import * as glob from "glob";
 import { LcovBranch, LcovFile, LcovLine, source } from "lcov-parse";
-import { Range, TextEditor, window, workspace, WorkspaceFolder } from "vscode";
+import { Observable, Subject } from "rxjs";
+import {
+  FileSystemWatcher,
+  Range,
+  TextEditor,
+  window,
+  workspace,
+  WorkspaceFolder,
+} from "vscode";
 import { appInjector } from "../../inversify.config";
 import { LcovFileFinder } from "../../visual-studio-code/lcov-file-finder";
-import { ICoverageLines } from "../../visual-studio-code/visual-studio-code";
+import { CoverageLines } from "./coverage-lines";
 
 export class FileCoverage {
+  private static readonly lcovFileName = "lcov.info";
+  static coverageWatcher: FileSystemWatcher;
+  static onFileChangeSubject: Subject<void>;
+
   private lcovFileFinder = appInjector.get(LcovFileFinder);
+  private allFilesCoverageLines: Promise<Map<string, CoverageLines>>;
 
-  constructor(private lcovFiles: Map<string, LcovFile>) {}
-
-  public getLcovFiles(): Map<string, LcovFile> {
-    return this.lcovFiles;
+  constructor(private readonly lcovFiles: Map<string, LcovFile>) {
+    this.allFilesCoverageLines = this.getAllFilesCoverageLines();
   }
 
-  public getLcovFilesForEditor(textEditor: TextEditor): ICoverageLines {
-    const lcovFiles = this.lcovFileFinder.findLcovFilesForEditor(
-      textEditor,
+  private async getAllFilesCoverageLines(): Promise<
+    Map<string, CoverageLines>
+  > {
+    const files = await workspace.findFiles("**/**");
+
+    const mappedFiles = new Map<string, CoverageLines>();
+
+    files.forEach((uri) => {
+      mappedFiles.set(uri.fsPath, this.getCoverageLinesForFile(uri.fsPath));
+    });
+
+    return mappedFiles;
+  }
+
+  public getLcovFiles(): LcovFile[] {
+    return Array.from(this.lcovFiles.values());
+  }
+
+  public async getCoverageLinesForEditor(
+    textEditor: TextEditor
+  ): Promise<CoverageLines> {
+    const coverageLines = (await this.allFilesCoverageLines).get(
+      textEditor.document.fileName
+    );
+
+    if (coverageLines) {
+      return coverageLines;
+    }
+
+    return new CoverageLines();
+  }
+
+  private getCoverageLinesForFile(fsPath: string): CoverageLines {
+    const lcovFiles = this.lcovFileFinder.findLcovFilesForFile(
+      fsPath,
       this.lcovFiles
     );
-    return this.filterCoverage(lcovFiles);
+    return this.lcovFilesToCoverageLines(lcovFiles);
   }
 
   public static async createNewCoverageFile(): Promise<FileCoverage> {
@@ -31,11 +74,10 @@ export class FileCoverage {
   }
 
   private static async findCoverageFiles(): Promise<Set<string>> {
-    const fileName = "lcov.info";
-    const files = await this.findCoverageInWorkspace(fileName);
+    const files = await this.findCoverageInWorkspace(this.lcovFileName);
     if (!files.size) {
       window.showWarningMessage(
-        "Could not find a Coverage file! Searched for " + fileName
+        "Could not find a Coverage file! Searched for " + this.lcovFileName
       );
       return new Set();
     }
@@ -84,7 +126,6 @@ export class FileCoverage {
         },
         (err: any, files: any) => {
           if (!files || !files.length) {
-            // Show any errors if no file was found.
             if (err) {
               window.showWarningMessage(
                 `An error occurred while looking for the coverage file ${err}`
@@ -119,7 +160,6 @@ export class FileCoverage {
   private static async loadDataFiles(
     files: Set<string>
   ): Promise<Map<string, string>> {
-    // Load the files and convert into data strings
     const dataFiles = new Map<string, string>();
     for (const file of files) {
       dataFiles.set(file, await this.load(file));
@@ -157,12 +197,12 @@ export class FileCoverage {
           const lcovFiles = await this.convertLcovFilesToMap(data);
           return resolve(lcovFiles);
         });
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (error: any) {
         checkError(error);
       }
     });
   }
+
   private static async convertLcovFilesToMap(
     data: LcovFile[]
   ): Promise<Map<string, LcovFile>> {
@@ -171,7 +211,6 @@ export class FileCoverage {
       lcovFiles.set(lcovFile.title + "::" + lcovFile.file, lcovFile);
     };
 
-    // convert the array of LcovFiles into an unique map
     const addPromises = data.map(addToLcovFilesMap);
     await Promise.all(addPromises);
     return lcovFiles;
@@ -183,9 +222,9 @@ export class FileCoverage {
     );
   }
 
-  private filterCoverage(lcovFiles: LcovFile[]): ICoverageLines {
-    return lcovFiles.reduce<ICoverageLines>(
-      (coverageLines: ICoverageLines, lcovFile: LcovFile) => {
+  private lcovFilesToCoverageLines(lcovFiles: LcovFile[]): CoverageLines {
+    return lcovFiles.reduce<CoverageLines>(
+      (coverageLines: CoverageLines, lcovFile: LcovFile) => {
         const actualCoverageLines = this.lcovFileToCoverageLines(lcovFile);
 
         if (!actualCoverageLines) {
@@ -198,17 +237,13 @@ export class FileCoverage {
           none: [...coverageLines.none, ...actualCoverageLines.none],
         };
       },
-      {
-        full: [],
-        none: [],
-        partial: [],
-      }
+      new CoverageLines()
     );
   }
 
   private lcovFileToCoverageLines(
     lcovFile: LcovFile
-  ): ICoverageLines | undefined {
+  ): CoverageLines | undefined {
     if (!lcovFile || !lcovFile.lines) {
       return;
     }
@@ -258,5 +293,27 @@ export class FileCoverage {
       none,
       partial,
     };
+  }
+
+  public static initiateLcovFileWatcher(): Observable<void> {
+    if (!this.onFileChangeSubject) {
+      this.onFileChangeSubject = new Subject<void>();
+
+      let baseDir = "**";
+      if (workspace.workspaceFolders) {
+        const workspaceFolders = workspace.workspaceFolders.map(
+          (wf) => wf.uri.fsPath
+        );
+        baseDir = `{${workspaceFolders}}/${baseDir}`;
+      }
+      const blobPattern = `${baseDir}/${this.lcovFileName}`;
+
+      this.coverageWatcher = workspace.createFileSystemWatcher(blobPattern);
+      this.coverageWatcher.onDidChange(() => this.onFileChangeSubject.next());
+      this.coverageWatcher.onDidCreate(() => this.onFileChangeSubject.next());
+      this.coverageWatcher.onDidDelete(() => this.onFileChangeSubject.next());
+    }
+
+    return this.onFileChangeSubject.asObservable();
   }
 }

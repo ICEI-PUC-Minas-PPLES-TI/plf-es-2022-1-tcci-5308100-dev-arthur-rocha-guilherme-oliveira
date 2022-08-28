@@ -1,15 +1,10 @@
 import { injectable } from "inversify";
-import { Disposable, Range, TextEditor, window } from "vscode";
+import { Disposable, TextEditor, window } from "vscode";
 import { DefaultConfiguration } from "../config";
 import { ConfigurationData } from "../extension-configuration/models/configuration-data";
+import { CoverageLines } from "../file-coverage/models/coverage-lines";
 import { FileCoverage } from "../file-coverage/models/file-coverage";
 import { appInjector } from "../inversify.config";
-
-export interface ICoverageLines {
-  full: Range[];
-  partial: Range[];
-  none: Range[];
-}
 
 @injectable()
 export class VisualStudioCode {
@@ -75,18 +70,15 @@ export class VisualStudioCode {
 
     const textEditors = window.visibleTextEditors;
 
-    textEditors.forEach((textEditor) => {
+    textEditors.forEach(async (textEditor) => {
       const coverageLines =
-        this.actualFileCoverage.getLcovFilesForEditor(textEditor);
+        await this.actualFileCoverage.getCoverageLinesForEditor(textEditor);
 
       this.setDecorationsForEditor(textEditor, coverageLines);
     });
   }
 
-  private setDecorationsForEditor(
-    editor: TextEditor,
-    coverage: ICoverageLines
-  ) {
+  private setDecorationsForEditor(editor: TextEditor, coverage: CoverageLines) {
     const config = appInjector.get(DefaultConfiguration);
 
     const {

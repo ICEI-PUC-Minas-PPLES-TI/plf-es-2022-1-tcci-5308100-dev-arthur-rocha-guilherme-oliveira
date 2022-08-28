@@ -1,5 +1,5 @@
 function formatNumber(num) {
-  return Math.round(num * 100).toFixed(2);
+  return (num * 100).toFixed(2);
 }
 
 const percentageElement = document.getElementById('percentage');
@@ -35,3 +35,7 @@ window.addEventListener('message', event => {
 
 const lastState = vscode.getState();
 updateCoverageData(lastState);
+
+vscode.postMessage({
+  command: 'startingView',
+});

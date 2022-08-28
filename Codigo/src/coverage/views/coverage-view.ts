@@ -14,7 +14,7 @@ export class CoverageView implements WebviewViewProvider {
   private context = appInjector.get<ExtensionContext>("ExtensionContext");
 
   private coverageService = appInjector.get(CoverageService);
-  private coverageData = new CoverageData(0, 0, true);
+  private coverageData = new CoverageData(0, 0);
 
   public resolveWebviewView(webviewView: WebviewView) {
     this._view = webviewView;
@@ -36,6 +36,16 @@ export class CoverageView implements WebviewViewProvider {
         type: "coverageData",
         data: coverageData,
       });
+    });
+
+    this._view.webview.onDidReceiveMessage((message) => {
+      switch (message.command) {
+        case "startingView":
+          this._view.webview.postMessage({
+            type: "coverageData",
+            data: this.coverageData,
+          });
+      }
     });
   }
 
