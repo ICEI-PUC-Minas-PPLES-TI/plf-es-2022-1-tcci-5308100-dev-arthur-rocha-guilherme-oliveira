@@ -4,9 +4,5 @@
 			"path": "."
 		}
 	],
-	"settings": {
-		"coverage-gutters.showLineCoverage": true,
-		"coverage-gutters.coverageReportFileName": "index.html",
-		"coverage-gutters.remotePathResolve": ["/var/www/", "./"]
-	}
+	"settings": {}
 }

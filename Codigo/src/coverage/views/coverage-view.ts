@@ -1,53 +1,63 @@
 import {
-  SnippetString,
-  Uri,
+  ExtensionContext,
   WebviewView,
   WebviewViewProvider,
   window,
 } from "vscode";
+import { appInjector } from "../../inversify.config";
 import { getCoverageHtmlForWebview } from "../core/coverage";
+import { CoverageService } from "../core/coverage-service";
 import { CoverageData } from "../models/coverage-data";
 
 export class CoverageView implements WebviewViewProvider {
-  private _view?: WebviewView;
+  private _view!: WebviewView;
+  private context = appInjector.get<ExtensionContext>("ExtensionContext");
 
-  constructor(private readonly _extensionUri: Uri) {}
+  private coverageService = appInjector.get(CoverageService);
+  private coverageData = new CoverageData(0, 0);
 
   public resolveWebviewView(webviewView: WebviewView) {
     this._view = webviewView;
 
     webviewView.webview.options = {
       enableScripts: true,
-      localResourceRoots: [this._extensionUri],
+      localResourceRoots: [this.context.extensionUri],
     };
 
-    webviewView.webview.html = getCoverageHtmlForWebview(
-      webviewView.webview,
-      this._extensionUri,
-      {
-        minCoveragePercentage: 0.8,
-        coveragePercentage: 0.9,
-        minCoverageReached: true,
-      }
+    this._view.webview.html = getCoverageHtmlForWebview(
+      this._view.webview,
+      this.context.extensionUri,
+      this.coverageData
     );
 
-    webviewView.webview.onDidReceiveMessage((data) => {
-      switch (data.type) {
-        case "colorSelected": {
-          window.activeTextEditor?.insertSnippet(
-            new SnippetString(`#${data.value}`)
-          );
-          break;
-        }
+    this.coverageService.getCoverageData().subscribe((coverageData) => {
+      this.emitNewCoverageData(coverageData);
+    });
+
+    this._view.webview.onDidReceiveMessage((message) => {
+      switch (message.command) {
+        case "startingView":
+          this._view.webview.postMessage({
+            type: "coverageData",
+            data: this.coverageData,
+          });
       }
     });
   }
 
-  public createView(): void {
-    throw new Error("Method not implemented.");
+  public static createView(): void {
+    const coverageWebViewProvider = new CoverageView();
+    window.registerWebviewViewProvider(
+      "covering.coverage-view",
+      coverageWebViewProvider
+    );
   }
 
   public emitNewCoverageData(newCoverageData: CoverageData): void {
-    throw new Error("Method not implemented.");
+    this.coverageData = newCoverageData;
+    this._view.webview.postMessage({
+      type: "coverageData",
+      data: newCoverageData,
+    });
   }
 }

@@ -5,6 +5,12 @@
 		"lib": [
 			"ES2020"
 		],
+
+		"types": ["reflect-metadata"],
+		"moduleResolution": "node",
+		"experimentalDecorators": true,
+
+		"emitDecoratorMetadata": true,
 		"sourceMap": true,
 		"rootDir": ".",
 		"strict": true, /* enable all strict type-checking options */
