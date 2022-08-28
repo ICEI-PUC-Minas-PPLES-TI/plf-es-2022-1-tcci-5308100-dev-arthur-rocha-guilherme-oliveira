@@ -6,6 +6,7 @@ import { CoverageLines } from "../file-coverage/models/coverage-lines";
 import { FileCoverage } from "../file-coverage/models/file-coverage";
 import { appInjector } from "../inversify.config";
 
+//TO-DO: Update documentation params
 @injectable()
 export class VisualStudioCode {
   private editorWatcher!: Disposable;
@@ -16,11 +17,10 @@ export class VisualStudioCode {
     this.observeEditorFocusChange();
   }
 
-  public redirectEditorTo(configFilePath: string): void {}
+  public redirectEditorTo(configFilePath: string): void { }
 
-  public requestFileGeneration(): void {}
+  public requestFileGeneration(): void { }
 
-  //TO-DO: Update documentation params
   public changeEditorDecoration(
     fileCoverage: FileCoverage,
     extensionConfiguration: ConfigurationData
@@ -38,9 +38,9 @@ export class VisualStudioCode {
     }
   }
 
-  public changeToCoveringTab(): void {}
+  public changeToCoveringTab(): void { }
 
-  public runScriptOnTerminal(command: string): void {}
+  public runScriptOnTerminal(command: string): void { }
 
   public cancelEditorFocusChangeObservation(): void {
     if (this.editorWatcher) {
@@ -56,11 +56,10 @@ export class VisualStudioCode {
     );
   }
 
-  public criaNaRaizDoProjetoUmArquivoDeConfiguração(): void {}
+  public criaNaRaizDoProjetoUmArquivoDeConfiguração(): void { }
 
-  public alterarOArquivoDeConfiguraçãoActivateDev(): void {}
+  public alterarOArquivoDeConfiguraçãoActivateDev(): void { }
 
-  //TO-DO: All methods declared above have to be in documentation
   private render(): void {
     this.removeDecorationsForEditors();
 

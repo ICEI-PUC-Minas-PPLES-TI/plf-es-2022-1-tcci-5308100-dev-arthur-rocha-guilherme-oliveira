@@ -13,6 +13,7 @@ import { UncoveredLinesTree } from "../../uncovered-lines/views/uncovered-lines-
 import { VisualStudioCode } from "../../visual-studio-code/visual-studio-code";
 import { TestType } from "../enums/test-type";
 
+//TO-DO: Add to UML project
 export class ExtensionOrchestrationService {
   private fileCoverageService = appInjector.get(FileCoverageService);
   private coverageService = appInjector.get(CoverageService);
@@ -27,13 +28,13 @@ export class ExtensionOrchestrationService {
 
   public emitNewProjectConfiguration(
     newProjectConfiguration: ProjectConfiguration
-  ): void {}
+  ): void { }
 
-  public initViewData(): void {}
+  public initViewData(): void { }
 
-  public reloadTab(): void {}
+  public reloadTab(): void { }
 
-  public runTest(testType: TestType): void {}
+  public runTest(testType: TestType): void { }
 
   public emitNewConfigurationData(
     newConfigurationData: ConfigurationData
@@ -46,9 +47,9 @@ export class ExtensionOrchestrationService {
     );
   }
 
-  public fileFocusChange(): void {}
+  public fileFocusChange(): void { }
 
-  public changeDefaultTestExecution(testType: TestType): void {}
+  public changeDefaultTestExecution(testType: TestType): void { }
 
   public emitNewFileCoverage(newFileCoverage: FileCoverage): void {
     this.actualFileCoverage = newFileCoverage;
@@ -60,7 +61,6 @@ export class ExtensionOrchestrationService {
     );
   }
 
-  //TO-DO: Add to UML project
   public initApp() {
     this.registerCommands();
     this.registerViews();
@@ -76,7 +76,6 @@ export class ExtensionOrchestrationService {
       });
   }
 
-  //TO-DO: Add to UML project
   private registerCommands() {
     let disposable = commands.registerCommand("covering.helloWorld", () => {
       window.showInformationMessage("Hello World from covering!");
@@ -85,7 +84,6 @@ export class ExtensionOrchestrationService {
     this.context.subscriptions.push(disposable);
   }
 
-  //TO-DO: Add to UML project
   private registerViews() {
     ConfigurationView.createView();
     CoverageView.createView();
