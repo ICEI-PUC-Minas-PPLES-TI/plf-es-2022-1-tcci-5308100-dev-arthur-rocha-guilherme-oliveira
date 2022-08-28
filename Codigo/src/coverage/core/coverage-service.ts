@@ -18,8 +18,4 @@ export class CoverageService {
     const newCoverageData = CoverageData.updateCoverageData(fileCoverage);
     this.coverageData.next(newCoverageData);
   }
-
-  public changeEditorVisibility(visibility: boolean): void {
-    this.vscode.changeEditorDecoration(undefined, visibility);
-  }
 }

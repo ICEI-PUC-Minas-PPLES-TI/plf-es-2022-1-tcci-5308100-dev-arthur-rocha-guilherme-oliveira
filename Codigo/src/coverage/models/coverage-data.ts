@@ -10,6 +10,6 @@ export class CoverageData {
   public static updateCoverageData(fileCoverage: FileCoverage): CoverageData {
     fileCoverage.getLcovFiles();
 
-    return new CoverageData(0.8, 0.4567, false);
+    return new CoverageData(0.5, Math.random(), false);
   }
 }

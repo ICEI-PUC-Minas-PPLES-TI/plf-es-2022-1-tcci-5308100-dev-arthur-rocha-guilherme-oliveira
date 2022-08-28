@@ -1,3 +1,4 @@
+import { Subscription } from "rxjs";
 import { commands, ExtensionContext, window } from "vscode";
 import { CoverageService } from "../../coverage/core/coverage-service";
 import { CoverageView } from "../../coverage/views/coverage-view";
@@ -21,6 +22,9 @@ export class ExtensionOrchestrationService {
   private vsCode = appInjector.get(VisualStudioCode);
   private context = appInjector.get<ExtensionContext>("ExtensionContext");
 
+  private actualFileCoverage!: FileCoverage;
+  private actualConfigurationData!: ConfigurationData;
+
   public emitNewProjectConfiguration(
     newProjectConfiguration: ProjectConfiguration
   ): void {}
@@ -33,14 +37,27 @@ export class ExtensionOrchestrationService {
 
   public emitNewConfigurationData(
     newConfigurationData: ConfigurationData
-  ): void {}
+  ): void {
+    this.actualConfigurationData = newConfigurationData;
+
+    this.vsCode.changeEditorDecoration(
+      this.actualFileCoverage,
+      newConfigurationData
+    );
+  }
 
   public fileFocusChange(): void {}
 
   public changeDefaultTestExecution(testType: TestType): void {}
 
   public emitNewFileCoverage(newFileCoverage: FileCoverage): void {
-    throw new Error("Method not implemented.");
+    this.actualFileCoverage = newFileCoverage;
+
+    this.coverageService.calculateCoverage(newFileCoverage);
+    this.vsCode.changeEditorDecoration(
+      newFileCoverage,
+      this.actualConfigurationData
+    );
   }
 
   //TO-DO: Add to UML project
@@ -48,18 +65,19 @@ export class ExtensionOrchestrationService {
     this.registerCommands();
     this.registerViews();
 
+    this.fileCoverageService.getFileCoverage().subscribe((fileCoverage) => {
+      this.emitNewFileCoverage(fileCoverage);
+    });
+
     this.extensionConfigurationService
-      .gerConfigurationData()
+      .getConfigurationData()
       .subscribe((configurationData) => {
-        this.coverageService.changeEditorVisibility(
-          configurationData.isGutterActive
-        );
+        this.emitNewConfigurationData(configurationData);
       });
 
-    this.fileCoverageService.getCoverageData().subscribe((fileCoverage) => {
-      this.coverageService.calculateCoverage(fileCoverage);
-      this.vsCode.changeEditorDecoration(fileCoverage);
-    });
+    setInterval(() => {
+      this.fileCoverageService.fileChanged();
+    }, 1000);
   }
 
   //TO-DO: Add to UML project

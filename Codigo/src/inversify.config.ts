@@ -2,7 +2,7 @@ import "reflect-metadata";
 import { Container } from "inversify";
 import { CoverageService } from "./coverage/core/coverage-service";
 import { FileCoverageService } from "./file-coverage/core/file-coverage-service";
-import { SectionFinder } from "./visual-studio-code/section-finder";
+import { LcovFileFinder } from "./visual-studio-code/lcov-file-finder";
 import { VisualStudioCode } from "./visual-studio-code/visual-studio-code";
 import { DefaultConfiguration } from "./config";
 import { ExtensionConfigurationService } from "./extension-configuration/core/extension-configuration-service";
@@ -25,8 +25,8 @@ appInjector
   .inSingletonScope();
 
 appInjector
-  .bind<SectionFinder>(SectionFinder)
-  .to(SectionFinder)
+  .bind<LcovFileFinder>(LcovFileFinder)
+  .to(LcovFileFinder)
   .inSingletonScope();
 
 appInjector

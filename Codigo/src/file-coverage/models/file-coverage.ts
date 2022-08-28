@@ -1,12 +1,13 @@
 import { readFile } from "fs";
 import * as glob from "glob";
-import { TextEditor, window, workspace, WorkspaceFolder } from "vscode";
-import { LcovFile, source } from "lcov-parse";
+import { LcovBranch, LcovFile, LcovLine, source } from "lcov-parse";
+import { Range, TextEditor, window, workspace, WorkspaceFolder } from "vscode";
 import { appInjector } from "../../inversify.config";
-import { SectionFinder } from "../../visual-studio-code/section-finder";
+import { LcovFileFinder } from "../../visual-studio-code/lcov-file-finder";
+import { ICoverageLines } from "../../visual-studio-code/visual-studio-code";
 
 export class FileCoverage {
-  private sectionFinder = appInjector.get(SectionFinder);
+  private lcovFileFinder = appInjector.get(LcovFileFinder);
 
   constructor(private lcovFiles: Map<string, LcovFile>) {}
 
@@ -14,8 +15,12 @@ export class FileCoverage {
     return this.lcovFiles;
   }
 
-  public getLcovFilesForEditor(textEditor: TextEditor): LcovFile[] {
-    return this.sectionFinder.findSectionsForEditor(textEditor, this.lcovFiles);
+  public getLcovFilesForEditor(textEditor: TextEditor): ICoverageLines {
+    const lcovFiles = this.lcovFileFinder.findLcovFilesForEditor(
+      textEditor,
+      this.lcovFiles
+    );
+    return this.filterCoverage(lcovFiles);
   }
 
   public static async createNewCoverageFile(): Promise<FileCoverage> {
@@ -176,5 +181,82 @@ export class FileCoverage {
     console.log(
       `[${Date.now()}][coverageParser][${system}]: Error: ${message}`
     );
+  }
+
+  private filterCoverage(lcovFiles: LcovFile[]): ICoverageLines {
+    return lcovFiles.reduce<ICoverageLines>(
+      (coverageLines: ICoverageLines, lcovFile: LcovFile) => {
+        const actualCoverageLines = this.lcovFileToCoverageLines(lcovFile);
+
+        if (!actualCoverageLines) {
+          return coverageLines;
+        }
+
+        return {
+          full: [...coverageLines.full, ...actualCoverageLines.full],
+          partial: [...coverageLines.partial, ...actualCoverageLines.partial],
+          none: [...coverageLines.none, ...actualCoverageLines.none],
+        };
+      },
+      {
+        full: [],
+        none: [],
+        partial: [],
+      }
+    );
+  }
+
+  private lcovFileToCoverageLines(
+    lcovFile: LcovFile
+  ): ICoverageLines | undefined {
+    if (!lcovFile || !lcovFile.lines) {
+      return;
+    }
+
+    const rangeReducer = (
+      condition: boolean,
+      accumulator: Range[],
+      detail: LcovBranch | LcovLine
+    ): Range[] => {
+      if (condition) {
+        if (detail.line < 0) {
+          return accumulator;
+        }
+
+        const lineRange = new Range(detail.line - 1, 0, detail.line - 1, 0);
+        return [...accumulator, lineRange];
+      }
+      return accumulator;
+    };
+
+    const partial: Range[] = lcovFile.branches.details.reduce<Range[]>(
+      (acc, detail) => rangeReducer(detail.taken === 0, acc, detail),
+      []
+    );
+
+    const full: Range[] = lcovFile.lines.details
+      .reduce<Range[]>(
+        (acc, detail) => rangeReducer(detail.hit > 0, acc, detail),
+        []
+      )
+      .filter(
+        (fullRange) =>
+          !partial.some((partialRange) => partialRange.isEqual(fullRange))
+      );
+
+    const none: Range[] = lcovFile.lines.details
+      .reduce<Range[]>(
+        (acc, detail) => rangeReducer(detail.hit === 0, acc, detail),
+        []
+      )
+      .filter(
+        (noneRange) => !full.some((fullRange) => fullRange.isEqual(noneRange))
+      );
+
+    return {
+      full,
+      none,
+      partial,
+    };
   }
 }

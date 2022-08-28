@@ -39,7 +39,7 @@ export class ConfigurationView implements WebviewViewProvider {
     );
 
     this.extensionConfigurationService
-      .gerConfigurationData()
+      .getConfigurationData()
       .subscribe((extensionConfigurationData) => {
         this.extensionConfigurationData = extensionConfigurationData;
         this._view.webview.postMessage({

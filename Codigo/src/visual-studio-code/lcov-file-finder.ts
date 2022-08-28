@@ -9,54 +9,54 @@ import {
 } from "./helpers";
 
 @injectable()
-export class SectionFinder {
+export class LcovFileFinder {
   /**
    * Compare the paths using relative logic or absolute
    * @param textEditor editor with current active file
    * @param sections sections to compare against open editors
    */
-  public findSectionsForEditor(
+  public findLcovFilesForEditor(
     textEditor: TextEditor,
-    sections: Map<string, LcovFile>
+    lcovFiles: Map<string, LcovFile>
   ): LcovFile[] {
-    const sectionsArray = Array.from(sections.values());
+    const lcovFilesArray = Array.from(lcovFiles.values());
     const res = this.calculateEditorData(textEditor);
     if (!res) {
       return [];
     }
 
-    // Check each section against the currently active document filename
-    const foundSections = sectionsArray.filter((section) =>
-      this.checkSection(section, res.relativePath, res.workspaceFolder)
+    // Check each lcovFile against the currently active document filename
+    const foundLcovFiles = lcovFilesArray.filter((lcovFile) =>
+      this.checkLcovFile(lcovFile, res.relativePath, res.workspaceFolder)
     );
-    if (!foundSections.length) {
+    if (!foundLcovFiles.length) {
       return [];
     }
 
-    return foundSections;
+    return foundLcovFiles;
   }
 
   /**
-   * Checks for a matching section file against the a given fileName
-   * @param section data section to check against filename
+   * Checks for a matching lcovFile against the a given fileName
+   * @param lcovFile data lcovFile to check against filename
    * @param editorFileRelative normalized relative path (against workspace folder) of editor filename, starts with ###
    * @param workspaceFolderName workspace folder name
-   * @returns true if this section matches (applies to) the provided editorRelativeFile
+   * @returns true if this lcovFile matches (applies to) the provided editorRelativeFile
    */
-  private checkSection(
-    section: LcovFile,
+  private checkLcovFile(
+    lcovFile: LcovFile,
     editorFileRelative: string,
     workspaceFolderName: string
   ): boolean {
     try {
       // Check if we need to swap any fragments of the file path with a remote fragment
       // IE: /var/www/ -> /home/me/
-      const sectionFileName = this.resolveFileName(section.file);
-      if (!isPathAbsolute(sectionFileName)) {
-        return this.checkSectionRelative(sectionFileName, editorFileRelative);
+      const lcovFileFileName = this.resolveFileName(lcovFile.file);
+      if (!isPathAbsolute(lcovFileFileName)) {
+        return this.checkLcovFileRelative(lcovFileFileName, editorFileRelative);
       } else {
-        return this.checkSectionAbsolute(
-          sectionFileName,
+        return this.checkLcovFileAbsolute(
+          lcovFileFileName,
           editorFileRelative,
           workspaceFolderName
         );
@@ -70,7 +70,7 @@ export class SectionFinder {
    * Resolves remote file paths by removing those fragments and replacing with local ones.
    * EG: /var/www/project/file.js -> /home/dev/project/file.js
    * Note: this only runs if the developer adds a remotePathResolve setting
-   * @param fileName section file path
+   * @param fileName lcovFile path
    */
   private resolveFileName(fileName: string): string {
     let potentialFileName = fileName;
@@ -122,35 +122,35 @@ export class SectionFinder {
   }
 
   /**
-   * Returns true if relative section matches given editor file
-   * @param sectionFileName relative section fileName
+   * Returns true if relative lcovFile matches given editor file
+   * @param lcovFileFileName relative lcovFile fileName
    * @param editorFileRelative normalized relative path (against workspace folder) of editor filename, starts with ###
    */
-  private checkSectionRelative(
-    sectionFileName: string,
+  private checkLcovFileRelative(
+    lcovFileFileName: string,
     editorFileRelative: string
   ): boolean {
-    // editorFileRelative must end with searchable & normalized section
-    sectionFileName = makePathSearchable(sectionFileName);
-    const sectionFileNormalized = normalizeFileName(sectionFileName);
-    return editorFileRelative.endsWith(sectionFileNormalized);
+    // editorFileRelative must end with searchable & normalized lcovFile
+    lcovFileFileName = makePathSearchable(lcovFileFileName);
+    const lcovFileFileNormalized = normalizeFileName(lcovFileFileName);
+    return editorFileRelative.endsWith(lcovFileFileNormalized);
   }
 
   /**
-   * Returns true if absolute section matches given editor file
-   * @param sectionFileName absolute section fileName
+   * Returns true if absolute lcovFile matches given editor file
+   * @param lcovFileFileName absolute lcovFile fileName
    * @param editorFileRelative normalized relative path (against workspace folder) of editor filename, starts with ###
    * @param workspaceFolderName workspace folder name
    */
-  private checkSectionAbsolute(
-    sectionFileName: string,
+  private checkLcovFileAbsolute(
+    lcovFileFileName: string,
     editorFileRelative: string,
     workspaceFolderName: string
   ): boolean {
-    // normalized section must end with /workspaceFolderName/editorFileRelative
-    const sectionFileNormalized = normalizeFileName(sectionFileName);
+    // normalized lcovFile must end with /workspaceFolderName/editorFileRelative
+    const lcovFileFileNormalized = normalizeFileName(lcovFileFileName);
     const matchPattern = `###${workspaceFolderName}${editorFileRelative}`;
-    return sectionFileNormalized.endsWith(matchPattern);
+    return lcovFileFileNormalized.endsWith(matchPattern);
   }
 }
 

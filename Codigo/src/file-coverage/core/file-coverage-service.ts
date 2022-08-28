@@ -1,22 +1,22 @@
 import { FileCoverage } from "../models/file-coverage";
-import { inject, injectable } from "inversify";
+import { injectable } from "inversify";
 import { Observable, ReplaySubject } from "rxjs";
 
 @injectable()
 export class FileCoverageService {
-  private fileCoverage!: ReplaySubject<FileCoverage>;
+  private fileCoverageSubject!: ReplaySubject<FileCoverage>;
 
-  public getCoverageData(): Observable<FileCoverage> {
-    if (!this.fileCoverage) {
-      this.fileCoverage = new ReplaySubject<FileCoverage>();
+  public getFileCoverage(): Observable<FileCoverage> {
+    if (!this.fileCoverageSubject) {
+      this.fileCoverageSubject = new ReplaySubject<FileCoverage>();
       this.fileChanged();
     }
 
-    return this.fileCoverage.asObservable();
+    return this.fileCoverageSubject.asObservable();
   }
 
   public async fileChanged(): Promise<void> {
     const newFileCoverage = await FileCoverage.createNewCoverageFile();
-    this.fileCoverage.next(newFileCoverage);
+    this.fileCoverageSubject.next(newFileCoverage);
   }
 }

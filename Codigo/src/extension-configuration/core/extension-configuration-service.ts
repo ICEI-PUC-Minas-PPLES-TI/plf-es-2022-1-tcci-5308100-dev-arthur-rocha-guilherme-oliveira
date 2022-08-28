@@ -7,7 +7,7 @@ export class ExtensionConfigurationService {
   private configurationData = new ReplaySubject<ConfigurationData>();
   private actualState = new ConfigurationData(true, false, "master", false);
 
-  public gerConfigurationData(): Observable<ConfigurationData> {
+  public getConfigurationData(): Observable<ConfigurationData> {
     return this.configurationData.pipe(startWith(this.actualState));
   }
   public toggleLineStatusVisibility(): void {
