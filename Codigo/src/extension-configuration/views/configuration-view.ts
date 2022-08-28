@@ -52,13 +52,13 @@ export class ConfigurationView implements WebviewViewProvider {
       (message) => {
         switch (message.command) {
           case "toggleIsGutterActive":
-            this.extensionConfigurationService.toggleLineStatusVisibility();
+            this.toggleLineStatusVisibility();
             return;
           case "toggleIsBasedOnBranchChange":
-            window.showErrorMessage("not implemented yet");
+            this.toggleCoveragePercentageMode();
             return;
           case "toggleIsJustForFileInFocus":
-            window.showErrorMessage("not implemented yet");
+            this.toggleCoverageBaseReferenceMode();
             return;
         }
       },
@@ -75,9 +75,15 @@ export class ConfigurationView implements WebviewViewProvider {
     );
   }
 
-  public toggleLineStatusVisibility(): void {}
+  public toggleLineStatusVisibility(): void {
+    this.extensionConfigurationService.toggleLineStatusVisibility();
+  }
 
-  public toggleCoveragePercentageMode(): void {}
+  public toggleCoveragePercentageMode(): void {
+    this.extensionConfigurationService.toggleCoveragePercentageMode();
+  }
 
-  public toggleCoverageBaseReferenceMode(): void {}
+  public toggleCoverageBaseReferenceMode(): void {
+    this.extensionConfigurationService.toggleCoverageBaseReferenceMode();
+  }
 }

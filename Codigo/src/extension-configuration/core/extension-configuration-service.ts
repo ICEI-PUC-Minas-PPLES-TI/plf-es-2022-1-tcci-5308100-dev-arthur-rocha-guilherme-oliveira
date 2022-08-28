@@ -1,5 +1,6 @@
 import { injectable } from "inversify";
 import { Observable, ReplaySubject, startWith } from "rxjs";
+import { window } from "vscode";
 import { ConfigurationData } from "../models/configuration-data";
 
 @injectable()
@@ -19,9 +20,13 @@ export class ExtensionConfigurationService {
     this.emitNemConfig(newConfig);
   }
 
-  public toggleCoveragePercentageMode(): void {}
+  public toggleCoveragePercentageMode(): void {
+    window.showErrorMessage("not implemented yet");
+  }
 
-  public toggleCoverageBaseReferenceMode(): void {}
+  public toggleCoverageBaseReferenceMode(): void {
+    window.showErrorMessage("not implemented yet");
+  }
 
   private emitNemConfig(newConfigurationData: ConfigurationData): void {
     this.actualState = newConfigurationData;

@@ -31,11 +31,7 @@ export class CoverageView implements WebviewViewProvider {
     );
 
     this.coverageService.getCoverageData().subscribe((coverageData) => {
-      this.coverageData = coverageData;
-      this._view.webview.postMessage({
-        type: "coverageData",
-        data: coverageData,
-      });
+      this.emitNewCoverageData(coverageData);
     });
 
     this._view.webview.onDidReceiveMessage((message) => {
@@ -58,6 +54,10 @@ export class CoverageView implements WebviewViewProvider {
   }
 
   public emitNewCoverageData(newCoverageData: CoverageData): void {
-    throw new Error("Method not implemented.");
+    this.coverageData = newCoverageData;
+    this._view.webview.postMessage({
+      type: "coverageData",
+      data: newCoverageData,
+    });
   }
 }
