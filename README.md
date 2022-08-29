@@ -8,14 +8,31 @@ O seguinte projeto tem como objetivo principal auxiliar os desenvolvedores a pro
 
 ## Alunos integrantes da equipe
 
-* Arthur Rocha Amaral
-* Guilherme Oliveira Antônio
+- Arthur Rocha Amaral
+- Guilherme Oliveira Antônio
 
 ## Professores responsáveis
 
-* Jose Laerte Pires Xavier Junior
-* Marco Rodrigo Costa
+- Jose Laerte Pires Xavier Junior
+- Marco Rodrigo Costa
 
 ## Instruções de utilização
 
-[Assim que a primeira versão do sistema estiver disponível, deverá complementar com as instruções de utilização. Descreva como instalar eventuais dependências e como executar a aplicação.]
+### Pré-requisitos
+
+- Visual Studio Code (Versão v1.68.0 ou superior)
+- Node (v18.7.0)
+- Node Package Manager (v8.15.0)
+
+### Execução
+
+Após clonar o repositório, abra o Visual Studio Code no diretório `Codigo`. Para isso você pode utilizar o seguinte comando:
+
+```sh
+code ./Codigo
+```
+
+Com o Visual Studio Code aberto na pasta `Codigo`, e execute o comando `npm install` para instalar as dependências. Com as dependências instaladas vá até a aba `Run and Debug` do VS Code, encontrada na barra lateral, e clique no botão de executar com a etiqueta `Run Extension`. Após clicado, o programa será executado e uma nova janela do VS Code abrirá com diretório de trabalho na pasta `example` e com a extensão instalada.
+
+Todas as alterações feitas no código necessitam que o a janela de teste seja encerrada e comando seja executado novamente.
+
