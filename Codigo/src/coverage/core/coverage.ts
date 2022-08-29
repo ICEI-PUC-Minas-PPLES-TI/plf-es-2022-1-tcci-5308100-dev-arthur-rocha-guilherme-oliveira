@@ -8,15 +8,19 @@ export function getCoverageHtmlForWebview(
   coverageData: CoverageData
 ) {
   const scriptUri = webview.asWebviewUri(
-    vscode.Uri.joinPath(extensionUri, "src", "coverage", "views", "coverage.js")
+    vscode.Uri.joinPath(
+      extensionUri,
+      "resources",
+      "coverage-view",
+      "coverage.js"
+    )
   );
 
   const styleMainUri = webview.asWebviewUri(
     vscode.Uri.joinPath(
       extensionUri,
-      "src",
-      "coverage",
-      "views",
+      "resources",
+      "coverage-view",
       "coverage.css"
     )
   );
@@ -24,9 +28,8 @@ export function getCoverageHtmlForWebview(
   const templateFileName = webview.asWebviewUri(
     vscode.Uri.joinPath(
       extensionUri,
-      "src",
-      "coverage",
-      "views",
+      "resources",
+      "coverage-view",
       "coverage.html"
     )
   );
@@ -40,4 +43,3 @@ export function getCoverageHtmlForWebview(
 
   return template;
 }
-

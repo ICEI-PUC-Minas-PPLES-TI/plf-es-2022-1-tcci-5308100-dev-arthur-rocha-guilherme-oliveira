@@ -87,13 +87,18 @@ function getGlobalTemplateData(
   extensionUri: Uri
 ): GlobalTemplateData {
   const styleResetUri = webview.asWebviewUri(
-    Uri.joinPath(extensionUri, "src", "global", "reset.css")
+    Uri.joinPath(extensionUri, "resources", "global", "reset.css")
   );
   const styleVSCodeUri = webview.asWebviewUri(
-    Uri.joinPath(extensionUri, "src", "global", "vscode.css")
+    Uri.joinPath(extensionUri, "resources", "global", "vscode.css")
   );
   const globalTemplateUri = webview.asWebviewUri(
-    Uri.joinPath(extensionUri, "src", "global", "webview-view-template.html")
+    Uri.joinPath(
+      extensionUri,
+      "resources",
+      "global",
+      "webview-view-template.html"
+    )
   );
   const rawGlobalTemplate = fs.readFileSync(globalTemplateUri.fsPath, "utf8");
   const globalTemplateWithoutComments = removeComments(rawGlobalTemplate);
@@ -130,4 +135,3 @@ function getNonce() {
   }
   return text;
 }
-
