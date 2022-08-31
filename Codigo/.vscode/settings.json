@@ -13,5 +13,12 @@
     "[javascript]": {
         "editor.defaultFormatter": "vscode.typescript-language-features"
     },
+    "[typescript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[css]": {
+        "editor.defaultFormatter": "vscode.css-language-features"
+    },
+    "editor.tabSize": 2,
     "editor.formatOnSave": true
 }
