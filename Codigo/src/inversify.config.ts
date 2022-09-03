@@ -6,6 +6,7 @@ import { LcovFileFinder } from "./visual-studio-code/lcov-file-finder";
 import { VisualStudioCode } from "./visual-studio-code/visual-studio-code";
 import { DefaultConfiguration } from "./config";
 import { ExtensionConfigurationService } from "./extension-configuration/core/extension-configuration-service";
+import { ProjectConfigurationService } from "./project-configuration/core/project-configuration-service";
 
 const appInjector = new Container();
 
@@ -25,6 +26,11 @@ appInjector
   .inSingletonScope();
 
 appInjector
+  .bind<ProjectConfigurationService>(ProjectConfigurationService)
+  .to(ProjectConfigurationService)
+  .inSingletonScope();
+
+appInjector
   .bind<LcovFileFinder>(LcovFileFinder)
   .to(LcovFileFinder)
   .inSingletonScope();
@@ -40,4 +46,3 @@ appInjector
   .inSingletonScope();
 
 export { appInjector };
-

@@ -1,0 +1,8 @@
+{
+  "lcovFilePath": "coverage/lcov.infos",
+  "minCoverage": 0.3,
+  "refBranch": "develop",
+  "runTestCoverage": "npm run test:coverage",
+  "runTestCoverageWatchMode": "npm run test:coverage:watch",
+  "usePrePushValidation": false
+}

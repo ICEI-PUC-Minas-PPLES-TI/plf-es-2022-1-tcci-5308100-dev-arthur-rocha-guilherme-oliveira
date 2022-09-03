@@ -17,8 +17,9 @@ interface DecorationConfig {
 //TO-DO: Add to UML project - verify if is on correct class. Other option: ExtensionConfiguration
 @injectable()
 export class DefaultConfiguration {
-  public readonly textDecorationConfig: DecorationConfig;
   private context = appInjector.get<ExtensionContext>("ExtensionContext");
+
+  public readonly textDecorationConfig: DecorationConfig;
 
   constructor() {
     this.textDecorationConfig =
@@ -109,4 +110,3 @@ export class DefaultConfiguration {
     };
   }
 }
-

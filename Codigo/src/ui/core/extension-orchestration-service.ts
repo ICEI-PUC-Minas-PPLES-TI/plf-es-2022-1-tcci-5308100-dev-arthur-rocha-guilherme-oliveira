@@ -8,6 +8,7 @@ import { ConfigurationView } from "../../extension-configuration/views/configura
 import { FileCoverageService } from "../../file-coverage/core/file-coverage-service";
 import { FileCoverage } from "../../file-coverage/models/file-coverage";
 import { appInjector } from "../../inversify.config";
+import { ProjectConfigurationService } from "../../project-configuration/core/project-configuration-service";
 import { ProjectConfiguration } from "../../project-configuration/models/project-configuration";
 import { UncoveredLinesTree } from "../../uncovered-lines/views/uncovered-lines-tree";
 import { VisualStudioCode } from "../../visual-studio-code/visual-studio-code";
@@ -15,26 +16,32 @@ import { TestType } from "../enums/test-type";
 
 //TO-DO: Add to UML project
 export class ExtensionOrchestrationService {
-  private fileCoverageService = appInjector.get(FileCoverageService);
   private coverageService = appInjector.get(CoverageService);
   private extensionConfigurationService = appInjector.get(
     ExtensionConfigurationService
+  );
+  private fileCoverageService = appInjector.get(FileCoverageService);
+  private projectConfigurationService = appInjector.get(
+    ProjectConfigurationService
   );
   private vsCode = appInjector.get(VisualStudioCode);
   private context = appInjector.get<ExtensionContext>("ExtensionContext");
 
   private actualFileCoverage!: FileCoverage;
   private actualConfigurationData!: ConfigurationData;
+  private actualProjectConfiguration!: ProjectConfiguration;
 
   public emitNewProjectConfiguration(
     newProjectConfiguration: ProjectConfiguration
-  ): void { }
+  ): void {
+    this.actualProjectConfiguration = newProjectConfiguration;
+  }
 
-  public initViewData(): void { }
+  public initViewData(): void {}
 
-  public reloadTab(): void { }
+  public reloadTab(): void {}
 
-  public runTest(testType: TestType): void { }
+  public runTest(testType: TestType): void {}
 
   public emitNewConfigurationData(
     newConfigurationData: ConfigurationData
@@ -47,9 +54,9 @@ export class ExtensionOrchestrationService {
     );
   }
 
-  public fileFocusChange(): void { }
+  public fileFocusChange(): void {}
 
-  public changeDefaultTestExecution(testType: TestType): void { }
+  public changeDefaultTestExecution(testType: TestType): void {}
 
   public emitNewFileCoverage(newFileCoverage: FileCoverage): void {
     this.actualFileCoverage = newFileCoverage;
@@ -73,6 +80,12 @@ export class ExtensionOrchestrationService {
       .getConfigurationData()
       .subscribe((configurationData) => {
         this.emitNewConfigurationData(configurationData);
+      });
+
+    this.projectConfigurationService
+      .getProjectConfigurationData()
+      .subscribe((configurationData) => {
+        this.emitNewProjectConfiguration(configurationData);
       });
   }
 
