@@ -3,6 +3,7 @@ import { window, workspace } from "vscode";
 
 export class ProjectConfiguration {
   public static readonly fileName = ".coveringconfig";
+  public static readonly minCoverageDefaultValue = 0.8;
 
   public readonly lcovFilePath?: string;
   public readonly minCoverage: number;
@@ -13,11 +14,68 @@ export class ProjectConfiguration {
 
   constructor(private readonly data: any = {}) {
     this.lcovFilePath = data["lcovFilePath"];
-    this.minCoverage = data["minCoverage"] ?? 0.8;
+
+    this.minCoverage = this.validateNullableValueWithDefault<number>(
+      data["minCoverage"],
+      ProjectConfiguration.minCoverageDefaultValue,
+      [this.getMinCoverageRangeValidation]
+    );
+
     this.refBranch = data["refBranch"];
     this.runTestCoverage = data["runTestCoverage"];
     this.runTestCoverageWatchMode = data["runTestCoverageWatchMode"];
-    this.usePrePushValidation = data["usePrePushValidation"] ?? false;
+
+    this.usePrePushValidation = this.validateNullableValueWithDefault<boolean>(
+      data["usePrePushValidation"],
+      false
+    );
+  }
+
+  private getMinCoverageRangeValidation(value: number): {
+    isValid: boolean;
+    message: string;
+  } {
+    if (value < 0 || value > 1) {
+      return {
+        isValid: false,
+        message: `Invalid value for minCoverage in ${ProjectConfiguration.fileName}. It must be between 0 and 1.`,
+      };
+    }
+    return { isValid: true, message: "" };
+  }
+
+  private validateNullableValueWithDefault<T extends string | number | boolean>(
+    value: any,
+    defaultValue: T,
+    extraValidations?: Array<
+      (value: T) => { isValid: boolean; message: string }
+    >
+  ): T {
+    const defaultType = typeof defaultValue;
+    if (typeof value === defaultType) {
+      if (extraValidations) {
+        const validations = extraValidations.map((validation) =>
+          validation(value)
+        );
+        for (const { isValid, message } of validations) {
+          if (!isValid) {
+            window.showErrorMessage(message);
+          }
+        }
+        if (validations.some((validation) => !validation.isValid)) {
+          return defaultValue;
+        }
+      }
+      return value;
+    }
+
+    if (value !== undefined && value !== null) {
+      window.showErrorMessage(
+        `Invalid value for minCoverage in ${ProjectConfiguration.fileName}. It must be a ${defaultType} or null.`
+      );
+    }
+
+    return defaultValue;
   }
 
   public static async createNewConfiguration(): Promise<ProjectConfiguration> {
