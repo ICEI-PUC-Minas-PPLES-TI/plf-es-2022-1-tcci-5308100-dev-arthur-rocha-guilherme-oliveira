@@ -15,7 +15,7 @@ import { LcovFileFinder } from "../../visual-studio-code/lcov-file-finder";
 import { CoverageLines } from "./coverage-lines";
 
 export class FileCoverage {
-  private static readonly lcovFileName = "lcov.info";
+  public static readonly DEFAULT_LCOV_FILE_NAME = "lcov.info";
   static coverageWatcher: FileSystemWatcher;
   static onFileChangeSubject: Subject<void>;
 
@@ -74,10 +74,13 @@ export class FileCoverage {
   }
 
   private static async findCoverageFiles(): Promise<Set<string>> {
-    const files = await this.findCoverageInWorkspace(this.lcovFileName);
+    const files = await this.findCoverageInWorkspace(
+      this.DEFAULT_LCOV_FILE_NAME
+    );
     if (!files.size) {
       window.showWarningMessage(
-        "Could not find a Coverage file! Searched for " + this.lcovFileName
+        "Could not find a Coverage file! Searched for " +
+          this.DEFAULT_LCOV_FILE_NAME
       );
       return new Set();
     }
@@ -293,27 +296,5 @@ export class FileCoverage {
       none,
       partial,
     };
-  }
-
-  public static initiateLcovFileWatcher(): Observable<void> {
-    if (!this.onFileChangeSubject) {
-      this.onFileChangeSubject = new Subject<void>();
-
-      let baseDir = "**";
-      if (workspace.workspaceFolders) {
-        const workspaceFolders = workspace.workspaceFolders.map(
-          (wf) => wf.uri.fsPath
-        );
-        baseDir = `{${workspaceFolders}}/${baseDir}`;
-      }
-      const blobPattern = `${baseDir}/${this.lcovFileName}`;
-
-      this.coverageWatcher = workspace.createFileSystemWatcher(blobPattern);
-      this.coverageWatcher.onDidChange(() => this.onFileChangeSubject.next());
-      this.coverageWatcher.onDidCreate(() => this.onFileChangeSubject.next());
-      this.coverageWatcher.onDidDelete(() => this.onFileChangeSubject.next());
-    }
-
-    return this.onFileChangeSubject.asObservable();
   }
 }

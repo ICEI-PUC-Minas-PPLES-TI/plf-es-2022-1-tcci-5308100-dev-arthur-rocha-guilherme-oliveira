@@ -35,6 +35,13 @@ export class ExtensionOrchestrationService {
     newProjectConfiguration: ProjectConfiguration
   ): void {
     this.actualProjectConfiguration = newProjectConfiguration;
+
+    if (this.actualFileCoverage) {
+      this.coverageService.calculateCoverage(
+        this.actualFileCoverage,
+        newProjectConfiguration
+      );
+    }
   }
 
   public initViewData(): void {}
@@ -48,10 +55,12 @@ export class ExtensionOrchestrationService {
   ): void {
     this.actualConfigurationData = newConfigurationData;
 
-    this.vsCode.changeEditorDecoration(
-      this.actualFileCoverage,
-      newConfigurationData
-    );
+    if (this.actualFileCoverage) {
+      this.vsCode.changeEditorDecoration(
+        this.actualFileCoverage,
+        newConfigurationData
+      );
+    }
   }
 
   public fileFocusChange(): void {}
@@ -61,11 +70,19 @@ export class ExtensionOrchestrationService {
   public emitNewFileCoverage(newFileCoverage: FileCoverage): void {
     this.actualFileCoverage = newFileCoverage;
 
-    this.coverageService.calculateCoverage(newFileCoverage);
-    this.vsCode.changeEditorDecoration(
-      newFileCoverage,
-      this.actualConfigurationData
-    );
+    if (this.actualProjectConfiguration) {
+      this.coverageService.calculateCoverage(
+        newFileCoverage,
+        this.actualProjectConfiguration
+      );
+    }
+
+    if (this.actualConfigurationData) {
+      this.vsCode.changeEditorDecoration(
+        newFileCoverage,
+        this.actualConfigurationData
+      );
+    }
   }
 
   public initApp() {
