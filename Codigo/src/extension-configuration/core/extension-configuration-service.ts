@@ -1,3 +1,4 @@
+import { injectable } from "inversify";
 import { Observable, ReplaySubject, startWith } from "rxjs";
 import { window } from "vscode";
 import { ConfigurationData } from "../models/configuration-data";

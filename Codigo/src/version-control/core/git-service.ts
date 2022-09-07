@@ -1,9 +1,6 @@
 import { exec } from "child_process";
 import { injectable } from "inversify";
-import { LcovFile, LcovLine } from "lcov-parse";
-import { Uri, workspace } from "vscode";
 import { Line } from "../../utils/Line";
-import { normalizeFileName } from "../../visual-studio-code/helpers";
 import { BranchDiff } from "../models/branch-diff";
 
 @injectable()

@@ -21,6 +21,7 @@ export class FileCoverage {
   static onFileChangeSubject: Subject<void>;
 
   private lcovFileFinder = appInjector.get(LcovFileFinder);
+  private gitService = appInjector.get(GitService);
 
   constructor(private readonly lcovFiles: Map<string, LcovFile>) {}
 
@@ -35,13 +36,12 @@ export class FileCoverage {
       textEditor,
       this.lcovFiles
     );
-    
+
     const coverageLines = this.lcovFilesToCoverageLines(lcovFiles);
 
     if (!coverageLines) {
       return new CoverageLines();
     }
-
 
     const isFileDiff = await this.gitService.getIsCurrentFilesBranchDiff(
       textEditor.document.fileName
@@ -52,19 +52,19 @@ export class FileCoverage {
         textEditor.document.fileName
       );
 
-      const filteredFull = coverageLines?.full.filter((line) => {
+      const filteredFull = coverageLines.full.filter((line) => {
         return branchDiff.diffLines.some((diffLine) => {
           return Line.equals(diffLine, line);
         });
       });
 
-      const filteredPartial = coverageLines?.partial.filter((line) => {
+      const filteredPartial = coverageLines.partial.filter((line) => {
         return branchDiff.diffLines.some((diffLine) => {
           return Line.equals(diffLine, line);
         });
       });
 
-      const filteredNone = coverageLines?.none.filter((line) => {
+      const filteredNone = coverageLines.none.filter((line) => {
         return branchDiff.diffLines.some((diffLine) => {
           return Line.equals(diffLine, line);
         });
