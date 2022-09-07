@@ -1,9 +1,7 @@
 import { injectable } from "inversify";
 import { Observable, ReplaySubject } from "rxjs";
 import { FileCoverage } from "../../file-coverage/models/file-coverage";
-import { appInjector } from "../../inversify.config";
 import { CoverageData } from "../models/coverage-data";
-import { VisualStudioCode } from "../../visual-studio-code/visual-studio-code";
 import { ProjectConfiguration } from "../../project-configuration/models/project-configuration";
 
 @injectable()
