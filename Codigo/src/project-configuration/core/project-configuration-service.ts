@@ -1,10 +1,9 @@
-import { injectable } from "inversify";
 import { Observable, ReplaySubject } from "rxjs";
-import { DefaultConfiguration } from "../../config";
 import { appInjector } from "../../inversify.config";
 import { File } from "../../uncovered-lines/models/file";
 import { VisualStudioCode } from "../../visual-studio-code/visual-studio-code";
 import { ProjectConfiguration } from "../models/project-configuration";
+import { injectable } from "inversify";
 
 @injectable()
 export class ProjectConfigurationService {

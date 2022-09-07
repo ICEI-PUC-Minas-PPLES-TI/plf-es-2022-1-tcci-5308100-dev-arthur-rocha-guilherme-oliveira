@@ -1,5 +1,5 @@
 import { injectable } from "inversify";
-import { Observable, ReplaySubject, startWith } from "rxjs";
+import { Observable, ReplaySubject } from "rxjs";
 import { FileCoverage } from "../../file-coverage/models/file-coverage";
 import { appInjector } from "../../inversify.config";
 import { CoverageData } from "../models/coverage-data";
