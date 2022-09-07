@@ -1,7 +1,7 @@
 import { readFile } from "fs";
 import * as glob from "glob";
 import { LcovBranch, LcovFile, LcovLine, source } from "lcov-parse";
-import { Observable, Subject } from "rxjs";
+import { Subject } from "rxjs";
 import {
   FileSystemWatcher,
   Range,
@@ -20,25 +20,8 @@ export class FileCoverage {
   static onFileChangeSubject: Subject<void>;
 
   private lcovFileFinder = appInjector.get(LcovFileFinder);
-  private allFilesCoverageLines: Promise<Map<string, CoverageLines>>;
 
-  constructor(private readonly lcovFiles: Map<string, LcovFile>) {
-    this.allFilesCoverageLines = this.getAllFilesCoverageLines();
-  }
-
-  private async getAllFilesCoverageLines(): Promise<
-    Map<string, CoverageLines>
-  > {
-    const files = await workspace.findFiles("**/**");
-
-    const mappedFiles = new Map<string, CoverageLines>();
-
-    files.forEach((uri) => {
-      mappedFiles.set(uri.fsPath, this.getCoverageLinesForFile(uri.fsPath));
-    });
-
-    return mappedFiles;
-  }
+  constructor(private readonly lcovFiles: Map<string, LcovFile>) {}
 
   public getLcovFiles(): LcovFile[] {
     return Array.from(this.lcovFiles.values());
@@ -47,23 +30,17 @@ export class FileCoverage {
   public async getCoverageLinesForEditor(
     textEditor: TextEditor
   ): Promise<CoverageLines> {
-    const coverageLines = (await this.allFilesCoverageLines).get(
-      textEditor.document.fileName
+    const lcovFiles = this.lcovFileFinder.findLcovFilesForEditor(
+      textEditor,
+      this.lcovFiles
     );
 
+    const coverageLines = this.lcovFilesToCoverageLines(lcovFiles);
     if (coverageLines) {
       return coverageLines;
     }
 
     return new CoverageLines();
-  }
-
-  private getCoverageLinesForFile(fsPath: string): CoverageLines {
-    const lcovFiles = this.lcovFileFinder.findLcovFilesForFile(
-      fsPath,
-      this.lcovFiles
-    );
-    return this.lcovFilesToCoverageLines(lcovFiles);
   }
 
   public static async createNewCoverageFile(): Promise<FileCoverage> {
