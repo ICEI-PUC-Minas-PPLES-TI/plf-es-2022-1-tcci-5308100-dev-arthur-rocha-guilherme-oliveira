@@ -88,11 +88,16 @@ export class ProjectConfiguration {
     try {
       const parsedData = JSON.parse(fileContent);
       return new ProjectConfiguration(parsedData);
-    } catch (e) {
+    } catch (e: any) {
+      if (typeof e === "string") {
+        window.showErrorMessage(e);
+      }
+
       if (e instanceof SyntaxError) {
         window.showErrorMessage(e.message);
-        return new ProjectConfiguration();
       }
+
+      return new ProjectConfiguration();
     }
   }
 
