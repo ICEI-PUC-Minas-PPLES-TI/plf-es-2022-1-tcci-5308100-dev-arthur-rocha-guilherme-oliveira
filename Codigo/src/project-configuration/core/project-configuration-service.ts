@@ -17,7 +17,7 @@ export class ProjectConfigurationService {
   private projectConfigurationSubject!: ReplaySubject<ProjectConfiguration>;
 
   constructor() {
-    this.referenceFileName = ProjectConfiguration.fileName;
+    this.referenceFileName = ProjectConfiguration.DEFAULT_FILE_NAME;
 
     this.onProjectConfigurationsFileChange = this.vscode.getFileWatcher(
       this.referenceFileName

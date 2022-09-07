@@ -2,12 +2,12 @@ import { readFile } from "fs";
 import { window, workspace } from "vscode";
 
 export class ProjectConfiguration {
-  public static readonly fileName = ".coveringconfig";
+  public static readonly DEFAULT_FILE_NAME = ".coveringconfig";
   public static readonly minCoverageDefaultValue = 0.8;
 
   public readonly lcovFilePath?: string;
   public readonly minCoverage: number;
-  public readonly refBranch?: string; // nullable just for a while
+  public readonly refBranch?: string;
   public readonly runTestCoverage?: string;
   public readonly runTestCoverageWatchMode?: string;
   public readonly usePrePushValidation: boolean;
@@ -38,7 +38,7 @@ export class ProjectConfiguration {
     if (value < 0 || value > 1) {
       return {
         isValid: false,
-        message: `Invalid value for minCoverage in ${ProjectConfiguration.fileName}. It must be between 0 and 1.`,
+        message: `Invalid value for minCoverage in ${ProjectConfiguration.DEFAULT_FILE_NAME}. It must be between 0 and 1.`,
       };
     }
     return { isValid: true, message: "" };
@@ -71,7 +71,7 @@ export class ProjectConfiguration {
 
     if (value !== undefined && value !== null) {
       window.showErrorMessage(
-        `Invalid value for minCoverage in ${ProjectConfiguration.fileName}. It must be a ${defaultType} or null.`
+        `Invalid value for minCoverage in ${ProjectConfiguration.DEFAULT_FILE_NAME}. It must be a ${defaultType} or null.`
       );
     }
 
@@ -101,7 +101,7 @@ export class ProjectConfiguration {
       }
 
       const rootPath = workspace.workspaceFolders[0].uri.fsPath;
-      const filePath = `${rootPath}/${this.fileName}`;
+      const filePath = `${rootPath}/${this.DEFAULT_FILE_NAME}`;
       readFile(filePath, (err, data) => {
         if (err) {
           return resolve(null);
