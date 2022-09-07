@@ -12,6 +12,7 @@ import {
 import { appInjector } from "../../inversify.config";
 import { Line } from "../../utils/Line";
 import { GitService } from "../../version-control/core/git-service";
+import { BranchDiff } from "../../version-control/models/branch-diff";
 import { LcovFileFinder } from "../../visual-studio-code/lcov-file-finder";
 import { CoverageLines } from "./coverage-lines";
 
@@ -52,23 +53,20 @@ export class FileCoverage {
         textEditor.document.fileName
       );
 
-      const filteredFull = coverageLines.full.filter((line) => {
-        return branchDiff.diffLines.some((diffLine) => {
-          return Line.equals(diffLine, line);
-        });
-      });
+      const filteredFull = await this.filterCoverageLines(
+        coverageLines.full,
+        branchDiff
+      );
 
-      const filteredPartial = coverageLines.partial.filter((line) => {
-        return branchDiff.diffLines.some((diffLine) => {
-          return Line.equals(diffLine, line);
-        });
-      });
+      const filteredPartial = await this.filterCoverageLines(
+        coverageLines.partial,
+        branchDiff
+      );
 
-      const filteredNone = coverageLines.none.filter((line) => {
-        return branchDiff.diffLines.some((diffLine) => {
-          return Line.equals(diffLine, line);
-        });
-      });
+      const filteredNone = await this.filterCoverageLines(
+        coverageLines.none,
+        branchDiff
+      );
 
       return new CoverageLines(filteredFull, filteredPartial, filteredNone);
     }
@@ -81,6 +79,14 @@ export class FileCoverage {
     const dataFiles = await this.loadDataFiles(files);
     const dataCoverage = await this.filesToLcovFiles(dataFiles);
     return new FileCoverage(dataCoverage);
+  }
+
+  private async filterCoverageLines(lines: Line[], branchDiff: BranchDiff) {
+    return lines.filter((line) => {
+      return branchDiff.diffLines.some((diffLine) => {
+        return Line.equals(diffLine, line);
+      });
+    });
   }
 
   private static async findCoverageFiles(): Promise<Set<string>> {
