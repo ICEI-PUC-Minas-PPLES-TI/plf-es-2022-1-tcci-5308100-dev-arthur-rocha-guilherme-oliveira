@@ -63,9 +63,6 @@ export class FileCoverage {
         textEditor.document.fileName
       );
 
-      console.log(branchDiff);
-      console.log(coverageLines);
-
       const filteredFull = coverageLines?.full.filter((line) => {
         return branchDiff.diffLines.some((diffLine) => {
           return Line.equals(diffLine, line);
@@ -83,10 +80,6 @@ export class FileCoverage {
           return Line.equals(diffLine, line);
         });
       });
-
-      console.log(filteredFull);
-      console.log(filteredPartial);
-      console.log(filteredNone);
 
       return new CoverageLines(filteredFull, filteredPartial, filteredNone);
     }
