@@ -3,7 +3,7 @@ import { window, workspace } from "vscode";
 
 export class ProjectConfiguration {
   public static readonly DEFAULT_FILE_NAME = ".coveringconfig";
-  public static readonly MIN_COVERAGE_DEFAULT_VALUE = 0.8;
+  public static readonly MINIMUM_COVERAGE_DEFAULT_VALUE = 0.8;
 
   public readonly lcovFilePath?: string;
   public readonly minCoverage: number;
@@ -17,7 +17,7 @@ export class ProjectConfiguration {
 
     this.minCoverage = this.validateNullableValueWithDefault<number>(
       data["minCoverage"],
-      ProjectConfiguration.MIN_COVERAGE_DEFAULT_VALUE,
+      ProjectConfiguration.MINIMUM_COVERAGE_DEFAULT_VALUE,
       [this.getMinCoverageRangeValidation]
     );
 
@@ -88,9 +88,11 @@ export class ProjectConfiguration {
     try {
       const parsedData = JSON.parse(fileContent);
       return new ProjectConfiguration(parsedData);
-    } catch (e: any) {
-      window.showErrorMessage(e.message);
-      return new ProjectConfiguration();
+    } catch (e) {
+      if (e instanceof SyntaxError) {
+        window.showErrorMessage(e.message);
+        return new ProjectConfiguration();
+      }
     }
   }
 
