@@ -1,7 +1,7 @@
 import { readFile } from "fs";
 import * as glob from "glob";
 import { LcovBranch, LcovFile, LcovLine, source } from "lcov-parse";
-import { Observable, Subject } from "rxjs";
+import { Subject } from "rxjs";
 import {
   FileSystemWatcher,
   TextEditor,
@@ -16,32 +16,13 @@ import { LcovFileFinder } from "../../visual-studio-code/lcov-file-finder";
 import { CoverageLines } from "./coverage-lines";
 
 export class FileCoverage {
-  private static readonly lcovFileName = "lcov.info";
+  public static readonly DEFAULT_LCOV_FILE_NAME = "lcov.info";
   static coverageWatcher: FileSystemWatcher;
   static onFileChangeSubject: Subject<void>;
 
   private lcovFileFinder = appInjector.get(LcovFileFinder);
-  private allFilesCoverageLines: Promise<Map<string, CoverageLines>>;
 
-  private gitService = appInjector.get(GitService);
-
-  constructor(private readonly lcovFiles: Map<string, LcovFile>) {
-    this.allFilesCoverageLines = this.getAllFilesCoverageLines();
-  }
-
-  private async getAllFilesCoverageLines(): Promise<
-    Map<string, CoverageLines>
-  > {
-    const files = await workspace.findFiles("**/**");
-
-    const mappedFiles = new Map<string, CoverageLines>();
-
-    files.forEach((uri) => {
-      mappedFiles.set(uri.fsPath, this.getCoverageLinesForFile(uri.fsPath));
-    });
-
-    return mappedFiles;
-  }
+  constructor(private readonly lcovFiles: Map<string, LcovFile>) {}
 
   public getLcovFiles(): LcovFile[] {
     return Array.from(this.lcovFiles.values());
@@ -50,9 +31,16 @@ export class FileCoverage {
   public async getCoverageLinesForEditor(
     textEditor: TextEditor
   ): Promise<CoverageLines> {
-    const coverageLines = (await this.allFilesCoverageLines).get(
-      textEditor.document.fileName
+    const lcovFiles = this.lcovFileFinder.findLcovFilesForEditor(
+      textEditor,
+      this.lcovFiles
     );
+    
+    const coverageLines = this.lcovFilesToCoverageLines(lcovFiles);
+
+    if (coverageLines) {
+      return coverageLines;
+    }
 
     const isFileDiff = await this.gitService.getIsCurrentFilesBranchDiff(
       textEditor.document.fileName
@@ -84,19 +72,7 @@ export class FileCoverage {
       return new CoverageLines(filteredFull, filteredPartial, filteredNone);
     }
 
-    if (coverageLines) {
-      return coverageLines;
-    }
-
     return new CoverageLines();
-  }
-
-  private getCoverageLinesForFile(fsPath: string): CoverageLines {
-    const lcovFiles = this.lcovFileFinder.findLcovFilesForFile(
-      fsPath,
-      this.lcovFiles
-    );
-    return this.lcovFilesToCoverageLines(lcovFiles);
   }
 
   public static async createNewCoverageFile(): Promise<FileCoverage> {
@@ -107,10 +83,13 @@ export class FileCoverage {
   }
 
   private static async findCoverageFiles(): Promise<Set<string>> {
-    const files = await this.findCoverageInWorkspace(this.lcovFileName);
+    const files = await this.findCoverageInWorkspace(
+      this.DEFAULT_LCOV_FILE_NAME
+    );
     if (!files.size) {
       window.showWarningMessage(
-        "Could not find a Coverage file! Searched for " + this.lcovFileName
+        "Could not find a Coverage file! Searched for " +
+          this.DEFAULT_LCOV_FILE_NAME
       );
       return new Set();
     }
@@ -326,27 +305,5 @@ export class FileCoverage {
       none,
       partial,
     };
-  }
-
-  public static initiateLcovFileWatcher(): Observable<void> {
-    if (!this.onFileChangeSubject) {
-      this.onFileChangeSubject = new Subject<void>();
-
-      let baseDir = "**";
-      if (workspace.workspaceFolders) {
-        const workspaceFolders = workspace.workspaceFolders.map(
-          (wf) => wf.uri.fsPath
-        );
-        baseDir = `{${workspaceFolders}}/${baseDir}`;
-      }
-      const blobPattern = `${baseDir}/${this.lcovFileName}`;
-
-      this.coverageWatcher = workspace.createFileSystemWatcher(blobPattern);
-      this.coverageWatcher.onDidChange(() => this.onFileChangeSubject.next());
-      this.coverageWatcher.onDidCreate(() => this.onFileChangeSubject.next());
-      this.coverageWatcher.onDidDelete(() => this.onFileChangeSubject.next());
-    }
-
-    return this.onFileChangeSubject.asObservable();
   }
 }

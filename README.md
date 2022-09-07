@@ -21,8 +21,8 @@ O seguinte projeto tem como objetivo principal auxiliar os desenvolvedores a pro
 ### Pré-requisitos
 
 - Visual Studio Code (Versão v1.68.0 ou superior)
-- Node (v18.7.0)
-- Node Package Manager (v8.15.0)
+- Node (v18.7.0 ou superior)
+- Node Package Manager (v8.15.0 ou superior)
 
 ### Execução
 

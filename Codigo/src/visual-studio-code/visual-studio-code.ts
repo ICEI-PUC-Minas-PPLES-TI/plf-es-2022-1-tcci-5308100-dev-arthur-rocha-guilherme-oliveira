@@ -1,5 +1,6 @@
 import { injectable } from "inversify";
-import { Disposable, TextEditor, window } from "vscode";
+import { finalize, Observable, Subject } from "rxjs";
+import { Disposable, TextEditor, window, workspace } from "vscode";
 import { DefaultConfiguration } from "../config";
 import { ConfigurationData } from "../extension-configuration/models/configuration-data";
 import { CoverageLines } from "../file-coverage/models/coverage-lines";
@@ -13,13 +14,15 @@ export class VisualStudioCode {
   private actualFileCoverage!: FileCoverage;
   private actualExtensionConfiguration!: ConfigurationData;
 
+  private fileWatchers: { [key: string]: Observable<void> } = {};
+
   constructor() {
     this.observeEditorFocusChange();
   }
 
-  public redirectEditorTo(configFilePath: string): void { }
+  public redirectEditorTo(configFilePath: string): void {}
 
-  public requestFileGeneration(): void { }
+  public requestFileGeneration(): void {}
 
   public changeEditorDecoration(
     fileCoverage: FileCoverage,
@@ -38,9 +41,9 @@ export class VisualStudioCode {
     }
   }
 
-  public changeToCoveringTab(): void { }
+  public changeToCoveringTab(): void {}
 
-  public runScriptOnTerminal(command: string): void { }
+  public runScriptOnTerminal(command: string): void {}
 
   public cancelEditorFocusChangeObservation(): void {
     if (this.editorWatcher) {
@@ -56,9 +59,9 @@ export class VisualStudioCode {
     );
   }
 
-  public criaNaRaizDoProjetoUmArquivoDeConfiguração(): void { }
+  public criaNaRaizDoProjetoUmArquivoDeConfiguração(): void {}
 
-  public alterarOArquivoDeConfiguraçãoActivateDev(): void { }
+  public alterarOArquivoDeConfiguraçãoActivateDev(): void {}
 
   private render(): void {
     this.removeDecorationsForEditors();
@@ -106,5 +109,38 @@ export class VisualStudioCode {
       editor.setDecorations(noCoverageDecorationType, []);
       editor.setDecorations(partialCoverageDecorationType, []);
     });
+  }
+
+  public getFileWatcher(fileName: string): Observable<void> {
+    const fileWatcher = this.fileWatchers[fileName];
+
+    if (!fileWatcher) {
+      const newFileSubject = new Subject<void>();
+
+      let baseDir = "**";
+      if (workspace.workspaceFolders) {
+        const workspaceFolders = workspace.workspaceFolders.map(
+          (wf) => wf.uri.fsPath
+        );
+        baseDir = `{${workspaceFolders}}/${baseDir}`;
+      }
+      const blobPattern = `${baseDir}/${fileName}`;
+
+      const newFileWatcher = workspace.createFileSystemWatcher(blobPattern);
+      newFileWatcher.onDidChange(() => newFileSubject.next());
+      newFileWatcher.onDidCreate(() => newFileSubject.next());
+      newFileWatcher.onDidDelete(() => newFileSubject.next());
+
+      this.fileWatchers[fileName] = newFileSubject.asObservable().pipe(
+        finalize(() => {
+          newFileWatcher.dispose();
+          delete this.fileWatchers[fileName];
+        })
+      );
+
+      return this.fileWatchers[fileName];
+    }
+
+    return fileWatcher;
   }
 }

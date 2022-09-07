@@ -6,16 +6,31 @@
         "sourceType": "module"
     },
     "plugins": [
-        "@typescript-eslint"
+        "@typescript-eslint",
+        "unused-imports"
     ],
     "rules": {
-        "@typescript-eslint/naming-convention": "warn",
+        "@typescript-eslint/naming-convention": [
+            "error",
+            {
+                "selector": "memberLike",
+                "modifiers": ["readonly"],
+                "format": ["camelCase", "UPPER_CASE"]
+            },
+            {
+                "selector": "memberLike",
+                "modifiers": ["private"],
+                "format": ["camelCase"],
+                "leadingUnderscore": "allow"
+            }
+        ],
         "@typescript-eslint/semi": "warn",
         "curly": "warn",
         "eqeqeq": "warn",
         "no-throw-literal": "warn",
         "semi": "off",
-        "no-unused-vars": "off"
+        "no-unused-vars": "warn",
+        "unused-imports/no-unused-imports-ts": "error"
     },
     "ignorePatterns": [
         "out",
