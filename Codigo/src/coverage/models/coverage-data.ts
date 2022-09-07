@@ -1,4 +1,5 @@
 import { FileCoverage } from "../../file-coverage/models/file-coverage";
+import { ProjectConfiguration } from "../../project-configuration/models/project-configuration";
 
 export class CoverageData {
   public readonly minCoverageReached: boolean;
@@ -11,7 +12,10 @@ export class CoverageData {
       this.coveragePercentage >= this.minCoveragePercentage;
   }
 
-  public static updateCoverageData(fileCoverage: FileCoverage): CoverageData {
+  public static updateCoverageData(
+    fileCoverage: FileCoverage,
+    projectConfiguration: ProjectConfiguration
+  ): CoverageData {
     const coverageLines = fileCoverage.getLcovFiles();
 
     const coveredLines = coverageLines.reduce((acc, curr) => {
@@ -22,6 +26,9 @@ export class CoverageData {
       return acc + curr.lines.found;
     }, 0);
 
-    return new CoverageData(0.8, coveredLines / totalLines);
+    return new CoverageData(
+      projectConfiguration.minCoverage,
+      coveredLines / totalLines
+    );
   }
 }
