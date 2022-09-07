@@ -1,4 +1,3 @@
-import { Subscription } from "rxjs";
 import { commands, ExtensionContext, window } from "vscode";
 import { CoverageService } from "../../coverage/core/coverage-service";
 import { CoverageView } from "../../coverage/views/coverage-view";

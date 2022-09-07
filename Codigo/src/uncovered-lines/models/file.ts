@@ -1,4 +1,3 @@
-import { Folder } from "./folder";
 import { Line } from "./line";
 
 export class File {
