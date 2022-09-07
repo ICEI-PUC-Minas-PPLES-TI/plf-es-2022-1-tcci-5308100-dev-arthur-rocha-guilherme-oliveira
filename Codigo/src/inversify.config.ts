@@ -6,6 +6,7 @@ import { LcovFileFinder } from "./visual-studio-code/lcov-file-finder";
 import { VisualStudioCode } from "./visual-studio-code/visual-studio-code";
 import { DefaultConfiguration } from "./config";
 import { ExtensionConfigurationService } from "./extension-configuration/core/extension-configuration-service";
+import { GitService } from "./version-control/core/git-service";
 
 const appInjector = new Container();
 
@@ -34,9 +35,14 @@ appInjector
   .to(VisualStudioCode)
   .inSingletonScope();
 
-appInjector
+  appInjector
   .bind<DefaultConfiguration>(DefaultConfiguration)
   .to(DefaultConfiguration)
+  .inSingletonScope();
+
+  appInjector
+  .bind<GitService>(GitService)
+  .to(GitService)
   .inSingletonScope();
 
 export { appInjector };

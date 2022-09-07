@@ -1,10 +1,9 @@
-import { Range } from "vscode";
+import { Line } from "../../utils/Line";
 
 export class CoverageLines {
   constructor(
-    public full: Range[] = [],
-    public partial: Range[] = [],
-    public none: Range[] = []
+    public full: Line[] = [],
+    public partial: Line[] = [],
+    public none: Line[] = []
   ) {}
 }
-

@@ -3,16 +3,27 @@ module.exports.test = function test(testNumber) {
         return true;
     }
 
-    if (true === false) {
+    if (false) {
         return "never get here";
     }
 
     if (true === false) {
         return "never get here";
     }
+
+    console.log("notNull");
 
     const test = 0;
+
+    console.log("notNull");
+
+    if (false) {
+        return "never get here";
+    }
+
     if (true === false) {
+        console.log("notNull");
+
         return "never get here";
     }
 
@@ -29,6 +40,8 @@ module.exports.test = function test(testNumber) {
         attr3: true
     };
     if (testObj.attr1 && testObj.attr2 && callbackBased(testNumber, subTest)) {
+        testNumber = testNumber ? subTest(testNumber) : "neverhappen";
+        testNumber = testNumber ? subTest(testNumber) : "neverhappen";
         testNumber = testNumber ? subTest(testNumber) : "neverhappen";
     }
 

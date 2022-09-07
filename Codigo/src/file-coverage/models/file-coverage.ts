@@ -4,13 +4,14 @@ import { LcovBranch, LcovFile, LcovLine, source } from "lcov-parse";
 import { Observable, Subject } from "rxjs";
 import {
   FileSystemWatcher,
-  Range,
   TextEditor,
   window,
   workspace,
   WorkspaceFolder,
 } from "vscode";
 import { appInjector } from "../../inversify.config";
+import { Line } from "../../utils/Line";
+import { GitService } from "../../version-control/core/git-service";
 import { LcovFileFinder } from "../../visual-studio-code/lcov-file-finder";
 import { CoverageLines } from "./coverage-lines";
 
@@ -21,6 +22,8 @@ export class FileCoverage {
 
   private lcovFileFinder = appInjector.get(LcovFileFinder);
   private allFilesCoverageLines: Promise<Map<string, CoverageLines>>;
+
+  private gitService = appInjector.get(GitService);
 
   constructor(private readonly lcovFiles: Map<string, LcovFile>) {
     this.allFilesCoverageLines = this.getAllFilesCoverageLines();
@@ -50,6 +53,43 @@ export class FileCoverage {
     const coverageLines = (await this.allFilesCoverageLines).get(
       textEditor.document.fileName
     );
+
+    const isFileDiff = await this.gitService.getIsCurrentFilesBranchDiff(
+      textEditor.document.fileName
+    );
+
+    if (isFileDiff) {
+      const branchDiff = await this.gitService.getCurrentBranchDiff(
+        textEditor.document.fileName
+      );
+
+      console.log(branchDiff);
+      console.log(coverageLines);
+
+      const filteredFull = coverageLines?.full.filter((line) => {
+        return branchDiff.diffLines.some((diffLine) => {
+          return Line.equals(diffLine, line);
+        });
+      });
+
+      const filteredPartial = coverageLines?.partial.filter((line) => {
+        return branchDiff.diffLines.some((diffLine) => {
+          return Line.equals(diffLine, line);
+        });
+      });
+
+      const filteredNone = coverageLines?.none.filter((line) => {
+        return branchDiff.diffLines.some((diffLine) => {
+          return Line.equals(diffLine, line);
+        });
+      });
+
+      console.log(filteredFull);
+      console.log(filteredPartial);
+      console.log(filteredNone);
+
+      return new CoverageLines(filteredFull, filteredPartial, filteredNone);
+    }
 
     if (coverageLines) {
       return coverageLines;
@@ -250,27 +290,27 @@ export class FileCoverage {
 
     const rangeReducer = (
       condition: boolean,
-      accumulator: Range[],
+      accumulator: Line[],
       detail: LcovBranch | LcovLine
-    ): Range[] => {
+    ): Line[] => {
       if (condition) {
         if (detail.line < 0) {
           return accumulator;
         }
 
-        const lineRange = new Range(detail.line - 1, 0, detail.line - 1, 0);
+        const lineRange = new Line(detail.line - 1);
         return [...accumulator, lineRange];
       }
       return accumulator;
     };
 
-    const partial: Range[] = lcovFile.branches.details.reduce<Range[]>(
+    const partial: Line[] = lcovFile.branches.details.reduce<Line[]>(
       (acc, detail) => rangeReducer(detail.taken === 0, acc, detail),
       []
     );
 
-    const full: Range[] = lcovFile.lines.details
-      .reduce<Range[]>(
+    const full: Line[] = lcovFile.lines.details
+      .reduce<Line[]>(
         (acc, detail) => rangeReducer(detail.hit > 0, acc, detail),
         []
       )
@@ -279,8 +319,8 @@ export class FileCoverage {
           !partial.some((partialRange) => partialRange.isEqual(fullRange))
       );
 
-    const none: Range[] = lcovFile.lines.details
-      .reduce<Range[]>(
+    const none: Line[] = lcovFile.lines.details
+      .reduce<Line[]>(
         (acc, detail) => rangeReducer(detail.hit === 0, acc, detail),
         []
       )

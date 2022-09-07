@@ -7,7 +7,6 @@ import { VisualStudioCode } from "../../visual-studio-code/visual-studio-code";
 
 @injectable()
 export class CoverageService {
-  private vscode = appInjector.get(VisualStudioCode);
   private coverageData = new ReplaySubject<CoverageData>();
 
   public getCoverageData(): Observable<CoverageData> {
