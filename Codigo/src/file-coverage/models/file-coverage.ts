@@ -38,9 +38,10 @@ export class FileCoverage {
     
     const coverageLines = this.lcovFilesToCoverageLines(lcovFiles);
 
-    if (coverageLines) {
-      return coverageLines;
+    if (!coverageLines) {
+      return new CoverageLines();
     }
+
 
     const isFileDiff = await this.gitService.getIsCurrentFilesBranchDiff(
       textEditor.document.fileName
