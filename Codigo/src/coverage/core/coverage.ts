@@ -1,5 +1,5 @@
 import * as vscode from "vscode";
-import { getTemplate } from "../../utils/template-parser";
+import { getTemplate } from "../../utils/functions/template-parser";
 import { CoverageData } from "../models/coverage-data";
 
 export function getCoverageHtmlForWebview(
