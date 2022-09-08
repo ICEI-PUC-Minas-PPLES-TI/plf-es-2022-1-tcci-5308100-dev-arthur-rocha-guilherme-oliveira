@@ -1,5 +1,6 @@
 import { exec } from "child_process";
 import { injectable } from "inversify";
+import { normalizeFileName } from "../../utils/functions/helpers";
 import { Line } from "../../utils/models/line";
 import { BranchDiff } from "../models/branch-diff";
 
@@ -22,8 +23,10 @@ export class GitService {
     const filesDiff = files.split("\n").filter((file) => file.length);
 
     return filesDiff.some((fileDiff) => {
-      fileDiff = fileDiff.replace(/\//g, "\\\\");
-      return fileName.match(fileDiff);
+      let customFileDiff = normalizeFileName(fileDiff);
+      let customFileName = normalizeFileName(fileName);
+
+      return customFileName.match(customFileDiff);
     });
   }
 
@@ -44,8 +47,10 @@ export class GitService {
 
     for (const diff of diffArray) {
       if (diff.length) {
-        fsPatch = diff.split("\n")[0].split(" ")[0].replace(/\//g, "\\\\");
-        const isDiffFile = fileName.match(fsPatch);
+        fsPatch = diff.split("\n")[0].split(" ")[0];
+        fsPatch = normalizeFileName(fsPatch);
+
+        const isDiffFile = normalizeFileName(fileName).match(fsPatch);
 
         if (isDiffFile) {
           diff.split("\n").forEach((line) => {

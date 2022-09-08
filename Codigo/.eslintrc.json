@@ -16,12 +16,6 @@
                 "selector": "memberLike",
                 "modifiers": ["readonly"],
                 "format": ["camelCase", "UPPER_CASE"]
-            },
-            {
-                "selector": "memberLike",
-                "modifiers": ["private"],
-                "format": ["camelCase"],
-                "leadingUnderscore": "allow"
             }
         ],
         "@typescript-eslint/semi": "warn",
