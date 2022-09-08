@@ -10,7 +10,7 @@ import {
   WorkspaceFolder,
 } from "vscode";
 import { appInjector } from "../../inversify.config";
-import { Line } from "../../utils/Line";
+import { Line } from "../../utils/models/line";
 import { GitService } from "../../version-control/core/git-service";
 import { BranchDiff } from "../../version-control/models/branch-diff";
 import { LcovFileFinder } from "../../visual-studio-code/lcov-file-finder";
@@ -45,12 +45,14 @@ export class FileCoverage {
     }
 
     const isFileDiff = await this.gitService.getIsCurrentFilesBranchDiff(
-      textEditor.document.fileName
+      textEditor.document.fileName,
+      "master"
     );
 
     if (isFileDiff) {
       const branchDiff = await this.gitService.getCurrentBranchDiff(
-        textEditor.document.fileName
+        textEditor.document.fileName,
+        "master"
       );
 
       const filteredFull = await this.filterCoverageLines(
