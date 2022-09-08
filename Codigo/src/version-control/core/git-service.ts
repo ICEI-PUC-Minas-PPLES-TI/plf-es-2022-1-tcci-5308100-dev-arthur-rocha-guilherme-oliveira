@@ -1,15 +1,22 @@
 import { exec } from "child_process";
 import { injectable } from "inversify";
-import { Line } from "../../utils/Line";
+import { Line } from "../../utils/models/line";
 import { BranchDiff } from "../models/branch-diff";
 
 @injectable()
 export class GitService {
-  public async getIsCurrentFilesBranchDiff(fileName: string): Promise<boolean> {
+  private readonly GIT_COMMAND = "git diff";
+  private readonly OPTION_NAME_ONLY = "--name-only";
+  private readonly OPTION_UNIFIED = "-U0";
+
+  public async getIsCurrentFilesBranchDiff(
+    fileName: string,
+    branch: string
+  ): Promise<boolean> {
     const files = await this.execGitCommand(
-      "git diff",
-      ["--name-only"],
-      ["master"]
+      this.GIT_COMMAND,
+      [this.OPTION_NAME_ONLY],
+      [branch]
     );
 
     const filesDiff = files.split("\n").filter((file) => file.length);
@@ -20,8 +27,15 @@ export class GitService {
     });
   }
 
-  public async getCurrentBranchDiff(fileName: string): Promise<BranchDiff> {
-    const diffs = await this.execGitCommand("git diff", ["-U0"], ["master"]);
+  public async getCurrentBranchDiff(
+    fileName: string,
+    branch: string
+  ): Promise<BranchDiff> {
+    const diffs = await this.execGitCommand(
+      this.GIT_COMMAND,
+      [this.OPTION_UNIFIED],
+      [branch]
+    );
 
     let fsPatch: string = "";
     let lines: Line[] = [];
