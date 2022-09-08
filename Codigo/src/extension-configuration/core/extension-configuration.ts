@@ -10,9 +10,8 @@ export function getExtensionConfigurationHtmlForWebview(
   const scriptUri = webview.asWebviewUri(
     vscode.Uri.joinPath(
       extensionUri,
-      "src",
-      "extension-configuration",
-      "views",
+      "resources",
+      "extension-configuration-view",
       "extension-configuration.js"
     )
   );
@@ -20,9 +19,8 @@ export function getExtensionConfigurationHtmlForWebview(
   const styleMainUri = webview.asWebviewUri(
     vscode.Uri.joinPath(
       extensionUri,
-      "src",
-      "extension-configuration",
-      "views",
+      "resources",
+      "extension-configuration-view",
       "extension-configuration.css"
     )
   );
@@ -30,9 +28,8 @@ export function getExtensionConfigurationHtmlForWebview(
   const templateFileName = webview.asWebviewUri(
     vscode.Uri.joinPath(
       extensionUri,
-      "src",
-      "extension-configuration",
-      "views",
+      "resources",
+      "extension-configuration-view",
       "extension-configuration.html"
     )
   );
@@ -46,4 +43,3 @@ export function getExtensionConfigurationHtmlForWebview(
 
   return template;
 }
-
