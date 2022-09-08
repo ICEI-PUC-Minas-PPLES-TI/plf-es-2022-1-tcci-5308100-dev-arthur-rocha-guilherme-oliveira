@@ -1,7 +1,7 @@
 {
   "lcovFilePath": null,
-  "minCoverage": 0.9,
-  "refBranch": null,
+  "minCoverage": 0.78,
+  "refBranch": "master",
   "runTestCoverage": null,
   "runTestCoverageWatchMode": null,
   "usePrePushValidation": null

@@ -31,7 +31,8 @@ export class FileCoverage {
   }
 
   public async getCoverageLinesForEditor(
-    textEditor: TextEditor
+    textEditor: TextEditor,
+    useGitDiff: boolean
   ): Promise<CoverageLines> {
     const lcovFiles = this.lcovFileFinder.findLcovFilesForEditor(
       textEditor,

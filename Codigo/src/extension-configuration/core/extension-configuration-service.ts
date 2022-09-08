@@ -5,6 +5,14 @@ import { ConfigurationData } from "../models/configuration-data";
 
 @injectable()
 export class ExtensionConfigurationService {
+  changeRefBranch(refBranch: string | undefined) {
+    const newConfig = ConfigurationData.updateConfigurationData(
+      this.actualState,
+      { referenceBranch: refBranch }
+    );
+
+    this.emitNemConfig(newConfig);
+  }
   private configurationData = new ReplaySubject<ConfigurationData>();
   private actualState = new ConfigurationData(true, false, "master", false);
 

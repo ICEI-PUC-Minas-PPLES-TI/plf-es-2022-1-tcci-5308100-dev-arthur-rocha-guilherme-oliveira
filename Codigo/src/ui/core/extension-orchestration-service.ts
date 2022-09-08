@@ -41,6 +41,10 @@ export class ExtensionOrchestrationService {
         newProjectConfiguration
       );
     }
+
+    this.extensionConfigurationService.changeRefBranch(
+      newProjectConfiguration.refBranch
+    );
   }
 
   public initViewData(): void {}
