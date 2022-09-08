@@ -76,8 +76,7 @@ export class VisualStudioCode {
       const coverageLines =
         await this.actualFileCoverage.getCoverageLinesForEditor(
           textEditor,
-          this.actualExtensionConfiguration.isBasedOnBranchChange,
-          this.actualExtensionConfiguration.referenceBranch
+          this.actualExtensionConfiguration.isBasedOnBranchChange
         );
 
       this.setDecorationsForEditor(textEditor, coverageLines);

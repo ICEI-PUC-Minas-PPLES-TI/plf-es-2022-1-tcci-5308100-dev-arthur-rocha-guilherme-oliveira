@@ -50,7 +50,7 @@ export class FileCoverage {
       "master"
     );
 
-    if (isFileDiff) {
+    if (isFileDiff && useGitDiff) {
       const branchDiff = await this.gitService.getCurrentBranchDiff(
         textEditor.document.fileName,
         "master"
@@ -74,7 +74,7 @@ export class FileCoverage {
       return new CoverageLines(filteredFull, filteredPartial, filteredNone);
     }
 
-    return new CoverageLines();
+    return coverageLines;
   }
 
   public static async createNewCoverageFile(): Promise<FileCoverage> {

@@ -5,14 +5,6 @@ import { ConfigurationData } from "../models/configuration-data";
 
 @injectable()
 export class ExtensionConfigurationService {
-  changeRefBranch(refBranch: string | undefined) {
-    const newConfig = ConfigurationData.updateConfigurationData(
-      this.actualState,
-      { referenceBranch: refBranch }
-    );
-
-    this.emitNemConfig(newConfig);
-  }
   private configurationData = new ReplaySubject<ConfigurationData>();
   private actualState = new ConfigurationData(true, false, "master", false);
 
@@ -33,7 +25,12 @@ export class ExtensionConfigurationService {
   }
 
   public toggleCoverageBaseReferenceMode(): void {
-    window.showErrorMessage("not implemented yet");
+    const newConfig = ConfigurationData.updateConfigurationData(
+      this.actualState,
+      { isBasedOnBranchChange: !this.actualState.isBasedOnBranchChange }
+    );
+
+    this.emitNemConfig(newConfig);
   }
 
   private emitNemConfig(newConfigurationData: ConfigurationData): void {
