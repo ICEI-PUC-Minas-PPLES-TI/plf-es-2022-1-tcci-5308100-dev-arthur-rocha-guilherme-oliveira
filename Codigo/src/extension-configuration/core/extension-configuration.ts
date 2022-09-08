@@ -1,5 +1,5 @@
 import * as vscode from "vscode";
-import { getTemplate } from "../../utils/template-parser";
+import { getTemplate } from "../../utils/functions/template-parser";
 import { ConfigurationData } from "../models/configuration-data";
 
 export function getExtensionConfigurationHtmlForWebview(
@@ -46,4 +46,3 @@ export function getExtensionConfigurationHtmlForWebview(
 
   return template;
 }
-

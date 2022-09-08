@@ -55,10 +55,10 @@ export class ConfigurationView implements WebviewViewProvider {
             this.toggleLineStatusVisibility();
             return;
           case "toggleIsBasedOnBranchChange":
-            this.toggleCoveragePercentageMode();
+            this.toggleCoverageBaseReferenceMode();
             return;
           case "toggleIsJustForFileInFocus":
-            this.toggleCoverageBaseReferenceMode();
+            this.toggleCoveragePercentageMode();
             return;
         }
       },

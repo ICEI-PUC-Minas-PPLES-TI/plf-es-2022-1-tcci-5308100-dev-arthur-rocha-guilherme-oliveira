@@ -1,4 +1,4 @@
-import { Line } from "../../utils/Line";
+import { Line } from "../../utils/models/line";
 
 export class CoverageLines {
   constructor(
