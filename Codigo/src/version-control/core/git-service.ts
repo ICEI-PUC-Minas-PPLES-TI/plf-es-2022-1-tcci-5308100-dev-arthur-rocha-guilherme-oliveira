@@ -1,8 +1,6 @@
 import { exec } from "child_process";
 import { injectable } from "inversify";
 import { normalizeFileName } from "../../utils/functions/helpers";
-import { Line } from "../../utils/models/line";
-import { BranchDiff } from "../models/branch-diff";
 
 @injectable()
 export class GitService {
@@ -11,16 +9,10 @@ export class GitService {
   private readonly OPTION_UNIFIED = "-U0";
 
   public async getIsCurrentFilesBranchDiff(
-    fileName: string,
-    branch: string
+    branch: string,
+    fileName: string
   ): Promise<boolean> {
-    const files = await this.execGitCommand(
-      this.GIT_COMMAND,
-      [this.OPTION_NAME_ONLY],
-      [branch]
-    );
-
-    const filesDiff = files.split("\n").filter((file) => file.length);
+    const filesDiff = await this.getFilesBranchDiff(branch);
 
     return filesDiff.some((fileDiff) => {
       let customFileDiff = normalizeFileName(fileDiff);
@@ -30,50 +22,24 @@ export class GitService {
     });
   }
 
-  public async getCurrentBranchDiff(
-    fileName: string,
-    branch: string
-  ): Promise<BranchDiff> {
+  public async getFilesBranchDiff(branch: string): Promise<string[]> {
+    const files = await this.execGitCommand(
+      this.GIT_COMMAND,
+      [this.OPTION_NAME_ONLY],
+      [branch]
+    );
+
+    return files.split("\n").filter((file) => file.length);
+  }
+
+  public async getCurrentBranchDiff(branch: string): Promise<string[]> {
     const diffs = await this.execGitCommand(
       this.GIT_COMMAND,
       [this.OPTION_UNIFIED],
       [branch]
     );
 
-    let fsPatch: string = "";
-    let lines: Line[] = [];
-
-    const diffArray = diffs.split("diff --git a/");
-
-    for (const diff of diffArray) {
-      if (diff.length) {
-        fsPatch = diff.split("\n")[0].split(" ")[0];
-        fsPatch = normalizeFileName(fsPatch);
-
-        const isDiffFile = normalizeFileName(fileName).match(fsPatch);
-
-        if (isDiffFile) {
-          diff.split("\n").forEach((line) => {
-            if (line.startsWith("@@")) {
-              const diffLinesNumbers = line
-                .split(" ")[2]
-                .replace("+", "")
-                .split(",");
-              const startLine = Number(diffLinesNumbers[0]);
-              const endLine = Number(diffLinesNumbers[1] || 1);
-
-              for (let i = 0; i < endLine; i++) {
-                lines.push(new Line(startLine + i));
-              }
-            }
-          });
-
-          break;
-        }
-      }
-    }
-
-    return new BranchDiff(fileName, lines);
+    return diffs.split("diff --git a/").filter((file) => file.length);
   }
 
   private async execGitCommand(
@@ -86,8 +52,8 @@ export class GitService {
 
     //TO DO fix to take the workspace folder path
     const cwd =
-      // "c:\\Users\\Guilherme\\1@Eu\\plf-es-2022-1-tcci-5308100-dev-arthur-rocha-guilherme-oliveira\\Codigo";
-      "/Users/arthurramaral/projects/puc/plf-es-2022-1-tcci-5308100-dev-arthur-rocha-guilherme-oliveira/Codigo";
+      "c:\\Users\\Guilherme\\1@Eu\\plf-es-2022-1-tcci-5308100-dev-arthur-rocha-guilherme-oliveira\\Codigo";
+    // "/Users/arthurramaral/projects/puc/plf-es-2022-1-tcci-5308100-dev-arthur-rocha-guilherme-oliveira/Codigo";
     return await new Promise((resolve, reject) => {
       exec(
         `${cmd} ${stringOptions} ${stringData}`,

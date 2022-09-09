@@ -46,32 +46,18 @@ export class FileCoverage {
     }
 
     const isFileDiff = await this.gitService.getIsCurrentFilesBranchDiff(
-      textEditor.document.fileName,
-      "master"
+      "master",
+      textEditor.document.fileName
     );
 
     if (isFileDiff && useGitDiff) {
-      const branchDiff = await this.gitService.getCurrentBranchDiff(
-        textEditor.document.fileName,
-        "master"
+      const diff = await this.gitService.getCurrentBranchDiff("master");
+      const branchDiff = BranchDiff.createBranchDiffFileLines(
+        diff,
+        textEditor.document.fileName
       );
 
-      const filteredFull = await this.filterCoverageLines(
-        coverageLines.full,
-        branchDiff
-      );
-
-      const filteredPartial = await this.filterCoverageLines(
-        coverageLines.partial,
-        branchDiff
-      );
-
-      const filteredNone = await this.filterCoverageLines(
-        coverageLines.none,
-        branchDiff
-      );
-
-      return new CoverageLines(filteredFull, filteredPartial, filteredNone);
+      return CoverageLines.createDiffCoverageLines(coverageLines, branchDiff);
     }
 
     return coverageLines;
@@ -82,14 +68,6 @@ export class FileCoverage {
     const dataFiles = await this.loadDataFiles(files);
     const dataCoverage = await this.filesToLcovFiles(dataFiles);
     return new FileCoverage(dataCoverage);
-  }
-
-  private async filterCoverageLines(lines: Line[], branchDiff: BranchDiff) {
-    return lines.filter((line) => {
-      return branchDiff.diffLines.some((diffLine) => {
-        return Line.equals(diffLine, line);
-      });
-    });
   }
 
   private static async findCoverageFiles(): Promise<Set<string>> {

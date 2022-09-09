@@ -38,7 +38,8 @@ export class ExtensionOrchestrationService {
     if (this.actualFileCoverage) {
       this.coverageService.calculateCoverage(
         this.actualFileCoverage,
-        newProjectConfiguration
+        newProjectConfiguration,
+        this.actualConfigurationData.isBasedOnBranchChange
       );
     }
   }
@@ -72,7 +73,8 @@ export class ExtensionOrchestrationService {
     if (this.actualProjectConfiguration) {
       this.coverageService.calculateCoverage(
         newFileCoverage,
-        this.actualProjectConfiguration
+        this.actualProjectConfiguration,
+        this.actualConfigurationData.isBasedOnBranchChange
       );
     }
 
