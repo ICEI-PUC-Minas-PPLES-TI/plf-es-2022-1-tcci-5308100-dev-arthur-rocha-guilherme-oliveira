@@ -21,6 +21,7 @@ export class CoverageData {
     const coverageLines = await fileCoverage.getAllCoverageLines(
       extensionConfiguration.isBasedOnBranchChange
     );
+
     const coveredLines = coverageLines.reduce(
       (acc, curr) => acc + curr.full.length + curr.partial.length,
       0

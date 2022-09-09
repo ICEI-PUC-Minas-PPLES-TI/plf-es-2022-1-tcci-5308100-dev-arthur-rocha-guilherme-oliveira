@@ -17,6 +17,15 @@ import { LcovFileFinder } from "../../visual-studio-code/lcov-file-finder";
 import { CoverageLines } from "./coverage-lines";
 
 export class FileCoverage {
+  public static readonly DEFAULT_LCOV_FILE_NAME = "lcov.info";
+  static coverageWatcher: FileSystemWatcher;
+  static onFileChangeSubject: Subject<void>;
+
+  private lcovFileFinder = appInjector.get(LcovFileFinder);
+  private gitService = appInjector.get(GitService);
+
+  constructor(private readonly lcovFiles: Map<string, LcovFile>) {}
+
   public async getAllCoverageLines(
     useBranchRef: boolean
   ): Promise<CoverageLines[]> {
@@ -35,14 +44,6 @@ export class FileCoverage {
 
     return coverageLines;
   }
-  public static readonly DEFAULT_LCOV_FILE_NAME = "lcov.info";
-  static coverageWatcher: FileSystemWatcher;
-  static onFileChangeSubject: Subject<void>;
-
-  private lcovFileFinder = appInjector.get(LcovFileFinder);
-  private gitService = appInjector.get(GitService);
-
-  constructor(private readonly lcovFiles: Map<string, LcovFile>) {}
 
   public getLcovFiles(): LcovFile[] {
     return Array.from(this.lcovFiles.values());

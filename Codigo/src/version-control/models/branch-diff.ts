@@ -37,7 +37,7 @@ export class BranchDiff {
   }
 
   private static isSameDiffFile(diff: string, fileName: string) {
-    const fsPatch = diff.split("\n")[0].split(" ")[0];
+    const fsPatch = diff.split("\n")[0].split(" ")[1].replace("b/", "");
     const normalizedFsPatch = normalizeFileName(fsPatch);
     const normalizedFileName = normalizeFileName(fileName);
 
