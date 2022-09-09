@@ -102,16 +102,28 @@ export class ExtensionOrchestrationService {
     this.registerCommands();
     this.registerViews();
 
+    this.startProjectConfigurationObserver();
+
+    this.startExtensionConfigurationObserver();
+
+    this.startCoverageFileObserver();
+  }
+
+  private startCoverageFileObserver() {
     this.fileCoverageService.getFileCoverage().subscribe((fileCoverage) => {
       this.emitNewFileCoverage(fileCoverage);
     });
+  }
 
+  private startExtensionConfigurationObserver() {
     this.extensionConfigurationService
       .getConfigurationData()
       .subscribe((configurationData) => {
         this.emitNewConfigurationData(configurationData);
       });
+  }
 
+  private startProjectConfigurationObserver() {
     this.projectConfigurationService
       .getProjectConfigurationData()
       .subscribe((configurationData) => {
