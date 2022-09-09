@@ -1,5 +1,6 @@
 import { exec } from "child_process";
 import { injectable } from "inversify";
+import { workspace, window } from "vscode";
 import { normalizeFileName } from "../../utils/functions/helpers";
 
 @injectable()
@@ -7,12 +8,15 @@ export class GitService {
   private readonly GIT_COMMAND = "git diff";
   private readonly OPTION_NAME_ONLY = "--name-only";
   private readonly OPTION_UNIFIED = "-U0";
+  private output = window.createOutputChannel("GitService");
 
   public async getIsCurrentFilesBranchDiff(
     branch: string,
     fileName: string
   ): Promise<boolean> {
     const filesDiff = await this.getFilesBranchDiff(branch);
+
+    this.output.appendLine(`git diff: ${filesDiff.join("\n")}`);
 
     return filesDiff.some((fileDiff) => {
       let customFileDiff = normalizeFileName(fileDiff);
@@ -53,19 +57,26 @@ export class GitService {
     const stringOptions = Array.isArray(options) ? options.join(" ") : "";
     const stringData = Array.isArray(data) ? data.join(" ") : "";
 
-    //TO DO fix to take the workspace folder path
-    const cwd =
-      // "c:\\Users\\Guilherme\\1@Eu\\plf-es-2022-1-tcci-5308100-dev-arthur-rocha-guilherme-oliveira\\Codigo";
-      "/Users/arthurramaral/projects/puc/plf-es-2022-1-tcci-5308100-dev-arthur-rocha-guilherme-oliveira/Codigo";
+    if (!workspace.workspaceFolders) {
+      this.output.appendLine("returning: '' as workspaceFolder");
+      return "";
+    }
+
+    const cwd = workspace.workspaceFolders[0].uri.fsPath;
+    this.output.appendLine(`returning: '${cwd}' as workspaceFolder`);
+
     return await new Promise((resolve, reject) => {
       exec(
         `${cmd} ${stringOptions} ${stringData}`,
         { cwd: cwd },
         (error, stdout, stderr) => {
           if (error) {
+            this.output.appendLine(`ERROR: git diff: ${stderr}`);
             console.error(stderr);
             reject(error);
           }
+
+          this.output.appendLine(`SUCCESS: git diff: ${stdout}`);
           resolve(stdout);
         }
       );

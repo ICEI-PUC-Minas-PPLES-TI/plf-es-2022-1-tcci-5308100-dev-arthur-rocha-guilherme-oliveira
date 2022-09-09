@@ -77,14 +77,12 @@ export class FileCoverage {
 
     if (useGitDiff) {
       const isFileDiff = await this.gitService.getIsCurrentFilesBranchDiff(
-        "UC04-Alternar-visualização-da-porcentagem-de-obertura",
+        "master",
         fileName
       );
 
       if (isFileDiff) {
-        const diff = await this.gitService.getCurrentBranchDiff(
-          "UC04-Alternar-visualização-da-porcentagem-de-obertura"
-        );
+        const diff = await this.gitService.getCurrentBranchDiff("master");
         const branchDiff = BranchDiff.createBranchDiffFileLines(diff, fileName);
 
         return CoverageLines.createDiffCoverageLines(coverageLines, branchDiff);
