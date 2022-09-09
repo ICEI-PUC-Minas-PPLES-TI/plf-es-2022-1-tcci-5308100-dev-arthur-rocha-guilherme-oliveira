@@ -23,7 +23,7 @@ export class BranchDiff {
               const endLine = Number(diffLinesNumbers[1] || 1);
 
               for (let i = 0; i < endLine; i++) {
-                lines.push(new Line(startLine + i));
+                lines.push(new Line(startLine + i - 1));
               }
             }
           });
@@ -37,9 +37,13 @@ export class BranchDiff {
   }
 
   private static isSameDiffFile(diff: string, fileName: string) {
-    let fsPatch = diff.split("\n")[0].split(" ")[0];
-    fsPatch = normalizeFileName(fsPatch);
+    const fsPatch = diff.split("\n")[0].split(" ")[0];
+    const normalizedFsPatch = normalizeFileName(fsPatch);
+    const normalizedFileName = normalizeFileName(fileName);
 
-    return normalizeFileName(fileName).match(fsPatch);
+    if (normalizedFileName.length > normalizedFsPatch.length) {
+      return normalizedFileName.match(normalizedFsPatch);
+    }
+    return normalizedFsPatch.match(normalizedFileName);
   }
 }

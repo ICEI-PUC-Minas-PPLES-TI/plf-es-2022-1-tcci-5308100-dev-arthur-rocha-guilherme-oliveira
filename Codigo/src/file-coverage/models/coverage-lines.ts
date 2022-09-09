@@ -36,7 +36,7 @@ export class CoverageLines {
   ) {
     return lines.filter((line) => {
       return branchDiff.diffLines.some((diffLine: Line) => {
-        return Line.equals(diffLine, line);
+        return diffLine.equals(line);
       });
     });
   }

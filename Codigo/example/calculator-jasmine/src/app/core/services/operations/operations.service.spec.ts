@@ -14,19 +14,19 @@ describe('OperationsService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('sum', () => {
-    const a = 8;
-    const b = 4;
+  // it('sum', () => {
+  //   const a = 8;
+  //   const b = 4;
 
-    expect(service.sum(a, b)).toBe(12);
-  });
+  //   expect(service.sum(a, b)).toBe(12);
+  // });
 
-  it('subtract', () => {
-    const a = 8;
-    const b = 4;
+  // it('subtract', () => {
+  //   const a = 8;
+  //   const b = 4;
 
-    expect(service.subtract(a, b)).toBe(4);
-  });
+  //   expect(service.subtract(a, b)).toBe(4);
+  // });
 
   it('multiplicate', () => {
     const a = 8;

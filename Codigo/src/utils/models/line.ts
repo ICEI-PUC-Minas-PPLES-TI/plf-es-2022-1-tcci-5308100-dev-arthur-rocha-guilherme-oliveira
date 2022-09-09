@@ -5,7 +5,7 @@ export class Line extends Range {
     super(lineNumber, 0, lineNumber, 0);
   }
 
-  public static equals(data1: Line, data2: Line): boolean {
-    return data1.start.line === data2.start.line;
+  public equals(data: Line): boolean {
+    return this.start.line === data.start.line;
   }
 }

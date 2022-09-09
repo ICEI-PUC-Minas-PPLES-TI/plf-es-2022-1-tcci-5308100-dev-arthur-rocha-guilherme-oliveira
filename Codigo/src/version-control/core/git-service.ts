@@ -18,7 +18,10 @@ export class GitService {
       let customFileDiff = normalizeFileName(fileDiff);
       let customFileName = normalizeFileName(fileName);
 
-      return customFileName.match(customFileDiff);
+      if (customFileName.length > customFileDiff.length) {
+        return customFileName.match(customFileDiff);
+      }
+      return customFileDiff.match(customFileName);
     });
   }
 
@@ -52,8 +55,8 @@ export class GitService {
 
     //TO DO fix to take the workspace folder path
     const cwd =
-      "c:\\Users\\Guilherme\\1@Eu\\plf-es-2022-1-tcci-5308100-dev-arthur-rocha-guilherme-oliveira\\Codigo";
-    // "/Users/arthurramaral/projects/puc/plf-es-2022-1-tcci-5308100-dev-arthur-rocha-guilherme-oliveira/Codigo";
+      // "c:\\Users\\Guilherme\\1@Eu\\plf-es-2022-1-tcci-5308100-dev-arthur-rocha-guilherme-oliveira\\Codigo";
+      "/Users/arthurramaral/projects/puc/plf-es-2022-1-tcci-5308100-dev-arthur-rocha-guilherme-oliveira/Codigo";
     return await new Promise((resolve, reject) => {
       exec(
         `${cmd} ${stringOptions} ${stringData}`,

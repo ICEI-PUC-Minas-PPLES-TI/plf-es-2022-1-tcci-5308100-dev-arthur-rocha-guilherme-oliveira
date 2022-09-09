@@ -37,4 +37,13 @@ export class ExtensionConfigurationService {
     this.actualState = newConfigurationData;
     this.configurationData.next(newConfigurationData);
   }
+
+  public changeRefBranch(refBranch: string = "master"): void {
+    const newConfig = ConfigurationData.updateConfigurationData(
+      this.actualState,
+      { referenceBranch: refBranch }
+    );
+
+    this.emitNemConfig(newConfig);
+  }
 }

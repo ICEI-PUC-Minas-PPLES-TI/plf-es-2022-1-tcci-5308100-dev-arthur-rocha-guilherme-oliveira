@@ -3,6 +3,7 @@ import { Observable, ReplaySubject } from "rxjs";
 import { FileCoverage } from "../../file-coverage/models/file-coverage";
 import { CoverageData } from "../models/coverage-data";
 import { ProjectConfiguration } from "../../project-configuration/models/project-configuration";
+import { ConfigurationData } from "../../extension-configuration/models/configuration-data";
 
 @injectable()
 export class CoverageService {
@@ -12,13 +13,15 @@ export class CoverageService {
     return this.coverageData.asObservable(); //.pipe(startWith(new CoverageData(0, 0, true)));
   }
 
-  public calculateCoverage(
+  public async calculateCoverage(
     fileCoverage: FileCoverage,
-    projectConfiguration: ProjectConfiguration
-  ): void {
-    const newCoverageData = CoverageData.updateCoverageData(
+    projectConfiguration: ProjectConfiguration,
+    extensionConfiguration: ConfigurationData
+  ): Promise<void> {
+    const newCoverageData = await CoverageData.updateCoverageData(
       fileCoverage,
-      projectConfiguration
+      projectConfiguration,
+      extensionConfiguration
     );
     this.coverageData.next(newCoverageData);
   }

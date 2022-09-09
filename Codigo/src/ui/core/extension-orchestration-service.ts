@@ -35,13 +35,17 @@ export class ExtensionOrchestrationService {
   ): void {
     this.actualProjectConfiguration = newProjectConfiguration;
 
-    if (this.actualFileCoverage) {
+    if (this.actualFileCoverage && this.actualConfigurationData) {
       this.coverageService.calculateCoverage(
         this.actualFileCoverage,
         newProjectConfiguration,
-        this.actualConfigurationData.isBasedOnBranchChange
+        this.actualConfigurationData
       );
     }
+
+    this.extensionConfigurationService.changeRefBranch(
+      newProjectConfiguration.refBranch
+    );
   }
 
   public initViewData(): void {}
@@ -61,6 +65,14 @@ export class ExtensionOrchestrationService {
         newConfigurationData
       );
     }
+
+    if (this.actualFileCoverage && this.actualProjectConfiguration) {
+      this.coverageService.calculateCoverage(
+        this.actualFileCoverage,
+        this.actualProjectConfiguration,
+        newConfigurationData
+      );
+    }
   }
 
   public fileFocusChange(): void {}
@@ -70,11 +82,11 @@ export class ExtensionOrchestrationService {
   public emitNewFileCoverage(newFileCoverage: FileCoverage): void {
     this.actualFileCoverage = newFileCoverage;
 
-    if (this.actualProjectConfiguration) {
+    if (this.actualProjectConfiguration && this.actualConfigurationData) {
       this.coverageService.calculateCoverage(
         newFileCoverage,
         this.actualProjectConfiguration,
-        this.actualConfigurationData.isBasedOnBranchChange
+        this.actualConfigurationData
       );
     }
 

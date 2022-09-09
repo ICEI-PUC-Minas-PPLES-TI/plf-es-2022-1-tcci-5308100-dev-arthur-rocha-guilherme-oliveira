@@ -17,6 +17,24 @@ import { LcovFileFinder } from "../../visual-studio-code/lcov-file-finder";
 import { CoverageLines } from "./coverage-lines";
 
 export class FileCoverage {
+  public async getAllCoverageLines(
+    useBranchRef: boolean
+  ): Promise<CoverageLines[]> {
+    const lcovFiles = this.getLcovFiles();
+
+    const coverageLines: CoverageLines[] = [];
+
+    for (const lcovFile of lcovFiles) {
+      const coverageLine = await this.getCoverageLinesForAFile(
+        [lcovFile],
+        lcovFile.file,
+        useBranchRef
+      );
+      coverageLines.push(coverageLine);
+    }
+
+    return coverageLines;
+  }
   public static readonly DEFAULT_LCOV_FILE_NAME = "lcov.info";
   static coverageWatcher: FileSystemWatcher;
   static onFileChangeSubject: Subject<void>;
@@ -39,25 +57,40 @@ export class FileCoverage {
       this.lcovFiles
     );
 
+    return this.getCoverageLinesForAFile(
+      lcovFiles,
+      textEditor.document.fileName,
+      useGitDiff
+    );
+  }
+
+  private async getCoverageLinesForAFile(
+    lcovFiles: LcovFile[],
+    fileName: string,
+    useGitDiff: boolean
+  ): Promise<CoverageLines> {
     const coverageLines = this.lcovFilesToCoverageLines(lcovFiles);
 
     if (!coverageLines) {
       return new CoverageLines();
     }
 
-    const isFileDiff = await this.gitService.getIsCurrentFilesBranchDiff(
-      "master",
-      textEditor.document.fileName
-    );
-
-    if (isFileDiff && useGitDiff) {
-      const diff = await this.gitService.getCurrentBranchDiff("master");
-      const branchDiff = BranchDiff.createBranchDiffFileLines(
-        diff,
-        textEditor.document.fileName
+    if (useGitDiff) {
+      const isFileDiff = await this.gitService.getIsCurrentFilesBranchDiff(
+        "UC04-Alternar-visualização-da-porcentagem-de-obertura",
+        fileName
       );
 
-      return CoverageLines.createDiffCoverageLines(coverageLines, branchDiff);
+      if (isFileDiff) {
+        const diff = await this.gitService.getCurrentBranchDiff(
+          "UC04-Alternar-visualização-da-porcentagem-de-obertura"
+        );
+        const branchDiff = BranchDiff.createBranchDiffFileLines(diff, fileName);
+
+        return CoverageLines.createDiffCoverageLines(coverageLines, branchDiff);
+      }
+
+      return new CoverageLines();
     }
 
     return coverageLines;
