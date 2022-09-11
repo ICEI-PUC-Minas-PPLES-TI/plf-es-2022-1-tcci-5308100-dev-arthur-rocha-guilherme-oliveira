@@ -57,12 +57,9 @@ export class GitService {
     const stringOptions = Array.isArray(options) ? options.join(" ") : "";
     const stringData = Array.isArray(data) ? data.join(" ") : "";
 
-    if (!workspace.workspaceFolders) {
-      this.output.appendLine("returning: '' as workspaceFolder");
-      return "";
-    }
-
-    const cwd = workspace.workspaceFolders[0].uri.fsPath;
+    const cwd = workspace.workspaceFolders
+      ? workspace.workspaceFolders[0].uri.fsPath
+      : __dirname;
     this.output.appendLine(`returning: '${cwd}' as workspaceFolder`);
 
     return await new Promise((resolve, reject) => {
