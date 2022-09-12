@@ -16,6 +16,6 @@ export class File {
     this.lines = [
       ...linesNotCovered.map((line) => new Line(this, line, "none")),
       ...linesPartiallyCovered.map((line) => new Line(this, line, "partial")),
-    ];
+    ].sort((a, b) => a.rangeLine.lineNumber - b.rangeLine.lineNumber);
   }
 }

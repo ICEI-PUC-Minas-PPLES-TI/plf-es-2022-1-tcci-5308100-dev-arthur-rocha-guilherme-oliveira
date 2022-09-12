@@ -131,12 +131,10 @@ export class UncoveredLinesTree
   }
 
   private getFileChildren(parentFile: File): UncoveredLineTreeNode<Line>[] {
-    return parentFile.lines
-      .sort((a, b) => a.rangeLine.lineNumber - b.rangeLine.lineNumber)
-      .map<UncoveredLineTreeNode<Line>>((line) => ({
-        type: FileType.Unknown,
-        selfData: line,
-      }));
+    return parentFile.lines.map<UncoveredLineTreeNode<Line>>((line) => ({
+      type: FileType.Unknown,
+      selfData: line,
+    }));
   }
 
   private getFolderChildren(
