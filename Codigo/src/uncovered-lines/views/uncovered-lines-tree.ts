@@ -10,6 +10,7 @@ import {
   window,
 } from "vscode";
 import { appInjector } from "../../inversify.config";
+import { LoggerManager } from "../../utils/logger/logger-manager";
 import { UncoveredLinesService } from "../core/uncovered-lines-service";
 import { File } from "../models/file";
 import { Folder } from "../models/folder";
@@ -30,6 +31,10 @@ export class UncoveredLinesTree
     });
   }
 
+  private logger = appInjector
+    .get(LoggerManager)
+    .getServiceOutput(UncoveredLinesTree);
+
   private uncoveredLinesService = appInjector.get(UncoveredLinesService);
   private context = appInjector.get<ExtensionContext>("ExtensionContext");
 
@@ -42,6 +47,7 @@ export class UncoveredLinesTree
       .subscribe((newUncoveredLinesData) => {
         this.actualRoot = newUncoveredLinesData.root;
         this.changeEvent.fire();
+        this.logger.info("Uncovered lines data changed");
       });
   }
 
