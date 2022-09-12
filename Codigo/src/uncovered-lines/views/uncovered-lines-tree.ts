@@ -1,69 +1,165 @@
 import {
+  Event,
   EventEmitter,
-  ProviderResult,
+  ExtensionContext,
+  FileType,
   TreeDataProvider,
   TreeItem,
   TreeItemCollapsibleState,
+  Uri,
+  window,
 } from "vscode";
+import { appInjector } from "../../inversify.config";
+import { UncoveredLinesService } from "../core/uncovered-lines-service";
 import { File } from "../models/file";
-import { Folder, getMockedFolder } from "../models/folder";
+import { Folder } from "../models/folder";
 import { Line } from "../models/line";
-import { UncoveredLinesData } from "../models/uncovered-lines-data";
 
-type UncoveredLineTreeNode = Folder | File | Line;
+type UncoveredLineTreeNode<T extends Folder | File | Line> = {
+  type: FileType;
+  selfData: T;
+};
 
 export class UncoveredLinesTree
-  implements TreeDataProvider<UncoveredLineTreeNode>
+  implements TreeDataProvider<UncoveredLineTreeNode<Folder | File | Line>>
 {
-  private readonly _changeTreeData = new EventEmitter<
-    UncoveredLineTreeNode | void | undefined | null
-  >();
-
-  public readonly onDidChangeTreeData = this._changeTreeData.event;
-  private state: Folder = getMockedFolder();
-
-  getTreeItem(element: UncoveredLineTreeNode): TreeItem | Thenable<TreeItem> {
-    if (element instanceof Folder) {
-      const label = element.path;
-      const tree = new TreeItem(label, TreeItemCollapsibleState.Expanded);
-      return tree;
-    }
-
-    if (element instanceof File) {
-      const label = element.path;
-      const tree = new TreeItem(label, TreeItemCollapsibleState.Expanded);
-      return tree;
-    }
-
-    const label = `${element.parentFile.path}:${element.number}`;
-    const tree = new TreeItem(label, TreeItemCollapsibleState.None);
-    tree.iconPath = "resources/partial-covered-icon.svg";
-    return tree;
+  static createView() {
+    const uncoveredLinesTreeDataProvider = new UncoveredLinesTree();
+    window.createTreeView("covering.uncovered-lines-view", {
+      treeDataProvider: uncoveredLinesTreeDataProvider,
+    });
   }
 
-  getChildren(
-    element?: UncoveredLineTreeNode | undefined
-  ): ProviderResult<UncoveredLineTreeNode[]> {
-    if (!element) {
-      return [...this.state.folders, ...this.state.files];
-    }
+  private uncoveredLinesService = appInjector.get(UncoveredLinesService);
+  private context = appInjector.get<ExtensionContext>("ExtensionContext");
 
-    if (element instanceof Folder) {
-      return [...element.folders, ...element.files];
-    }
+  private changeEvent = new EventEmitter<void>();
+  private actualRoot!: Folder;
 
-    if (element instanceof File) {
-      return element.lines;
-    }
-
-    return null;
+  constructor() {
+    this.uncoveredLinesService
+      .getUncoveredLinesData()
+      .subscribe((newUncoveredLinesData) => {
+        this.actualRoot = newUncoveredLinesData.root;
+        this.changeEvent.fire();
+      });
   }
 
-  public createView(): void {}
+  public get onDidChangeTreeData(): Event<void> {
+    return this.changeEvent.event;
+  }
 
-  public emitNewUncoveredLinesData(
-    newUncoveredLinesData: UncoveredLinesData
-  ): void {}
+  public getTreeItem(
+    element: UncoveredLineTreeNode<Folder | File | Line>
+  ): TreeItem {
+    const { selfData } = element;
 
-  public selectUncoveredLine(line: Line): void {}
+    if (selfData instanceof Line) {
+      const lineTreeItem = new TreeItem(
+        `${selfData.parentFile.fileName}:${selfData.rangeLine.lineNumber}`,
+        TreeItemCollapsibleState.None
+      );
+      return this.getLineTreeItem(lineTreeItem, selfData);
+    }
+
+    if (selfData instanceof Folder) {
+      return this.getFolderTreeItem(selfData);
+    }
+
+    return this.getFileTreeItem(selfData);
+  }
+
+  private getLineTreeItem(lineTreeItem: TreeItem, selfData: Line) {
+    lineTreeItem.command = {
+      command: "covering.open-file",
+      title: "Redirect to uncovered line",
+      arguments: [selfData],
+    };
+    lineTreeItem.contextValue = "file";
+    lineTreeItem.iconPath = Uri.joinPath(
+      this.context.extensionUri,
+      "resources",
+      "uncovered-line-icons",
+      `${selfData.coverageStatus}.svg`
+    );
+    return lineTreeItem;
+  }
+
+  private getFolderTreeItem(selfData: Folder): TreeItem {
+    return new TreeItem(
+      selfData.folderName,
+      TreeItemCollapsibleState.Collapsed
+    );
+  }
+
+  private getFileTreeItem(selfData: File) {
+    const fileTreeItem = new TreeItem(
+      selfData.fileName,
+      TreeItemCollapsibleState.Collapsed
+    );
+    fileTreeItem.contextValue = "file";
+    // fileTreeItem.resourceUri = selfData.uri;
+    return fileTreeItem;
+  }
+
+  public getChildren(
+    element?: UncoveredLineTreeNode<Folder | File | Line>
+  ): UncoveredLineTreeNode<Folder | File | Line>[] {
+    if (element) {
+      const { selfData } = element;
+
+      if (!selfData || selfData instanceof Line) {
+        return [];
+      }
+
+      if (selfData instanceof File) {
+        return this.getFileChildren(selfData);
+      }
+
+      if (selfData instanceof Folder) {
+        return this.getFolderChildren(selfData);
+      }
+
+      return [];
+    }
+
+    if (this.actualRoot) {
+      return this.getFolderChildren(this.actualRoot);
+    }
+
+    return [];
+  }
+
+  private getFileChildren(parentFile: File): UncoveredLineTreeNode<Line>[] {
+    return parentFile.lines
+      .sort((a, b) => a.rangeLine.lineNumber - b.rangeLine.lineNumber)
+      .map<UncoveredLineTreeNode<Line>>((line) => ({
+        type: FileType.Unknown,
+        selfData: line,
+      }));
+  }
+
+  private getFolderChildren(
+    parentFolder: Folder
+  ): UncoveredLineTreeNode<Folder | File>[] {
+    const children = [...parentFolder.folders, ...parentFolder.files];
+
+    children.sort((a, b) => {
+      if (a instanceof Folder && b instanceof Folder) {
+        return a.folderName.localeCompare(b.folderName);
+      }
+
+      if (a instanceof File && b instanceof File) {
+        return a.fileName.localeCompare(b.fileName);
+      }
+
+      return a instanceof File ? -1 : 1;
+    });
+
+    return children.map<UncoveredLineTreeNode<Folder | File>>((item) => ({
+      uri: item.uri,
+      selfData: item,
+      type: item instanceof Folder ? FileType.Directory : FileType.File,
+    }));
+  }
 }

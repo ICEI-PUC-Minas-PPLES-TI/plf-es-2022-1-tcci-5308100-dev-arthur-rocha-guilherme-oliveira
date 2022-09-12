@@ -5,16 +5,22 @@ import { Subject } from "rxjs";
 import {
   FileSystemWatcher,
   TextEditor,
+  Uri,
   window,
   workspace,
   WorkspaceFolder,
 } from "vscode";
 import { appInjector } from "../../inversify.config";
-import { Line } from "../../utils/models/line";
+import { RangeLine } from "../../utils/models/line";
 import { GitService } from "../../version-control/core/git-service";
 import { BranchDiff } from "../../version-control/models/branch-diff";
 import { LcovFileFinder } from "../../visual-studio-code/lcov-file-finder";
 import { CoverageLines } from "./coverage-lines";
+
+export type CompleteCoverageLines = {
+  fileName: Uri;
+  coverageLines: CoverageLines;
+};
 
 export class FileCoverage {
   public static readonly DEFAULT_LCOV_FILE_NAME = "lcov.info";
@@ -28,21 +34,24 @@ export class FileCoverage {
 
   public async getAllCoverageLines(
     useBranchRef: boolean
-  ): Promise<CoverageLines[]> {
+  ): Promise<CompleteCoverageLines[]> {
     const lcovFiles = this.getLcovFiles();
 
-    const coverageLines: CoverageLines[] = [];
+    const allFilesCoverageLines = [];
 
     for (const lcovFile of lcovFiles) {
-      const coverageLine = await this.getCoverageLinesForAFile(
+      const coverageLines = await this.getCoverageLinesForAFile(
         [lcovFile],
         lcovFile.file,
         useBranchRef
       );
-      coverageLines.push(coverageLine);
+      allFilesCoverageLines.push({
+        fileName: Uri.file(lcovFile.file),
+        coverageLines,
+      });
     }
 
-    return coverageLines;
+    return allFilesCoverageLines;
   }
 
   public getLcovFiles(): LcovFile[] {
@@ -282,27 +291,27 @@ export class FileCoverage {
 
     const rangeReducer = (
       condition: boolean,
-      accumulator: Line[],
+      accumulator: RangeLine[],
       detail: LcovBranch | LcovLine
-    ): Line[] => {
+    ): RangeLine[] => {
       if (condition) {
         if (detail.line < 0) {
           return accumulator;
         }
 
-        const lineRange = new Line(detail.line - 1);
+        const lineRange = new RangeLine(detail.line);
         return [...accumulator, lineRange];
       }
       return accumulator;
     };
 
-    const partial: Line[] = lcovFile.branches.details.reduce<Line[]>(
+    const partial: RangeLine[] = lcovFile.branches.details.reduce<RangeLine[]>(
       (acc, detail) => rangeReducer(detail.taken === 0, acc, detail),
       []
     );
 
-    const full: Line[] = lcovFile.lines.details
-      .reduce<Line[]>(
+    const full: RangeLine[] = lcovFile.lines.details
+      .reduce<RangeLine[]>(
         (acc, detail) => rangeReducer(detail.hit > 0, acc, detail),
         []
       )
@@ -311,8 +320,8 @@ export class FileCoverage {
           !partial.some((partialRange) => partialRange.isEqual(fullRange))
       );
 
-    const none: Line[] = lcovFile.lines.details
-      .reduce<Line[]>(
+    const none: RangeLine[] = lcovFile.lines.details
+      .reduce<RangeLine[]>(
         (acc, detail) => rangeReducer(detail.hit === 0, acc, detail),
         []
       )

@@ -1,11 +1,11 @@
-import { Line } from "../../utils/models/line";
+import { RangeLine } from "../../utils/models/line";
 import { BranchDiff } from "../../version-control/models/branch-diff";
 
 export class CoverageLines {
   constructor(
-    public full: Line[] = [],
-    public partial: Line[] = [],
-    public none: Line[] = []
+    public full: RangeLine[] = [],
+    public partial: RangeLine[] = [],
+    public none: RangeLine[] = []
   ) {}
 
   public static async createDiffCoverageLines(
@@ -31,11 +31,11 @@ export class CoverageLines {
   }
 
   private static async filterCoverageLines(
-    lines: Line[],
+    lines: RangeLine[],
     branchDiff: BranchDiff
   ) {
     return lines.filter((line) => {
-      return branchDiff.diffLines.some((diffLine: Line) => {
+      return branchDiff.diffLines.some((diffLine: RangeLine) => {
         return diffLine.equals(line);
       });
     });
