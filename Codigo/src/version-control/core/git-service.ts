@@ -65,6 +65,7 @@ export class GitService {
     const stringOptions = Array.isArray(options) ? options.join(" ") : "";
     const stringData = Array.isArray(data) ? data.join(" ") : "";
 
+<<<<<<< HEAD
     if (!workspace.workspaceFolders) {
       return "";
     }
@@ -72,6 +73,12 @@ export class GitService {
     const cwd = workspace.workspaceFolders
       ? workspace.workspaceFolders[0].uri.fsPath
       : __dirname;
+=======
+    const cwd = workspace.workspaceFolders
+      ? workspace.workspaceFolders[0].uri.fsPath
+      : __dirname;
+    this.output.appendLine(`returning: '${cwd}' as workspaceFolder`);
+>>>>>>> UC04-Alternar-visualização-da-porcentagem-de-obertura
 
     return await new Promise((resolve, reject) => {
       exec(
