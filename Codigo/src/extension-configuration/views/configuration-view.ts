@@ -5,6 +5,7 @@ import {
   window,
 } from "vscode";
 import { appInjector } from "../../inversify.config";
+import { GitService } from "../../version-control/core/git-service";
 import { getExtensionConfigurationHtmlForWebview } from "../core/extension-configuration";
 import { ExtensionConfigurationService } from "../core/extension-configuration-service";
 import { ConfigurationData } from "../models/configuration-data";
@@ -15,6 +16,8 @@ export class ConfigurationView implements WebviewViewProvider {
     ExtensionConfigurationService
   );
   private context = appInjector.get<ExtensionContext>("ExtensionContext");
+  private gitService = appInjector.get(GitService);
+
   private extensionConfigurationData = new ConfigurationData(
     false,
     false,
@@ -40,11 +43,14 @@ export class ConfigurationView implements WebviewViewProvider {
 
     this.extensionConfigurationService
       .getConfigurationData()
-      .subscribe((extensionConfigurationData) => {
+      .subscribe(async (extensionConfigurationData) => {
+        const isGitWorkspace = await this.gitService.getIsGitWorkspace();
+
         this.extensionConfigurationData = extensionConfigurationData;
         this._view.webview.postMessage({
           type: "extensionConfigurationData",
           data: this.extensionConfigurationData,
+          isGitWorkspace: isGitWorkspace,
         });
       });
 
