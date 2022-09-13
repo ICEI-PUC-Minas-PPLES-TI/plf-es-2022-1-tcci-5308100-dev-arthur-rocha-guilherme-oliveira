@@ -8,18 +8,23 @@ const vscode = acquireVsCodeApi();
 function updateExtensionConfigurationData(extensionConfigurationData, isGitWorkspace) {
   isGutterActive.checked = extensionConfigurationData.isGutterActive;
   isJustForFileInFocus.checked = extensionConfigurationData.isJustForFileInFocus;
+  isBasedOnBranchChange.checked = extensionConfigurationData.isBasedOnBranchChange;
+
 
   if (isGitWorkspace) {
-    isBasedOnBranchChange.checked = extensionConfigurationData.isBasedOnBranchChange;
-    isBasedOnBranchChange.disabled = false;
-    messageBranch.innerHTML = "Avaliar com base na branch: " + extensionConfigurationData.referenceBranchsage;
+    const message = "Avaliar com base na branch: " + extensionConfigurationData.referenceBranch;
+    updateBrachHtmlLabel(message, false);
   } else {
-    isBasedOnBranchChange.checked = extensionConfigurationData.isBasedOnBranchChange;
-    isBasedOnBranchChange.disabled = true;
-    messageBranch.innerHTML = ".git não encontrado";
+    const message = ".git não encontrado";
+    updateBrachHtmlLabel(message, true);
   }
 
   vscode.setState(extensionConfigurationData);
+}
+
+function updateBrachHtmlLabel(message, isDisabled) {
+  isBasedOnBranchChange.disabled = isDisabled;
+  messageBranch.innerHTML = message;
 }
 
 window.addEventListener('message', event => {
