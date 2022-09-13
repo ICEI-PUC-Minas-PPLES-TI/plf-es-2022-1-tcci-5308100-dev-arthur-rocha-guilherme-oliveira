@@ -5,13 +5,13 @@ import { Logger } from "./logger";
 export class LoggerManager {
   private readonly loggers = new Map<string, Logger>();
 
-  public getServiceOutput<T>(service: T & Function): Logger {
-    const logger = this.loggers.get(service.name);
+  public getServiceOutput(serviceName: string): Logger {
+    const logger = this.loggers.get(serviceName);
 
     if (!logger) {
-      const newOutputChannel = new Logger(service);
+      const newOutputChannel = new Logger(serviceName);
 
-      this.loggers.set(service.name, newOutputChannel);
+      this.loggers.set(serviceName, newOutputChannel);
       return newOutputChannel;
     }
 

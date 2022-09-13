@@ -17,7 +17,7 @@ export class UncoveredLinesData {
   ): Promise<UncoveredLinesData | null> {
     const logger = appInjector
       .get(LoggerManager)
-      .getServiceOutput(UncoveredLinesData);
+      .getServiceOutput("UncoveredLinesData");
 
     const uncoveredLines = await fileCoverage.getAllCoverageLines(
       extensionConfiguration.isBasedOnBranchChange

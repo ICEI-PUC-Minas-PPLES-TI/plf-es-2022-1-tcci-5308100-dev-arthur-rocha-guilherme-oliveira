@@ -1,12 +1,16 @@
 import * as path from "path";
 import { FileStat, FileType, Uri } from "vscode";
 import { CompleteCoverageLines } from "../../file-coverage/models/file-coverage";
+import { appInjector } from "../../inversify.config";
 import { fileSystemHelper } from "../../utils/functions/file-system-helper";
 import { normalizeFileName } from "../../utils/functions/helpers";
+import { LoggerManager } from "../../utils/logger/logger-manager";
 import { AppFileStat } from "../../utils/models/app-file-stat";
 import { File } from "./file";
 
 export class Folder {
+  private logger = appInjector.get(LoggerManager).getServiceOutput("Folder");
+
   public folderName: string;
   public folders: Folder[] = [];
   public files: File[] = [];
@@ -23,6 +27,13 @@ export class Folder {
     files: File[];
   }> {
     const allChildren = await this.readDirectory(this.uri);
+    const filteredChildren = allChildren.filter((child) =>
+      completeCoverageLines.some((file) =>
+        file.fileName.fsPath.includes(child.name)
+      )
+    );
+
+    this.logger.info(`All children for: ${this.uri}\n${filteredChildren}`);
 
     const children: {
       folders: Folder[];
@@ -32,7 +43,7 @@ export class Folder {
       files: [],
     };
 
-    for (const file of allChildren) {
+    for (const file of filteredChildren) {
       if (file.type === FileType.Directory) {
         const newFolder = await Folder.createRootFolder(
           Uri.file(path.join(this.uri.fsPath, file.name)),
@@ -46,9 +57,18 @@ export class Folder {
       if (file.type === FileType.File) {
         const fileUri = Uri.file(path.join(this.uri.fsPath, file.name));
 
+        this.logger.info(
+          `Trying to find: ${fileUri.fsPath}\nin:${completeCoverageLines.map(
+            (i) => i.fileName.fsPath
+          )}`
+        );
+
         const mappedFile = completeCoverageLines.find(
           (completeCoverageLine) => {
-            return completeCoverageLine.fileName.fsPath === fileUri.fsPath;
+            return completeCoverageLine.fileName.fsPath.length >
+              fileUri.fsPath.length
+              ? completeCoverageLine.fileName.fsPath.includes(fileUri.fsPath)
+              : fileUri.fsPath.includes(completeCoverageLine.fileName.fsPath);
           }
         );
         if (mappedFile) {
@@ -57,10 +77,17 @@ export class Folder {
             [...mappedFile.coverageLines.none],
             [...mappedFile.coverageLines.partial]
           );
-          children.files.push(newFile);
+
+          if (newFile.lines.length > 0) {
+            children.files.push(newFile);
+          }
         }
       }
     }
+
+    this.logger.info(
+      `Found ${children.files.length} files in the ${this.folderName} directory`
+    );
 
     return children;
   }

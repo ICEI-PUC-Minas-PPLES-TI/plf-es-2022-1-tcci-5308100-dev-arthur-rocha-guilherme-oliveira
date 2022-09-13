@@ -33,7 +33,7 @@ export class UncoveredLinesTree
 
   private logger = appInjector
     .get(LoggerManager)
-    .getServiceOutput(UncoveredLinesTree);
+    .getServiceOutput("UncoveredLinesTree");
 
   private uncoveredLinesService = appInjector.get(UncoveredLinesService);
   private context = appInjector.get<ExtensionContext>("ExtensionContext");
@@ -92,10 +92,12 @@ export class UncoveredLinesTree
   }
 
   private getFolderTreeItem(selfData: Folder): TreeItem {
-    return new TreeItem(
+    const folderTree = new TreeItem(
       selfData.folderName,
       TreeItemCollapsibleState.Collapsed
     );
+    folderTree.resourceUri = selfData.uri;
+    return folderTree;
   }
 
   private getFileTreeItem(selfData: File) {

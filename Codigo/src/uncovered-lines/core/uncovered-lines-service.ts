@@ -12,7 +12,7 @@ import { appInjector } from "../../inversify.config";
 export class UncoveredLinesService {
   private logger = appInjector
     .get(LoggerManager)
-    .getServiceOutput(UncoveredLinesService);
+    .getServiceOutput("UncoveredLinesService");
 
   private uncoveredLinesDataSubject!: ReplaySubject<UncoveredLinesData>;
 

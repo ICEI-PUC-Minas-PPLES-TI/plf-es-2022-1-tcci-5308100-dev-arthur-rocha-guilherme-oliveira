@@ -9,9 +9,9 @@ enum MessageType {
 export class Logger {
   private readonly outputChannel: OutputChannel;
 
-  constructor(service: Function) {
+  constructor(serviceName: string) {
     this.outputChannel = window.createOutputChannel(
-      `[Covering] [${service.name}]`
+      `[Covering] [${serviceName}]`
     );
   }
 
