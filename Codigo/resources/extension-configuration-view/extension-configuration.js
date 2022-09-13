@@ -13,7 +13,7 @@ function updateExtensionConfigurationData(extensionConfigurationData, isGitWorks
     const message = "Avaliar com base na branch: " + extensionConfigurationData.referenceBranch;
     updateBrachHtmlLabel(extensionConfigurationData, message, false);
   } else {
-    const message = ".git não encontrado"
+    const message = ".git não encontrado";
     updateBrachHtmlLabel(extensionConfigurationData, message, true);
   }
 
