@@ -10,7 +10,7 @@
 			"type": "extensionHost",
 			"request": "launch",
 			"args": [
-				"${workspaceFolder}/example/example.code-workspace",
+				"${workspaceFolder}/example/simple",
 				"--extensionDevelopmentPath=${workspaceFolder}"
 			],
 			"outFiles": [

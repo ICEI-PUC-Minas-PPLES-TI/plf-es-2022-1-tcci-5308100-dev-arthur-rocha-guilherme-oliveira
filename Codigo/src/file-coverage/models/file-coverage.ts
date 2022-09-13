@@ -4,13 +4,15 @@ import { LcovBranch, LcovFile, LcovLine, source } from "lcov-parse";
 import { Subject } from "rxjs";
 import {
   FileSystemWatcher,
-  Range,
   TextEditor,
   window,
   workspace,
   WorkspaceFolder,
 } from "vscode";
 import { appInjector } from "../../inversify.config";
+import { Line } from "../../utils/models/line";
+import { GitService } from "../../version-control/core/git-service";
+import { BranchDiff } from "../../version-control/models/branch-diff";
 import { LcovFileFinder } from "../../visual-studio-code/lcov-file-finder";
 import { CoverageLines } from "./coverage-lines";
 
@@ -20,27 +22,77 @@ export class FileCoverage {
   static onFileChangeSubject: Subject<void>;
 
   private lcovFileFinder = appInjector.get(LcovFileFinder);
+  private gitService = appInjector.get(GitService);
 
   constructor(private readonly lcovFiles: Map<string, LcovFile>) {}
+
+  public async getAllCoverageLines(
+    useBranchRef: boolean
+  ): Promise<CoverageLines[]> {
+    const lcovFiles = this.getLcovFiles();
+
+    const coverageLines: CoverageLines[] = [];
+
+    for (const lcovFile of lcovFiles) {
+      const coverageLine = await this.getCoverageLinesForAFile(
+        [lcovFile],
+        lcovFile.file,
+        useBranchRef
+      );
+      coverageLines.push(coverageLine);
+    }
+
+    return coverageLines;
+  }
 
   public getLcovFiles(): LcovFile[] {
     return Array.from(this.lcovFiles.values());
   }
 
   public async getCoverageLinesForEditor(
-    textEditor: TextEditor
+    textEditor: TextEditor,
+    useGitDiff: boolean
   ): Promise<CoverageLines> {
     const lcovFiles = this.lcovFileFinder.findLcovFilesForEditor(
       textEditor,
       this.lcovFiles
     );
 
+    return this.getCoverageLinesForAFile(
+      lcovFiles,
+      textEditor.document.fileName,
+      useGitDiff
+    );
+  }
+
+  private async getCoverageLinesForAFile(
+    lcovFiles: LcovFile[],
+    fileName: string,
+    useGitDiff: boolean
+  ): Promise<CoverageLines> {
     const coverageLines = this.lcovFilesToCoverageLines(lcovFiles);
-    if (coverageLines) {
-      return coverageLines;
+
+    if (!coverageLines) {
+      return new CoverageLines();
     }
 
-    return new CoverageLines();
+    if (useGitDiff) {
+      const isFileDiff = await this.gitService.getIsCurrentFilesBranchDiff(
+        "master",
+        fileName
+      );
+
+      if (isFileDiff) {
+        const diff = await this.gitService.getCurrentBranchDiff("master");
+        const branchDiff = BranchDiff.createBranchDiffFileLines(diff, fileName);
+
+        return CoverageLines.createDiffCoverageLines(coverageLines, branchDiff);
+      }
+
+      return new CoverageLines();
+    }
+
+    return coverageLines;
   }
 
   public static async createNewCoverageFile(): Promise<FileCoverage> {
@@ -230,27 +282,27 @@ export class FileCoverage {
 
     const rangeReducer = (
       condition: boolean,
-      accumulator: Range[],
+      accumulator: Line[],
       detail: LcovBranch | LcovLine
-    ): Range[] => {
+    ): Line[] => {
       if (condition) {
         if (detail.line < 0) {
           return accumulator;
         }
 
-        const lineRange = new Range(detail.line - 1, 0, detail.line - 1, 0);
+        const lineRange = new Line(detail.line - 1);
         return [...accumulator, lineRange];
       }
       return accumulator;
     };
 
-    const partial: Range[] = lcovFile.branches.details.reduce<Range[]>(
+    const partial: Line[] = lcovFile.branches.details.reduce<Line[]>(
       (acc, detail) => rangeReducer(detail.taken === 0, acc, detail),
       []
     );
 
-    const full: Range[] = lcovFile.lines.details
-      .reduce<Range[]>(
+    const full: Line[] = lcovFile.lines.details
+      .reduce<Line[]>(
         (acc, detail) => rangeReducer(detail.hit > 0, acc, detail),
         []
       )
@@ -259,8 +311,8 @@ export class FileCoverage {
           !partial.some((partialRange) => partialRange.isEqual(fullRange))
       );
 
-    const none: Range[] = lcovFile.lines.details
-      .reduce<Range[]>(
+    const none: Line[] = lcovFile.lines.details
+      .reduce<Line[]>(
         (acc, detail) => rangeReducer(detail.hit === 0, acc, detail),
         []
       )

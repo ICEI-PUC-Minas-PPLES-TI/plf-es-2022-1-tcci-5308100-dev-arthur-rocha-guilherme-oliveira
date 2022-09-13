@@ -35,12 +35,17 @@ export class ExtensionOrchestrationService {
   ): void {
     this.actualProjectConfiguration = newProjectConfiguration;
 
-    if (this.actualFileCoverage) {
+    if (this.actualFileCoverage && this.actualConfigurationData) {
       this.coverageService.calculateCoverage(
         this.actualFileCoverage,
-        newProjectConfiguration
+        newProjectConfiguration,
+        this.actualConfigurationData
       );
     }
+
+    this.extensionConfigurationService.changeRefBranch(
+      newProjectConfiguration.refBranch
+    );
   }
 
   public initViewData(): void {}
@@ -60,6 +65,14 @@ export class ExtensionOrchestrationService {
         newConfigurationData
       );
     }
+
+    if (this.actualFileCoverage && this.actualProjectConfiguration) {
+      this.coverageService.calculateCoverage(
+        this.actualFileCoverage,
+        this.actualProjectConfiguration,
+        newConfigurationData
+      );
+    }
   }
 
   public fileFocusChange(): void {}
@@ -69,10 +82,11 @@ export class ExtensionOrchestrationService {
   public emitNewFileCoverage(newFileCoverage: FileCoverage): void {
     this.actualFileCoverage = newFileCoverage;
 
-    if (this.actualProjectConfiguration) {
+    if (this.actualProjectConfiguration && this.actualConfigurationData) {
       this.coverageService.calculateCoverage(
         newFileCoverage,
-        this.actualProjectConfiguration
+        this.actualProjectConfiguration,
+        this.actualConfigurationData
       );
     }
 
@@ -88,16 +102,28 @@ export class ExtensionOrchestrationService {
     this.registerCommands();
     this.registerViews();
 
+    this.startProjectConfigurationObserver();
+
+    this.startExtensionConfigurationObserver();
+
+    this.startCoverageFileObserver();
+  }
+
+  private startCoverageFileObserver() {
     this.fileCoverageService.getFileCoverage().subscribe((fileCoverage) => {
       this.emitNewFileCoverage(fileCoverage);
     });
+  }
 
+  private startExtensionConfigurationObserver() {
     this.extensionConfigurationService
       .getConfigurationData()
       .subscribe((configurationData) => {
         this.emitNewConfigurationData(configurationData);
       });
+  }
 
+  private startProjectConfigurationObserver() {
     this.projectConfigurationService
       .getProjectConfigurationData()
       .subscribe((configurationData) => {

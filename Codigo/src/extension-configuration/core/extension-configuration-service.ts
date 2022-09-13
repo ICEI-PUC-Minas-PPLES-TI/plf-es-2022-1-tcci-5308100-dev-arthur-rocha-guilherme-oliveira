@@ -1,3 +1,4 @@
+import { injectable } from "inversify";
 import { Observable, ReplaySubject, startWith } from "rxjs";
 import { window } from "vscode";
 import { ConfigurationData } from "../models/configuration-data";
@@ -24,11 +25,25 @@ export class ExtensionConfigurationService {
   }
 
   public toggleCoverageBaseReferenceMode(): void {
-    window.showErrorMessage("not implemented yet");
+    const newConfig = ConfigurationData.updateConfigurationData(
+      this.actualState,
+      { isBasedOnBranchChange: !this.actualState.isBasedOnBranchChange }
+    );
+
+    this.emitNemConfig(newConfig);
   }
 
   private emitNemConfig(newConfigurationData: ConfigurationData): void {
     this.actualState = newConfigurationData;
     this.configurationData.next(newConfigurationData);
+  }
+
+  public changeRefBranch(refBranch: string = "master"): void {
+    const newConfig = ConfigurationData.updateConfigurationData(
+      this.actualState,
+      { referenceBranch: refBranch }
+    );
+
+    this.emitNemConfig(newConfig);
   }
 }
