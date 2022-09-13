@@ -161,7 +161,7 @@ export class UncoveredLinesTree
         return a.fileName.localeCompare(b.fileName);
       }
 
-      return a instanceof File ? -1 : 1;
+      return a instanceof File ? 1 : -1;
     });
 
     return children.map<UncoveredLineTreeNode<Folder | File>>((item) => ({
