@@ -3,6 +3,7 @@ import {
   EventEmitter,
   ExtensionContext,
   FileType,
+  ThemeIcon,
   TreeDataProvider,
   TreeItem,
   TreeItemCollapsibleState,
@@ -106,7 +107,8 @@ export class UncoveredLinesTree
       TreeItemCollapsibleState.Collapsed
     );
     fileTreeItem.contextValue = "file";
-    // fileTreeItem.resourceUri = selfData.uri;
+    fileTreeItem.resourceUri = selfData.uri;
+    fileTreeItem.iconPath = ThemeIcon.File;
     return fileTreeItem;
   }
 
