@@ -1,12 +1,15 @@
 import { injectable } from "inversify";
 import { Observable, ReplaySubject, startWith } from "rxjs";
 import { window } from "vscode";
+import { appInjector } from "../../inversify.config";
+import { GitService } from "../../version-control/core/git-service";
 import { ConfigurationData } from "../models/configuration-data";
 
 @injectable()
 export class ExtensionConfigurationService {
   private configurationData = new ReplaySubject<ConfigurationData>();
-  private actualState = new ConfigurationData(true, false, "master", false);
+  private actualState = new ConfigurationData(true, false, "", false);
+  private gitService = appInjector.get(GitService);
 
   public getConfigurationData(): Observable<ConfigurationData> {
     return this.configurationData.pipe(startWith(this.actualState));
@@ -38,7 +41,7 @@ export class ExtensionConfigurationService {
     this.configurationData.next(newConfigurationData);
   }
 
-  public changeRefBranch(refBranch: string = "master"): void {
+  public async changeRefBranch(refBranch: string): Promise<void> {
     const newConfig = ConfigurationData.updateConfigurationData(
       this.actualState,
       { referenceBranch: refBranch }
