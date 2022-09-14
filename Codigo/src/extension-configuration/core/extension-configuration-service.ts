@@ -41,7 +41,7 @@ export class ExtensionConfigurationService {
     this.configurationData.next(newConfigurationData);
   }
 
-  public async changeRefBranch(refBranch: string): Promise<void> {
+  public changeRefBranch(refBranch: string): void {
     const newConfig = ConfigurationData.updateConfigurationData(
       this.actualState,
       { referenceBranch: refBranch }
