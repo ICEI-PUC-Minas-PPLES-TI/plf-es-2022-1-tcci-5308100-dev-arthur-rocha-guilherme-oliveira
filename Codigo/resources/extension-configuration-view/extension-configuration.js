@@ -19,7 +19,7 @@ function updateExtensionConfigurationData(extensionConfigurationData, isGitWorks
     updateBrachHtmlLabel(message, true);
   }
 
-  vscode.setState(extensionConfigurationData);
+  vscode.setState({ extensionConfigurationData, isGitWorkspace });
 }
 
 function updateBrachHtmlLabel(message, isDisabled) {
@@ -38,8 +38,8 @@ window.addEventListener('message', event => {
   }
 });
 
-const lastState = vscode.getState();
-updateExtensionConfigurationData(lastState);
+const { extensionConfigurationData, isGitWorkspace } = vscode.getState();
+updateExtensionConfigurationData(extensionConfigurationData, isGitWorkspace);
 
 isGutterActive.addEventListener('change', () => {
   vscode.postMessage({
