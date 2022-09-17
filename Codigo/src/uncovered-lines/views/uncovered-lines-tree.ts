@@ -18,13 +18,14 @@ import { Folder } from "../models/folder";
 import { Line } from "../models/line";
 import { UncoveredLinesData } from "../models/uncovered-lines-data";
 
-type UncoveredLineTreeNode<T extends Folder | File | Line> = {
+type UncoveredLineTreeNode<T extends Folder | File | Line | undefined> = {
   type: FileType;
   selfData: T;
 };
 
 export class UncoveredLinesTree
-  implements TreeDataProvider<UncoveredLineTreeNode<Folder | File | Line>>
+  implements
+    TreeDataProvider<UncoveredLineTreeNode<Folder | File | Line | undefined>>
 {
   private logger = appInjector
     .get(LoggerManager)
@@ -62,7 +63,7 @@ export class UncoveredLinesTree
   }
 
   public getTreeItem(
-    element: UncoveredLineTreeNode<Folder | File | Line>
+    element: UncoveredLineTreeNode<Folder | File | Line | undefined>
   ): TreeItem {
     const { selfData } = element;
 
@@ -74,16 +75,25 @@ export class UncoveredLinesTree
       return this.getLineTreeItem(lineTreeItem, selfData);
     }
 
+    if (selfData instanceof File) {
+      return this.getFileTreeItem(selfData);
+    }
+
     if (selfData instanceof Folder) {
       return this.getFolderTreeItem(selfData);
     }
 
-    return this.getFileTreeItem(selfData);
+    return new TreeItem(
+      this.actualUncoveredLinesData.root.hasSomethingToCover
+        ? "Todas as linhas estão cobertas"
+        : "Nenhuma linha para cobrir",
+      TreeItemCollapsibleState.None
+    );
   }
 
   public getChildren(
     element?: UncoveredLineTreeNode<Folder | File | Line>
-  ): UncoveredLineTreeNode<Folder | File | Line>[] {
+  ): UncoveredLineTreeNode<Folder | File | Line | undefined>[] {
     if (element) {
       const { selfData } = element;
 
@@ -103,7 +113,20 @@ export class UncoveredLinesTree
     }
 
     if (this.actualUncoveredLinesData.root) {
-      return this.getFolderChildren(this.actualUncoveredLinesData.root);
+      const rootChildren = this.getFolderChildren(
+        this.actualUncoveredLinesData.root
+      );
+
+      if (rootChildren.length > 0) {
+        return rootChildren;
+      }
+
+      return [
+        {
+          selfData: undefined,
+          type: FileType.Unknown,
+        },
+      ];
     }
 
     return [];
