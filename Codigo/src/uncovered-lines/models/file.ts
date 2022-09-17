@@ -1,6 +1,6 @@
 import { Uri } from "vscode";
 import { normalizeFileName } from "../../utils/functions/helpers";
-import { RangeLine } from "../../utils/models/line";
+import { RangeLine } from "../../utils/models/range-line";
 import { Line } from "./line";
 
 export class File {

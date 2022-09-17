@@ -11,7 +11,7 @@ import {
   WorkspaceFolder,
 } from "vscode";
 import { appInjector } from "../../inversify.config";
-import { RangeLine } from "../../utils/models/line";
+import { RangeLine } from "../../utils/models/range-line";
 import { GitService } from "../../version-control/core/git-service";
 import { BranchDiff } from "../../version-control/models/branch-diff";
 import { LcovFileFinder } from "../../visual-studio-code/lcov-file-finder";

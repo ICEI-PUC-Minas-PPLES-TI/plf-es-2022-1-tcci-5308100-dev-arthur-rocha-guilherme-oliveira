@@ -1,5 +1,5 @@
 import { normalizeFileName } from "../../utils/functions/helpers";
-import { RangeLine } from "../../utils/models/line";
+import { RangeLine } from "../../utils/models/range-line";
 
 export class BranchDiff {
   constructor(public fileName: string, public diffLines: RangeLine[]) {}

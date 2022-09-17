@@ -8,6 +8,10 @@ import { LoggerManager } from "../../utils/logger/logger-manager";
 import { AppFileStat } from "../../utils/models/app-file-stat";
 import { File } from "./file";
 
+class DirectoryFile {
+  constructor(public name: string, public type: FileType) {}
+}
+
 export class Folder {
   private logger = appInjector.get(LoggerManager).getServiceOutput("Folder");
 
@@ -92,16 +96,14 @@ export class Folder {
     return children;
   }
 
-  private async readDirectory(
-    uri: Uri
-  ): Promise<{ name: string; type: FileType }[]> {
+  private async readDirectory(uri: Uri): Promise<DirectoryFile[]> {
     const children = await fileSystemHelper.readdir(uri.fsPath);
 
-    const result: { name: string; type: FileType }[] = [];
+    const result: DirectoryFile[] = [];
     for (let i = 0; i < children.length; i++) {
       const childName = children[i];
       const stat = await this.createStatFile(path.join(uri.fsPath, childName));
-      result.push({ name: childName, type: stat.type });
+      result.push(new DirectoryFile(childName, stat.type));
     }
 
     return Promise.resolve(result);

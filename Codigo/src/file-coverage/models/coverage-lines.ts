@@ -1,4 +1,4 @@
-import { RangeLine } from "../../utils/models/line";
+import { RangeLine } from "../../utils/models/range-line";
 import { BranchDiff } from "../../version-control/models/branch-diff";
 
 export class CoverageLines {
