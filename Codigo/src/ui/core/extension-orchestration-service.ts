@@ -1,4 +1,4 @@
-import { commands, ExtensionContext, window } from "vscode";
+import { commands, ExtensionContext } from "vscode";
 import { CoverageService } from "../../coverage/core/coverage-service";
 import { CoverageView } from "../../coverage/views/coverage-view";
 import { ExtensionConfigurationService } from "../../extension-configuration/core/extension-configuration-service";
@@ -9,7 +9,9 @@ import { FileCoverage } from "../../file-coverage/models/file-coverage";
 import { appInjector } from "../../inversify.config";
 import { ProjectConfigurationService } from "../../project-configuration/core/project-configuration-service";
 import { ProjectConfiguration } from "../../project-configuration/models/project-configuration";
+import { UncoveredLinesService } from "../../uncovered-lines/core/uncovered-lines-service";
 import { UncoveredLinesTree } from "../../uncovered-lines/views/uncovered-lines-tree";
+import { Line } from "../../uncovered-lines/models/line";
 import { VisualStudioCode } from "../../visual-studio-code/visual-studio-code";
 import { TestType } from "../enums/test-type";
 
@@ -23,6 +25,7 @@ export class ExtensionOrchestrationService {
   private projectConfigurationService = appInjector.get(
     ProjectConfigurationService
   );
+  private uncoveredLinesService = appInjector.get(UncoveredLinesService);
   private vsCode = appInjector.get(VisualStudioCode);
   private context = appInjector.get<ExtensionContext>("ExtensionContext");
 
@@ -64,6 +67,11 @@ export class ExtensionOrchestrationService {
         this.actualFileCoverage,
         newConfigurationData
       );
+
+      this.uncoveredLinesService.setCurrentUncoveredLines(
+        this.actualFileCoverage,
+        newConfigurationData
+      );
     }
 
     if (this.actualFileCoverage && this.actualProjectConfiguration) {
@@ -92,6 +100,11 @@ export class ExtensionOrchestrationService {
 
     if (this.actualConfigurationData) {
       this.vsCode.changeEditorDecoration(
+        newFileCoverage,
+        this.actualConfigurationData
+      );
+
+      this.uncoveredLinesService.setCurrentUncoveredLines(
         newFileCoverage,
         this.actualConfigurationData
       );
@@ -132,9 +145,10 @@ export class ExtensionOrchestrationService {
   }
 
   private registerCommands() {
-    let disposable = commands.registerCommand("covering.helloWorld", () => {
-      window.showInformationMessage("Hello World from covering!");
-    });
+    let disposable = commands.registerCommand(
+      "covering.open-file",
+      (line: Line) => this.uncoveredLinesService.selectUncoveredLine(line)
+    );
 
     this.context.subscriptions.push(disposable);
   }
@@ -142,10 +156,6 @@ export class ExtensionOrchestrationService {
   private registerViews() {
     ConfigurationView.createView();
     CoverageView.createView();
-
-    const uncoveredLinesTreeDataProvider = new UncoveredLinesTree();
-    window.createTreeView("covering.uncovered-lines-view", {
-      treeDataProvider: uncoveredLinesTreeDataProvider,
-    });
+    UncoveredLinesTree.createView();
   }
 }

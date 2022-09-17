@@ -24,13 +24,19 @@ export class CoverageData {
     );
 
     const coveredLines = coverageLines.reduce(
-      (acc, curr) => acc + curr.full.length + curr.partial.length,
+      (acc, curr) =>
+        acc +
+        curr.coverageLines.full.length +
+        curr.coverageLines.partial.length,
       0
     );
 
     const totalLines = coverageLines.reduce(
       (acc, curr) =>
-        acc + curr.full.length + curr.partial.length + curr.none.length,
+        acc +
+        curr.coverageLines.full.length +
+        curr.coverageLines.partial.length +
+        curr.coverageLines.none.length,
       0
     );
 
