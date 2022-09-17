@@ -1,6 +1,7 @@
 const isGutterActive = document.getElementById('isGutterActive');
 const isBasedOnBranchChange = document.getElementById('isBasedOnBranchChange');
 const messageBranch = document.getElementById('messageBranch');
+const refBranch = document.getElementById('referenceBranch');
 const isJustForFileInFocus = document.getElementById('isJustForFileInFocus');
 
 const vscode = acquireVsCodeApi();
@@ -10,21 +11,22 @@ function updateExtensionConfigurationData(extensionConfigurationData, isGitWorks
   isJustForFileInFocus.checked = extensionConfigurationData.isJustForFileInFocus;
   isBasedOnBranchChange.checked = extensionConfigurationData.isBasedOnBranchChange;
 
-
   if (isGitWorkspace) {
-    const message = "Avaliar com base na branch: " + extensionConfigurationData.referenceBranch;
-    updateBrachHtmlLabel(message, false);
+    const message = "Avaliar com base na branch: ";
+    updateBrachHtmlLabel(message, false, extensionConfigurationData.referenceBranch);
   } else {
     const message = ".git não encontrado";
-    updateBrachHtmlLabel(message, true);
+    updateBrachHtmlLabel(message, true, extensionConfigurationData.referenceBranch);
   }
 
   vscode.setState({ extensionConfigurationData, isGitWorkspace });
 }
 
-function updateBrachHtmlLabel(message, isDisabled) {
+function updateBrachHtmlLabel(message, isDisabled, referenceBranch) {
   isBasedOnBranchChange.disabled = isDisabled;
-  messageBranch.innerHTML = message;
+  messageBranch.innerText = message;
+  refBranch.innerText = referenceBranch;
+
 }
 
 window.addEventListener('message', event => {
