@@ -1,14 +1,14 @@
 import { normalizeFileName } from "../../utils/functions/helpers";
-import { Line } from "../../utils/models/line";
+import { RangeLine } from "../../utils/models/range-line";
 
 export class BranchDiff {
-  constructor(public fileName: string, public diffLines: Line[]) {}
+  constructor(public fileName: string, public diffLines: RangeLine[]) {}
 
   public static createBranchDiffFileLines(
     diffArray: string[],
     fileName: string
   ): BranchDiff {
-    let lines: Line[] = [];
+    let lines: RangeLine[] = [];
 
     for (const diff of diffArray) {
       if (diff.length) {
@@ -23,7 +23,7 @@ export class BranchDiff {
               const endLine = Number(diffLinesNumbers[1] || 1);
 
               for (let i = 0; i < endLine; i++) {
-                lines.push(new Line(startLine + i - 1));
+                lines.push(new RangeLine(startLine + i));
               }
             }
           });
