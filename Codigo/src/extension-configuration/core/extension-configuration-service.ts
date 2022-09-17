@@ -1,12 +1,15 @@
 import { injectable } from "inversify";
 import { Observable, ReplaySubject, startWith } from "rxjs";
 import { window } from "vscode";
+import { appInjector } from "../../inversify.config";
+import { GitService } from "../../version-control/core/git-service";
 import { ConfigurationData } from "../models/configuration-data";
 
 @injectable()
 export class ExtensionConfigurationService {
   private configurationData = new ReplaySubject<ConfigurationData>();
-  private actualState = new ConfigurationData(true, false, "master", false);
+  private actualState = new ConfigurationData(true, false, "", false);
+  private gitService = appInjector.get(GitService);
 
   public getConfigurationData(): Observable<ConfigurationData> {
     return this.configurationData.pipe(startWith(this.actualState));
@@ -38,12 +41,22 @@ export class ExtensionConfigurationService {
     this.configurationData.next(newConfigurationData);
   }
 
-  public changeRefBranch(refBranch: string = "master"): void {
-    const newConfig = ConfigurationData.updateConfigurationData(
-      this.actualState,
-      { referenceBranch: refBranch }
-    );
+  public async changeRefBranch(refBranch: string | undefined): Promise<void> {
+    const isExistingRefBranch = refBranch
+      ? await this.gitService.getIsBranch(refBranch)
+      : false;
 
-    this.emitNemConfig(newConfig);
+    if (isExistingRefBranch) {
+      const newConfig = ConfigurationData.updateConfigurationData(
+        this.actualState,
+        { referenceBranch: refBranch }
+      );
+
+      this.emitNemConfig(newConfig);
+    } else {
+      window.showWarningMessage(
+        `The branch "${refBranch}" does not exist in the repository`
+      );
+    }
   }
 }

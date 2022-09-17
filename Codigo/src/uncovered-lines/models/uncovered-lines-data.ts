@@ -20,7 +20,8 @@ export class UncoveredLinesData {
       .getServiceOutput("UncoveredLinesData");
 
     const uncoveredLines = await fileCoverage.getAllCoverageLines(
-      extensionConfiguration.isBasedOnBranchChange
+      extensionConfiguration.isBasedOnBranchChange,
+      extensionConfiguration.referenceBranch
     );
 
     const workspaceFolders = workspace.workspaceFolders;

@@ -1,6 +1,8 @@
 const isGutterActive = document.getElementById('isGutterActive');
 const isBasedOnBranchChange = document.getElementById('isBasedOnBranchChange');
+const branchContainer = document.getElementById('branchContainer');
 const messageBranch = document.getElementById('messageBranch');
+const refBranch = document.getElementById('referenceBranch');
 const isJustForFileInFocus = document.getElementById('isJustForFileInFocus');
 
 const vscode = acquireVsCodeApi();
@@ -10,21 +12,29 @@ function updateExtensionConfigurationData(extensionConfigurationData, isGitWorks
   isJustForFileInFocus.checked = extensionConfigurationData.isJustForFileInFocus;
   isBasedOnBranchChange.checked = extensionConfigurationData.isBasedOnBranchChange;
 
-
   if (isGitWorkspace) {
-    const message = "Avaliar com base na branch: " + extensionConfigurationData.referenceBranch;
-    updateBrachHtmlLabel(message, false);
+    const message = "Avaliar com base na branch: ";
+    updateBrachHtmlLabel(message, false, extensionConfigurationData.referenceBranch);
   } else {
     const message = ".git não encontrado";
-    updateBrachHtmlLabel(message, true);
+    updateBrachHtmlLabel(message, true, extensionConfigurationData.referenceBranch);
   }
 
-  vscode.setState(extensionConfigurationData);
+  vscode.setState({ extensionConfigurationData, isGitWorkspace });
 }
 
-function updateBrachHtmlLabel(message, isDisabled) {
+function updateBrachHtmlLabel(message, isDisabled, referenceBranch) {
   isBasedOnBranchChange.disabled = isDisabled;
-  messageBranch.innerHTML = message;
+  messageBranch.innerText = message;
+
+
+  if (referenceBranch) {
+    branchContainer.style.display = 'flex';
+    refBranch.innerHTML = referenceBranch;
+  } else {
+    branchContainer.style.display = 'none';
+    refBranch.innerHTML = '';
+  }
 }
 
 window.addEventListener('message', event => {
@@ -38,8 +48,8 @@ window.addEventListener('message', event => {
   }
 });
 
-const lastState = vscode.getState();
-updateExtensionConfigurationData(lastState);
+const { extensionConfigurationData, isGitWorkspace } = vscode.getState();
+updateExtensionConfigurationData(extensionConfigurationData, isGitWorkspace);
 
 isGutterActive.addEventListener('change', () => {
   vscode.postMessage({

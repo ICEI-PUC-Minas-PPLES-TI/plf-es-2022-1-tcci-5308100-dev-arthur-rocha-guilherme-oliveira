@@ -13,11 +13,18 @@
   gap: 12px;
 }
 
-.label span {
-  flex: 1
-}
-
 .label .checkbox {
   width: 18px;
   height: 18px;
+}
+
+.label span {
+  flex: 1;
+}
+
+.branchContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 12px;
 }

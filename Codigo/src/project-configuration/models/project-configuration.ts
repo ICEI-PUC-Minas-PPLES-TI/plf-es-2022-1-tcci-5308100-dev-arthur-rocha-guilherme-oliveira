@@ -21,7 +21,7 @@ export class ProjectConfiguration {
       [this.getMinCoverageRangeValidation]
     );
 
-    this.refBranch = data["refBranch"] || "master";
+    this.refBranch = data["refBranch"] || "main";
     this.runTestCoverage = data["runTestCoverage"];
     this.runTestCoverageWatchMode = data["runTestCoverageWatchMode"];
 

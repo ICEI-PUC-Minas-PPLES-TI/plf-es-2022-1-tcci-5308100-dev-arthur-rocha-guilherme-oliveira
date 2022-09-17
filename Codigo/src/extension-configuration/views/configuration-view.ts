@@ -37,8 +37,7 @@ export class ConfigurationView implements WebviewViewProvider {
 
     this._view.webview.html = getExtensionConfigurationHtmlForWebview(
       this._view.webview,
-      this.context.extensionUri,
-      this.extensionConfigurationData
+      this.context.extensionUri
     );
 
     this.extensionConfigurationService

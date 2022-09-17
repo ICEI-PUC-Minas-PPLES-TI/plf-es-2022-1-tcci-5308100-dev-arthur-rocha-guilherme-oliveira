@@ -10,6 +10,7 @@ export class GitService {
   private readonly OPTION_NAME_ONLY = "--name-only";
   private readonly OPTION_IS_GIT_WORKSPACE = "--is-inside-work-tree";
   private readonly OPTION_UNIFIED = "-U0";
+  private readonly OPTION_VERIFY = "--verify";
 
   public async getIsCurrentFilesBranchDiff(
     branch: string,
@@ -57,6 +58,20 @@ export class GitService {
     return !!isGitWorkspace.match("true");
   }
 
+  public async getIsBranch(refBranch: string): Promise<boolean> {
+    const isbranch = await this.execGitCommand(
+      this.GIT_COMMAND_REV_PARSE,
+      [this.OPTION_IS_GIT_WORKSPACE],
+      [refBranch]
+    );
+
+    if (isbranch.match("fatal")) {
+      return false;
+    }
+
+    return true;
+  }
+
   private async execGitCommand(
     cmd: string,
     options?: Array<string>,
@@ -73,14 +88,14 @@ export class GitService {
       ? workspace.workspaceFolders[0].uri.fsPath
       : __dirname;
 
-    return await new Promise((resolve, reject) => {
+    return await new Promise((resolve, reject): any => {
       exec(
         `${cmd} ${stringOptions} ${stringData}`,
         { cwd: cwd },
         (error, stdout, stderr) => {
           if (error) {
             console.error(stderr);
-            reject(error);
+            resolve(error.message);
           }
 
           resolve(stdout);

@@ -19,7 +19,8 @@ export class CoverageData {
     extensionConfiguration: ConfigurationData
   ): Promise<CoverageData> {
     const coverageLines = await fileCoverage.getAllCoverageLines(
-      extensionConfiguration.isBasedOnBranchChange
+      extensionConfiguration.isBasedOnBranchChange,
+      extensionConfiguration.referenceBranch
     );
 
     const coveredLines = coverageLines.reduce(

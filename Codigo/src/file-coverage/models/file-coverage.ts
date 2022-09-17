@@ -33,7 +33,8 @@ export class FileCoverage {
   constructor(private readonly lcovFiles: Map<string, LcovFile>) {}
 
   public async getAllCoverageLines(
-    useBranchRef: boolean
+    useGitDiff: boolean,
+    referenceBranch: string
   ): Promise<CompleteCoverageLines[]> {
     const lcovFiles = this.getLcovFiles();
 
@@ -43,7 +44,8 @@ export class FileCoverage {
       const coverageLines = await this.getCoverageLinesForAFile(
         [lcovFile],
         lcovFile.file,
-        useBranchRef
+        useGitDiff,
+        referenceBranch
       );
       allFilesCoverageLines.push({
         fileName: Uri.file(lcovFile.file),
@@ -60,7 +62,8 @@ export class FileCoverage {
 
   public async getCoverageLinesForEditor(
     textEditor: TextEditor,
-    useGitDiff: boolean
+    useGitDiff: boolean,
+    referenceBranch: string
   ): Promise<CoverageLines> {
     const lcovFiles = this.lcovFileFinder.findLcovFilesForEditor(
       textEditor,
@@ -70,14 +73,16 @@ export class FileCoverage {
     return this.getCoverageLinesForAFile(
       lcovFiles,
       textEditor.document.fileName,
-      useGitDiff
+      useGitDiff,
+      referenceBranch
     );
   }
 
   private async getCoverageLinesForAFile(
     lcovFiles: LcovFile[],
     fileName: string,
-    useGitDiff: boolean
+    useGitDiff: boolean,
+    referenceBranch: string
   ): Promise<CoverageLines> {
     const coverageLines = this.lcovFilesToCoverageLines(lcovFiles);
 
@@ -87,12 +92,14 @@ export class FileCoverage {
 
     if (useGitDiff) {
       const isFileDiff = await this.gitService.getIsCurrentFilesBranchDiff(
-        "master",
+        referenceBranch,
         fileName
       );
 
       if (isFileDiff) {
-        const diff = await this.gitService.getCurrentBranchDiff("master");
+        const diff = await this.gitService.getCurrentBranchDiff(
+          referenceBranch
+        );
         const branchDiff = BranchDiff.createBranchDiffFileLines(diff, fileName);
 
         return CoverageLines.createDiffCoverageLines(coverageLines, branchDiff);
