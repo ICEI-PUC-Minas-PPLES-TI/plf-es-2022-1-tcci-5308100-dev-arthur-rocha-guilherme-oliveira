@@ -5,7 +5,7 @@
   "icon": "resources/logo.jpeg",
   "repository": "https://github.com/ICEI-PUC-Minas-PPLES-TI/plf-es-2022-1-tcci-5308100-dev-arthur-rocha-guilherme-oliveira",
   "publisher": "covering",
-  "version": "0.4.1",
+  "version": "0.5.0",
   "engines": {
     "vscode": "^1.68.0"
   },
@@ -19,8 +19,8 @@
   "contributes": {
     "commands": [
       {
-        "command": "covering.helloWorld",
-        "title": "Hello World"
+        "command": "covering.open-file",
+        "title": "Redirect to uncovered line"
       }
     ],
     "viewsContainers": {
@@ -68,8 +68,10 @@
   "devDependencies": {
     "@types/glob": "^7.2.0",
     "@types/lcov-parse": "^1.0.0",
+    "@types/mkdirp": "^1.0.2",
     "@types/mocha": "^9.1.1",
     "@types/node": "16.x",
+    "@types/rimraf": "^3.0.2",
     "@types/vscode": "^1.68.0",
     "@typescript-eslint/eslint-plugin": "^5.27.0",
     "@typescript-eslint/parser": "^5.27.0",

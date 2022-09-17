@@ -8,6 +8,8 @@ import { DefaultConfiguration } from "./config";
 import { ExtensionConfigurationService } from "./extension-configuration/core/extension-configuration-service";
 import { GitService } from "./version-control/core/git-service";
 import { ProjectConfigurationService } from "./project-configuration/core/project-configuration-service";
+import { UncoveredLinesService } from "./uncovered-lines/core/uncovered-lines-service";
+import { LoggerManager } from "./utils/logger/logger-manager";
 
 const appInjector = new Container();
 
@@ -41,14 +43,21 @@ appInjector
   .to(VisualStudioCode)
   .inSingletonScope();
 
-  appInjector
+appInjector
   .bind<DefaultConfiguration>(DefaultConfiguration)
   .to(DefaultConfiguration)
   .inSingletonScope();
 
-  appInjector
-  .bind<GitService>(GitService)
-  .to(GitService)
+appInjector.bind<GitService>(GitService).to(GitService).inSingletonScope();
+
+appInjector
+  .bind<UncoveredLinesService>(UncoveredLinesService)
+  .to(UncoveredLinesService)
+  .inSingletonScope();
+
+appInjector
+  .bind<LoggerManager>(LoggerManager)
+  .to(LoggerManager)
   .inSingletonScope();
 
 export { appInjector };
