@@ -1,5 +1,6 @@
 const isGutterActive = document.getElementById('isGutterActive');
 const isBasedOnBranchChange = document.getElementById('isBasedOnBranchChange');
+const branchContainer = document.getElementById('branchContainer');
 const messageBranch = document.getElementById('messageBranch');
 const refBranch = document.getElementById('referenceBranch');
 const isJustForFileInFocus = document.getElementById('isJustForFileInFocus');
@@ -25,8 +26,15 @@ function updateExtensionConfigurationData(extensionConfigurationData, isGitWorks
 function updateBrachHtmlLabel(message, isDisabled, referenceBranch) {
   isBasedOnBranchChange.disabled = isDisabled;
   messageBranch.innerText = message;
-  refBranch.innerText = referenceBranch;
 
+
+  if (referenceBranch) {
+    branchContainer.style.display = 'flex';
+    refBranch.innerHTML = referenceBranch;
+  } else {
+    branchContainer.style.display = 'none';
+    refBranch.innerHTML = '';
+  }
 }
 
 window.addEventListener('message', event => {
