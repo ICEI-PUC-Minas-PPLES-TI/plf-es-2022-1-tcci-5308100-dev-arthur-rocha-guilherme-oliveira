@@ -14,7 +14,6 @@ interface DecorationConfig {
   readonly fullCoverageDecorationType: TextEditorDecorationType;
 }
 
-//TO-DO: Add to UML project - verify if is on correct class. Other option: ExtensionConfiguration
 @injectable()
 export class DefaultConfiguration {
   private context = appInjector.get<ExtensionContext>("ExtensionContext");

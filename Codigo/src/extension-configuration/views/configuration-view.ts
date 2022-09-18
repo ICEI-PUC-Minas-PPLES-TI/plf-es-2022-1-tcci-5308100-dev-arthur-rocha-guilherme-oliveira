@@ -25,7 +25,13 @@ export class ConfigurationView implements WebviewViewProvider {
     false
   );
 
-  constructor() {}
+  public static createView(): void {
+    const extensionConfigurationWebViewProvider = new ConfigurationView();
+    window.registerWebviewViewProvider(
+      "covering.config-view",
+      extensionConfigurationWebViewProvider
+    );
+  }
 
   public resolveWebviewView(webviewView: WebviewView) {
     this._view = webviewView;
@@ -72,23 +78,15 @@ export class ConfigurationView implements WebviewViewProvider {
     );
   }
 
-  public static createView(): void {
-    const extensionConfigurationWebViewProvider = new ConfigurationView();
-    window.registerWebviewViewProvider(
-      "covering.config-view",
-      extensionConfigurationWebViewProvider
-    );
-  }
-
-  public toggleLineStatusVisibility(): void {
+  private toggleLineStatusVisibility(): void {
     this.extensionConfigurationService.toggleLineStatusVisibility();
   }
 
-  public toggleCoveragePercentageMode(): void {
+  private toggleCoveragePercentageMode(): void {
     this.extensionConfigurationService.toggleCoveragePercentageMode();
   }
 
-  public toggleCoverageBaseReferenceMode(): void {
+  private toggleCoverageBaseReferenceMode(): void {
     this.extensionConfigurationService.toggleCoverageBaseReferenceMode();
   }
 }

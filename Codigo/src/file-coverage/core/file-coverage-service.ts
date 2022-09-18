@@ -36,7 +36,7 @@ export class FileCoverageService {
     return this.fileCoverageSubject.asObservable();
   }
 
-  public async fileChanged(): Promise<void> {
+  private async fileChanged(): Promise<void> {
     const newFileCoverage = await FileCoverage.createNewCoverageFile();
     this.fileCoverageSubject.next(newFileCoverage);
   }

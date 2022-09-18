@@ -1,5 +1,5 @@
 export enum LineCoverageStatus {
-  covered,
-  partiallyCovered,
-  uncovered,
+  covered = "full",
+  partiallyCovered = "partial",
+  uncovered = "none",
 }

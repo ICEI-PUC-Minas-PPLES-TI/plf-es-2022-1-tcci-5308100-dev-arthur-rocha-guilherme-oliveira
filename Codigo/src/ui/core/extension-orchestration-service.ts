@@ -15,7 +15,6 @@ import { Line } from "../../uncovered-lines/models/line";
 import { VisualStudioCode } from "../../visual-studio-code/visual-studio-code";
 import { TestType } from "../enums/test-type";
 
-//TO-DO: Add to UML project
 export class ExtensionOrchestrationService {
   private coverageService = appInjector.get(CoverageService);
   private extensionConfigurationService = appInjector.get(
@@ -32,6 +31,54 @@ export class ExtensionOrchestrationService {
   private actualFileCoverage!: FileCoverage;
   private actualConfigurationData!: ConfigurationData;
   private actualProjectConfiguration!: ProjectConfiguration;
+
+  public initApp() {
+    this.registerCommands();
+    this.registerViews();
+
+    this.startProjectConfigurationObserver();
+
+    this.startExtensionConfigurationObserver();
+
+    this.startCoverageFileObserver();
+  }
+
+  private registerCommands() {
+    let disposable = commands.registerCommand(
+      "covering.open-file",
+      (line: Line) => this.uncoveredLinesService.selectUncoveredLine(line)
+    );
+
+    this.context.subscriptions.push(disposable);
+  }
+
+  private registerViews() {
+    ConfigurationView.createView();
+    CoverageView.createView();
+    UncoveredLinesTree.createView();
+  }
+
+  private startProjectConfigurationObserver() {
+    this.projectConfigurationService
+      .getProjectConfigurationData()
+      .subscribe((configurationData) => {
+        this.emitNewProjectConfiguration(configurationData);
+      });
+  }
+
+  private startExtensionConfigurationObserver() {
+    this.extensionConfigurationService
+      .getConfigurationData()
+      .subscribe((configurationData) => {
+        this.emitNewConfigurationData(configurationData);
+      });
+  }
+
+  private startCoverageFileObserver() {
+    this.fileCoverageService.getFileCoverage().subscribe((fileCoverage) => {
+      this.emitNewFileCoverage(fileCoverage);
+    });
+  }
 
   public emitNewProjectConfiguration(
     newProjectConfiguration: ProjectConfiguration
@@ -50,12 +97,6 @@ export class ExtensionOrchestrationService {
       newProjectConfiguration.refBranch
     );
   }
-
-  public initViewData(): void {}
-
-  public reloadTab(): void {}
-
-  public runTest(testType: TestType): void {}
 
   public emitNewConfigurationData(
     newConfigurationData: ConfigurationData
@@ -83,10 +124,6 @@ export class ExtensionOrchestrationService {
     }
   }
 
-  public fileFocusChange(): void {}
-
-  public changeDefaultTestExecution(testType: TestType): void {}
-
   public emitNewFileCoverage(newFileCoverage: FileCoverage): void {
     this.actualFileCoverage = newFileCoverage;
 
@@ -111,51 +148,13 @@ export class ExtensionOrchestrationService {
     }
   }
 
-  public initApp() {
-    this.registerCommands();
-    this.registerViews();
+  public reloadTab(): void {}
 
-    this.startProjectConfigurationObserver();
+  public initViewData(): void {}
 
-    this.startExtensionConfigurationObserver();
+  public runTest(testType: TestType): void {}
 
-    this.startCoverageFileObserver();
-  }
+  public fileFocusChange(): void {}
 
-  private startCoverageFileObserver() {
-    this.fileCoverageService.getFileCoverage().subscribe((fileCoverage) => {
-      this.emitNewFileCoverage(fileCoverage);
-    });
-  }
-
-  private startExtensionConfigurationObserver() {
-    this.extensionConfigurationService
-      .getConfigurationData()
-      .subscribe((configurationData) => {
-        this.emitNewConfigurationData(configurationData);
-      });
-  }
-
-  private startProjectConfigurationObserver() {
-    this.projectConfigurationService
-      .getProjectConfigurationData()
-      .subscribe((configurationData) => {
-        this.emitNewProjectConfiguration(configurationData);
-      });
-  }
-
-  private registerCommands() {
-    let disposable = commands.registerCommand(
-      "covering.open-file",
-      (line: Line) => this.uncoveredLinesService.selectUncoveredLine(line)
-    );
-
-    this.context.subscriptions.push(disposable);
-  }
-
-  private registerViews() {
-    ConfigurationView.createView();
-    CoverageView.createView();
-    UncoveredLinesTree.createView();
-  }
+  public changeDefaultTestExecution(testType: TestType): void {}
 }

@@ -16,6 +16,22 @@ export class CoverageView implements WebviewViewProvider {
   private coverageService = appInjector.get(CoverageService);
   private coverageData = new CoverageData(0, 0);
 
+  public static createView(): void {
+    const coverageWebViewProvider = new CoverageView();
+    window.registerWebviewViewProvider(
+      "covering.coverage-view",
+      coverageWebViewProvider
+    );
+  }
+
+  public emitNewCoverageData(newCoverageData: CoverageData): void {
+    this.coverageData = newCoverageData;
+    this._view.webview.postMessage({
+      type: "coverageData",
+      data: newCoverageData,
+    });
+  }
+
   public resolveWebviewView(webviewView: WebviewView) {
     this._view = webviewView;
 
@@ -42,22 +58,6 @@ export class CoverageView implements WebviewViewProvider {
             data: this.coverageData,
           });
       }
-    });
-  }
-
-  public static createView(): void {
-    const coverageWebViewProvider = new CoverageView();
-    window.registerWebviewViewProvider(
-      "covering.coverage-view",
-      coverageWebViewProvider
-    );
-  }
-
-  public emitNewCoverageData(newCoverageData: CoverageData): void {
-    this.coverageData = newCoverageData;
-    this._view.webview.postMessage({
-      type: "coverageData",
-      data: newCoverageData,
     });
   }
 }

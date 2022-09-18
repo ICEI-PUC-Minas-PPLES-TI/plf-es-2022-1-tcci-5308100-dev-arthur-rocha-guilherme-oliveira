@@ -6,7 +6,7 @@ import {
   isPathAbsolute,
   makePathSearchable,
   normalizeFileName,
-} from "../utils/functions/helpers";
+} from "./helpers";
 
 @injectable()
 export class LcovFileFinder {

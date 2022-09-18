@@ -36,7 +36,10 @@ export class BranchDiff {
     return new BranchDiff(fileName, lines);
   }
 
-  private static isSameDiffFile(diff: string, fileName: string) {
+  private static isSameDiffFile(
+    diff: string,
+    fileName: string
+  ): RegExpMatchArray | null {
     const fsPatch = diff.split("\n")[0].split(" ")[1].replace("b/", "");
     const normalizedFsPatch = normalizeFileName(fsPatch);
     const normalizedFileName = normalizeFileName(fileName);
