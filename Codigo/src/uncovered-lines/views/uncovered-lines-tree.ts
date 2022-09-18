@@ -34,7 +34,7 @@ export class UncoveredLinesTree
   private context = appInjector.get<ExtensionContext>("ExtensionContext");
 
   private changeEvent = new EventEmitter<void>();
-  private actualRoot!: Folder;
+  private actualUncoveredLinesData!: UncoveredLinesData;
 
   constructor() {
     this.uncoveredLinesService
@@ -52,7 +52,7 @@ export class UncoveredLinesTree
   }
 
   private emitNewUncoveredLinesData(newUncoveredLinesData: UncoveredLinesData) {
-    this.actualRoot = newUncoveredLinesData.root;
+    this.actualUncoveredLinesData = newUncoveredLinesData;
     this.changeEvent.fire();
     this.logger.info("Uncovered lines data changed");
   }
@@ -102,8 +102,8 @@ export class UncoveredLinesTree
       return [];
     }
 
-    if (this.actualRoot) {
-      return this.getFolderChildren(this.actualRoot);
+    if (this.actualUncoveredLinesData.root) {
+      return this.getFolderChildren(this.actualUncoveredLinesData.root);
     }
 
     return [];
