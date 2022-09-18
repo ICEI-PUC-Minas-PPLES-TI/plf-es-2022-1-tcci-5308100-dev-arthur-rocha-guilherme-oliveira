@@ -25,7 +25,10 @@ export class Folder {
   public folders: Folder[] = [];
   public files: File[] = [];
 
-  private constructor(public uri: Uri) {
+  private constructor(
+    public uri: Uri,
+    public readonly hasSomethingToCover = false
+  ) {
     this.folderName =
       normalizeFileName(this.uri.fsPath).split("###").pop() || "";
   }
@@ -120,7 +123,10 @@ export class Folder {
     uri: Uri,
     completeCoverageLines: CompleteCoverageLines[]
   ): Promise<Folder> {
-    const rootFolder = new Folder(uri);
+    const hasSomethingToCover = completeCoverageLines.some(
+      (file) => file.coverageLines.full.length > 0
+    );
+    const rootFolder = new Folder(uri, hasSomethingToCover);
     const children = await rootFolder.getFolderChildren(completeCoverageLines);
     rootFolder.folders = children.folders;
     rootFolder.files = children.files;

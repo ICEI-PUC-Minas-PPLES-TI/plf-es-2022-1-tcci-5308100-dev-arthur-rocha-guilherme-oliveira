@@ -3,14 +3,16 @@ import { FileCoverage } from "../../file-coverage/models/file-coverage";
 import { ProjectConfiguration } from "../../project-configuration/models/project-configuration";
 
 export class CoverageData {
-  public readonly minCoverageReached: boolean;
+  public readonly minCoverageReached?: boolean;
 
   constructor(
     public readonly minCoveragePercentage: number,
-    public readonly coveragePercentage: number
+    public readonly coveragePercentage?: number
   ) {
-    this.minCoverageReached =
-      this.coveragePercentage >= this.minCoveragePercentage;
+    if (this.coveragePercentage !== undefined) {
+      this.minCoverageReached =
+        this.coveragePercentage >= this.minCoveragePercentage;
+    }
   }
 
   public static async updateCoverageData(
@@ -42,7 +44,7 @@ export class CoverageData {
 
     return new CoverageData(
       projectConfiguration.minCoverage,
-      coveredLines / totalLines
+      totalLines > 0 ? coveredLines / totalLines : undefined
     );
   }
 }

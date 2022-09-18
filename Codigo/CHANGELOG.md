@@ -6,6 +6,12 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+## [1.0.2] - 2022-09-18
+
+### Changed
+
+- Update coverage view and uncovered lines tree view to show the right information when theres no line to cover and when the minimum value was not reached.
+
 ## [1.0.1] - 2022-09-18
 
 ### Changed
