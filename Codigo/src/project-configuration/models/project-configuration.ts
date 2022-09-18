@@ -1,6 +1,11 @@
 import { readFile } from "fs";
 import { window, workspace } from "vscode";
 
+interface ValidationResult {
+  isValid: boolean;
+  message: string;
+}
+
 export class ProjectConfiguration {
   public static readonly DEFAULT_FILE_NAME = ".coveringconfig";
   public static readonly MINIMUM_COVERAGE_DEFAULT_VALUE = 0.8;
@@ -31,10 +36,7 @@ export class ProjectConfiguration {
     );
   }
 
-  private getMinCoverageRangeValidation(value: number): {
-    isValid: boolean;
-    message: string;
-  } {
+  private getMinCoverageRangeValidation(value: number): ValidationResult {
     if (value < 0 || value > 1) {
       return {
         isValid: false,
@@ -47,9 +49,7 @@ export class ProjectConfiguration {
   private validateNullableValueWithDefault<T extends string | number | boolean>(
     value: any,
     defaultValue: T,
-    extraValidations?: Array<
-      (value: T) => { isValid: boolean; message: string }
-    >
+    extraValidations?: Array<(value: T) => ValidationResult>
   ): T {
     const defaultType = typeof defaultValue;
     if (typeof value === defaultType) {

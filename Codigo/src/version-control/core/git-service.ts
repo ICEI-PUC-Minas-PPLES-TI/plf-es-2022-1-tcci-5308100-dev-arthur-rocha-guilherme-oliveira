@@ -12,6 +12,16 @@ export class GitService {
   private readonly OPTION_UNIFIED = "-U0";
   private readonly OPTION_VERIFY = "--verify";
 
+  public async getCurrentBranchDiff(branch: string): Promise<string[]> {
+    const diffs = await this.execGitCommand(
+      this.GIT_COMMAND_DIFF,
+      [this.OPTION_UNIFIED],
+      [branch]
+    );
+
+    return diffs.split("diff --git a/").filter((file) => file.length);
+  }
+
   public async getIsCurrentFilesBranchDiff(
     branch: string,
     fileName: string
@@ -37,16 +47,6 @@ export class GitService {
     );
 
     return files.split("\n").filter((file) => file.length);
-  }
-
-  public async getCurrentBranchDiff(branch: string): Promise<string[]> {
-    const diffs = await this.execGitCommand(
-      this.GIT_COMMAND_DIFF,
-      [this.OPTION_UNIFIED],
-      [branch]
-    );
-
-    return diffs.split("diff --git a/").filter((file) => file.length);
   }
 
   public async getIsGitWorkspace(): Promise<boolean> {

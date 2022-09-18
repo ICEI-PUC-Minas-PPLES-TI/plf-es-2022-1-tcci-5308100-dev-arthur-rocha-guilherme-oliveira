@@ -7,7 +7,6 @@ import { CoverageLines } from "../file-coverage/models/coverage-lines";
 import { FileCoverage } from "../file-coverage/models/file-coverage";
 import { appInjector } from "../inversify.config";
 
-//TO-DO: Update documentation params
 @injectable()
 export class VisualStudioCode {
   private editorWatcher!: Disposable;
@@ -18,6 +17,27 @@ export class VisualStudioCode {
 
   constructor() {
     this.observeEditorFocusChange();
+  }
+
+  private render(): void {
+    this.removeDecorationsForEditors();
+
+    if (!this.actualExtensionConfiguration.isGutterActive) {
+      return;
+    }
+
+    const textEditors = window.visibleTextEditors;
+
+    textEditors.forEach(async (textEditor) => {
+      const coverageLines =
+        await this.actualFileCoverage.getCoverageLinesForEditor(
+          textEditor,
+          this.actualExtensionConfiguration.isBasedOnBranchChange,
+          this.actualExtensionConfiguration.referenceBranch
+        );
+
+      this.setDecorationsForEditor(textEditor, coverageLines);
+    });
   }
 
   public redirectEditorTo(configFilePath: string): void {}
@@ -63,28 +83,10 @@ export class VisualStudioCode {
 
   public alterarOArquivoDeConfiguraçãoActivateDev(): void {}
 
-  private render(): void {
-    this.removeDecorationsForEditors();
-
-    if (!this.actualExtensionConfiguration.isGutterActive) {
-      return;
-    }
-
-    const textEditors = window.visibleTextEditors;
-
-    textEditors.forEach(async (textEditor) => {
-      const coverageLines =
-        await this.actualFileCoverage.getCoverageLinesForEditor(
-          textEditor,
-          this.actualExtensionConfiguration.isBasedOnBranchChange,
-          this.actualExtensionConfiguration.referenceBranch
-        );
-
-      this.setDecorationsForEditor(textEditor, coverageLines);
-    });
-  }
-
-  private setDecorationsForEditor(editor: TextEditor, coverage: CoverageLines) {
+  private setDecorationsForEditor(
+    editor: TextEditor,
+    coverage: CoverageLines
+  ): void {
     const config = appInjector.get(DefaultConfiguration);
 
     const {

@@ -16,6 +16,7 @@ import { UncoveredLinesService } from "../core/uncovered-lines-service";
 import { File } from "../models/file";
 import { Folder } from "../models/folder";
 import { Line } from "../models/line";
+import { UncoveredLinesData } from "../models/uncovered-lines-data";
 
 type UncoveredLineTreeNode<T extends Folder | File | Line> = {
   type: FileType;
@@ -25,13 +26,6 @@ type UncoveredLineTreeNode<T extends Folder | File | Line> = {
 export class UncoveredLinesTree
   implements TreeDataProvider<UncoveredLineTreeNode<Folder | File | Line>>
 {
-  static createView() {
-    const uncoveredLinesTreeDataProvider = new UncoveredLinesTree();
-    window.createTreeView("covering.uncovered-lines-view", {
-      treeDataProvider: uncoveredLinesTreeDataProvider,
-    });
-  }
-
   private logger = appInjector
     .get(LoggerManager)
     .getServiceOutput("UncoveredLinesTree");
@@ -46,10 +40,21 @@ export class UncoveredLinesTree
     this.uncoveredLinesService
       .getUncoveredLinesData()
       .subscribe((newUncoveredLinesData) => {
-        this.actualRoot = newUncoveredLinesData.root;
-        this.changeEvent.fire();
-        this.logger.info("Uncovered lines data changed");
+        this.emitNewUncoveredLinesData(newUncoveredLinesData);
       });
+  }
+
+  static createView(): void {
+    const uncoveredLinesTreeDataProvider = new UncoveredLinesTree();
+    window.createTreeView("covering.uncovered-lines-view", {
+      treeDataProvider: uncoveredLinesTreeDataProvider,
+    });
+  }
+
+  private emitNewUncoveredLinesData(newUncoveredLinesData: UncoveredLinesData) {
+    this.actualRoot = newUncoveredLinesData.root;
+    this.changeEvent.fire();
+    this.logger.info("Uncovered lines data changed");
   }
 
   public get onDidChangeTreeData(): Event<void> {
@@ -76,7 +81,35 @@ export class UncoveredLinesTree
     return this.getFileTreeItem(selfData);
   }
 
-  private getLineTreeItem(lineTreeItem: TreeItem, selfData: Line) {
+  public getChildren(
+    element?: UncoveredLineTreeNode<Folder | File | Line>
+  ): UncoveredLineTreeNode<Folder | File | Line>[] {
+    if (element) {
+      const { selfData } = element;
+
+      if (!selfData || selfData instanceof Line) {
+        return [];
+      }
+
+      if (selfData instanceof File) {
+        return this.getFileChildren(selfData);
+      }
+
+      if (selfData instanceof Folder) {
+        return this.getFolderChildren(selfData);
+      }
+
+      return [];
+    }
+
+    if (this.actualRoot) {
+      return this.getFolderChildren(this.actualRoot);
+    }
+
+    return [];
+  }
+
+  private getLineTreeItem(lineTreeItem: TreeItem, selfData: Line): TreeItem {
     lineTreeItem.command = {
       command: "covering.open-file",
       title: "Redirect to uncovered line",
@@ -110,34 +143,6 @@ export class UncoveredLinesTree
     fileTreeItem.resourceUri = selfData.uri;
     fileTreeItem.iconPath = ThemeIcon.File;
     return fileTreeItem;
-  }
-
-  public getChildren(
-    element?: UncoveredLineTreeNode<Folder | File | Line>
-  ): UncoveredLineTreeNode<Folder | File | Line>[] {
-    if (element) {
-      const { selfData } = element;
-
-      if (!selfData || selfData instanceof Line) {
-        return [];
-      }
-
-      if (selfData instanceof File) {
-        return this.getFileChildren(selfData);
-      }
-
-      if (selfData instanceof Folder) {
-        return this.getFolderChildren(selfData);
-      }
-
-      return [];
-    }
-
-    if (this.actualRoot) {
-      return this.getFolderChildren(this.actualRoot);
-    }
-
-    return [];
   }
 
   private getFileChildren(parentFile: File): UncoveredLineTreeNode<Line>[] {

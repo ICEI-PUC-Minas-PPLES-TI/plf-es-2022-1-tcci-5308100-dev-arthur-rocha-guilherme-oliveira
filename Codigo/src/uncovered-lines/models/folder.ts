@@ -8,8 +8,14 @@ import { LoggerManager } from "../../utils/logger/logger-manager";
 import { AppFileStat } from "../../utils/models/app-file-stat";
 import { File } from "./file";
 
-class DirectoryFile {
-  constructor(public name: string, public type: FileType) {}
+interface DirectoryFile {
+  name: string;
+  type: FileType;
+}
+
+interface FolderChildren {
+  folders: Folder[];
+  files: File[];
 }
 
 export class Folder {
@@ -26,10 +32,7 @@ export class Folder {
 
   public async getFolderChildren(
     completeCoverageLines: CompleteCoverageLines[]
-  ): Promise<{
-    folders: Folder[];
-    files: File[];
-  }> {
+  ): Promise<FolderChildren> {
     const allChildren = await this.readDirectory(this.uri);
     const filteredChildren = allChildren.filter((child) =>
       completeCoverageLines.some((file) =>
@@ -103,7 +106,7 @@ export class Folder {
     for (let i = 0; i < children.length; i++) {
       const childName = children[i];
       const stat = await this.createStatFile(path.join(uri.fsPath, childName));
-      result.push(new DirectoryFile(childName, stat.type));
+      result.push({ name: childName, type: stat.type });
     }
 
     return Promise.resolve(result);
@@ -115,10 +118,10 @@ export class Folder {
 
   public static async createRootFolder(
     uri: Uri,
-    map: CompleteCoverageLines[]
+    completeCoverageLines: CompleteCoverageLines[]
   ): Promise<Folder> {
     const rootFolder = new Folder(uri);
-    const children = await rootFolder.getFolderChildren(map);
+    const children = await rootFolder.getFolderChildren(completeCoverageLines);
     rootFolder.folders = children.folders;
     rootFolder.files = children.files;
     return rootFolder;

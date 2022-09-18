@@ -7,20 +7,22 @@ import { ConfigurationData } from "../models/configuration-data";
 
 @injectable()
 export class ExtensionConfigurationService {
+  private gitService = appInjector.get(GitService);
+
   private configurationData = new ReplaySubject<ConfigurationData>();
   private actualState = new ConfigurationData(true, false, "", false);
-  private gitService = appInjector.get(GitService);
 
   public getConfigurationData(): Observable<ConfigurationData> {
     return this.configurationData.pipe(startWith(this.actualState));
   }
+
   public toggleLineStatusVisibility(): void {
     const newConfig = ConfigurationData.updateConfigurationData(
       this.actualState,
       { isGutterActive: !this.actualState.isGutterActive }
     );
 
-    this.emitNemConfig(newConfig);
+    this.emitNewConfiguration(newConfig);
   }
 
   public toggleCoveragePercentageMode(): void {
@@ -33,10 +35,10 @@ export class ExtensionConfigurationService {
       { isBasedOnBranchChange: !this.actualState.isBasedOnBranchChange }
     );
 
-    this.emitNemConfig(newConfig);
+    this.emitNewConfiguration(newConfig);
   }
 
-  private emitNemConfig(newConfigurationData: ConfigurationData): void {
+  private emitNewConfiguration(newConfigurationData: ConfigurationData): void {
     this.actualState = newConfigurationData;
     this.configurationData.next(newConfigurationData);
   }
@@ -52,7 +54,7 @@ export class ExtensionConfigurationService {
         { referenceBranch: refBranch }
       );
 
-      this.emitNemConfig(newConfig);
+      this.emitNewConfiguration(newConfig);
     } else {
       window.showWarningMessage(
         `The branch "${refBranch}" does not exist in the repository`
