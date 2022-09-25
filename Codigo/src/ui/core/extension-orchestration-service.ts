@@ -14,6 +14,7 @@ import { UncoveredLinesTree } from "../../uncovered-lines/views/uncovered-lines-
 import { Line } from "../../uncovered-lines/models/line";
 import { VisualStudioCode } from "../../visual-studio-code/visual-studio-code";
 import { TestType } from "../enums/test-type";
+import { GitService } from "../../version-control/core/git-service";
 
 export class ExtensionOrchestrationService {
   private coverageService = appInjector.get(CoverageService);
@@ -27,6 +28,7 @@ export class ExtensionOrchestrationService {
   private uncoveredLinesService = appInjector.get(UncoveredLinesService);
   private vsCode = appInjector.get(VisualStudioCode);
   private context = appInjector.get<ExtensionContext>("ExtensionContext");
+  private gitService = appInjector.get(GitService);
 
   private actualFileCoverage!: FileCoverage;
   private actualConfigurationData!: ConfigurationData;
@@ -41,6 +43,8 @@ export class ExtensionOrchestrationService {
     this.startExtensionConfigurationObserver();
 
     this.startCoverageFileObserver();
+
+    this.startCoverageDataObserver();
   }
 
   private registerCommands() {
@@ -80,6 +84,12 @@ export class ExtensionOrchestrationService {
     });
   }
 
+  private startCoverageDataObserver() {
+    this.coverageService.getCoverageData().subscribe((coverageData) => {
+      this.gitService.updateGitHookParams(coverageData);
+    });
+  }
+
   public emitNewProjectConfiguration(
     newProjectConfiguration: ProjectConfiguration
   ): void {
@@ -96,6 +106,8 @@ export class ExtensionOrchestrationService {
     this.extensionConfigurationService.changeRefBranch(
       newProjectConfiguration.refBranch
     );
+
+    this.handlePrePushConfigChange(newProjectConfiguration);
   }
 
   public emitNewConfigurationData(
@@ -121,6 +133,16 @@ export class ExtensionOrchestrationService {
         this.actualProjectConfiguration,
         newConfigurationData
       );
+    }
+  }
+
+  private handlePrePushConfigChange(
+    projectConfiguration: ProjectConfiguration
+  ): void {
+    if (projectConfiguration.usePrePushValidation) {
+      this.gitService.enablePreCommitHook();
+    } else {
+      this.gitService.disablePreCommitHook();
     }
   }
 
