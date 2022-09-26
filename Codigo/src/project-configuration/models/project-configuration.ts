@@ -1,5 +1,5 @@
 import { readFile } from "fs";
-import { window, workspace } from "vscode";
+import { Uri, window, workspace } from "vscode";
 
 interface ValidationResult {
   isValid: boolean;
@@ -17,7 +17,7 @@ export class ProjectConfiguration {
   public readonly runTestCoverageWatchMode?: string;
   public readonly usePrePushValidation: boolean;
 
-  constructor(private readonly data: any = {}) {
+  constructor(data: any = {}) {
     this.lcovFilePath = data["lcovFilePath"];
 
     this.minCoverage = this.validateNullableValueWithDefault<number>(
@@ -101,14 +101,14 @@ export class ProjectConfiguration {
     }
   }
 
-  private static getFileData(): Promise<string | null> {
+  public static getFileData(): Promise<string | null> {
     return new Promise((resolve) => {
       if (!workspace.workspaceFolders) {
         return resolve(null);
       }
 
-      const rootPath = workspace.workspaceFolders[0].uri.fsPath;
-      const filePath = `${rootPath}/${this.DEFAULT_FILE_NAME}`;
+      const rootPath = workspace.workspaceFolders[0].uri;
+      const filePath = Uri.joinPath(rootPath, this.DEFAULT_FILE_NAME).fsPath;
       readFile(filePath, (err, data) => {
         if (err) {
           return resolve(null);

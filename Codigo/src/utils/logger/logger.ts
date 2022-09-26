@@ -15,25 +15,49 @@ export class Logger {
     );
   }
 
-  public info(message: string): void {
-    this.sendMessage(MessageType.INFO, message);
+  public info(message: string, showToast = false): void {
+    this.sendMessage(MessageType.INFO, message, showToast);
   }
 
-  public warn(message: string): void {
-    this.sendMessage(MessageType.WARNING, message);
+  public warn(message: string, showToast = false): void {
+    this.sendMessage(MessageType.WARNING, message, showToast);
   }
 
-  public error(message: string): void {
-    this.sendMessage(MessageType.ERROR, message);
+  public error(message: string, showToast = false): void {
+    this.sendMessage(MessageType.ERROR, message, showToast);
   }
 
-  public success(message: string): void {
-    this.sendMessage(MessageType.SUCCESS, message);
+  public success(message: string, showToast = false): void {
+    this.sendMessage(MessageType.SUCCESS, message, showToast);
   }
 
-  private sendMessage(messageType: MessageType, message: string) {
+  private sendMessage(
+    messageType: MessageType,
+    message: string,
+    showToast = false
+  ) {
+    if (showToast) {
+      this.showToast(messageType, message);
+    }
     const formatMessage = this.formatMessage(messageType, message);
     this.outputChannel.appendLine(formatMessage);
+  }
+
+  private showToast(messageType: MessageType, message: string) {
+    switch (messageType) {
+      case MessageType.INFO:
+        window.showInformationMessage(message);
+        break;
+      case MessageType.ERROR:
+        window.showErrorMessage(message);
+        break;
+      case MessageType.SUCCESS:
+        window.showInformationMessage(message);
+        break;
+      case MessageType.WARNING:
+        window.showWarningMessage(message);
+        break;
+    }
   }
 
   private formatMessage(messageType: MessageType, message: string): string {
