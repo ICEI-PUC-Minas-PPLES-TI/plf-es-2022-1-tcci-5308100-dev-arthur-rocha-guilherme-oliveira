@@ -14,8 +14,9 @@ You can set your own configuration crating a file called `.coveringconfig` in th
 
 ```json
 {
-  "minCoverage": 0.78,
-  "refBranch": "master"
+  "minCoverage": 0.9,
+  "refBranch": "master",
+  "usePrePushValidation": true
 }
 ```
 

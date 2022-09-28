@@ -73,7 +73,7 @@ export namespace fileSystemHelper {
     });
   }
 
-  export function readfile(path: string): Promise<Buffer> {
+  export function readFile(path: string): Promise<Buffer> {
     return new Promise<Buffer>((resolve, reject) => {
       fs.readFile(path, (error, buffer) =>
         handleResult(resolve, reject, error, buffer)
@@ -81,9 +81,27 @@ export namespace fileSystemHelper {
     });
   }
 
-  export function writefile(path: string, content: Buffer): Promise<void> {
+  export function writeFile(path: string, content: Buffer): Promise<void> {
     return new Promise<void>((resolve, reject) => {
       fs.writeFile(path, content, (error) =>
+        handleResult(resolve, reject, error, void 0)
+      );
+    });
+  }
+
+  export function writeStringFile(path: string, stringContent: string) {
+    return writeFile(path, Buffer.from(stringContent, "utf8"));
+  }
+
+  export function deleteFile(path: string) {
+    return new Promise<void>((resolve, reject) => {
+      fs.rm(path, (error) => handleResult(resolve, reject, error, void 0));
+    });
+  }
+
+  export function chmod(path: string, mode: number | string) {
+    return new Promise<void>((resolve, reject) => {
+      fs.chmod(path, mode, (error) =>
         handleResult(resolve, reject, error, void 0)
       );
     });

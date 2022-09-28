@@ -6,6 +6,12 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+## [1.1.0] - 2022-09-25
+
+### Added
+
+- Create pre-push file and update with coverage values to approve or refused the git action based on project coverage result and extension configurations.
+
 ## [1.0.2] - 2022-09-18
 
 ### Changed
