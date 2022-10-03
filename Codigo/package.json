@@ -21,6 +21,11 @@
       {
         "command": "covering.open-file",
         "title": "Redirect to uncovered line"
+      },
+      {
+        "command": "covering.generate-project-configuration-file",
+        "title": "Generate project configuration file",
+        "icon": "$(file-symlink-file)"
       }
     ],
     "viewsContainers": {
@@ -48,6 +53,15 @@
           "type": "tree",
           "id": "covering.uncovered-lines-view",
           "name": "Uncovered Lines"
+        }
+      ]
+    },
+    "menus": {
+      "view/title": [
+        {
+          "command": "covering.generate-project-configuration-file",
+          "when": "view == 'covering.config-view'",
+          "group": "navigation"
         }
       ]
     }

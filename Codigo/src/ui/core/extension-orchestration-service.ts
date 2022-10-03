@@ -15,6 +15,7 @@ import { Line } from "../../uncovered-lines/models/line";
 import { VisualStudioCode } from "../../visual-studio-code/visual-studio-code";
 import { TestType } from "../enums/test-type";
 import { GitService } from "../../version-control/core/git-service";
+import { LoggerManager } from "../../utils/logger/logger-manager";
 
 export class ExtensionOrchestrationService {
   private coverageService = appInjector.get(CoverageService);
@@ -29,6 +30,9 @@ export class ExtensionOrchestrationService {
   private vsCode = appInjector.get(VisualStudioCode);
   private context = appInjector.get<ExtensionContext>("ExtensionContext");
   private gitService = appInjector.get(GitService);
+  private logger = appInjector
+    .get(LoggerManager)
+    .getServiceOutput("ExtensionOrchestrationService");
 
   private actualFileCoverage!: FileCoverage;
   private actualConfigurationData!: ConfigurationData;
@@ -48,12 +52,29 @@ export class ExtensionOrchestrationService {
   }
 
   private registerCommands() {
-    let disposable = commands.registerCommand(
+    const openFileDisposable = commands.registerCommand(
       "covering.open-file",
       (line: Line) => this.uncoveredLinesService.selectUncoveredLine(line)
     );
 
-    this.context.subscriptions.push(disposable);
+    this.context.subscriptions.push(openFileDisposable);
+
+    const generateProjectConfigurationFileDisposable = commands.registerCommand(
+      "covering.generate-project-configuration-file",
+      async () => {
+        const result =
+          await this.projectConfigurationService.requireConfigFileGeneration();
+
+        if (!result.created) {
+          this.logger.error(
+            "Project configuration file generation error: " + result.error,
+            true
+          );
+        }
+      }
+    );
+
+    this.context.subscriptions.push(generateProjectConfigurationFileDisposable);
   }
 
   private registerViews() {
