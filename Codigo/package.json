@@ -26,6 +26,11 @@
         "command": "covering.generate-project-configuration-file",
         "title": "Generate project configuration file",
         "icon": "$(file-symlink-file)"
+      },
+      {
+        "command": "covering.refresh-extension",
+        "title": "Refresh extension",
+        "icon": "$(extensions-refresh)"
       }
     ],
     "viewsContainers": {
@@ -60,6 +65,11 @@
       "view/title": [
         {
           "command": "covering.generate-project-configuration-file",
+          "when": "view == 'covering.config-view'",
+          "group": "navigation"
+        },
+        {
+          "command": "covering.refresh-extension",
           "when": "view == 'covering.config-view'",
           "group": "navigation"
         }
