@@ -56,6 +56,7 @@ export class ProjectConfigurationService {
         minCoverage: 0.8,
         refBranch: "main",
         usePrePushValidation: false,
+        lcovFileName: "lcov.info",
       });
 
       const fileContent = JSON.stringify(sampleProjectConfiguration, null, 2);
