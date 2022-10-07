@@ -174,33 +174,23 @@ export class FileCoverage {
     };
   }
 
-  public static async createNewCoverageFileWithDefaultFile() {
-    return FileCoverage.createNewCoverageFile(
-      FileCoverage.DEFAULT_LCOV_FILE_NAME
-    );
-  }
-
-  public static async createNewCoverageFileWithFilename(lcovFileName: string) {
-    return FileCoverage.createNewCoverageFile(lcovFileName);
-  }
-
-  private static async createNewCoverageFile(
-    lcovfileName: string
+  public static async createNewCoverageFile(
+    lcovFileName: string = FileCoverage.DEFAULT_LCOV_FILE_NAME
   ): Promise<FileCoverage> {
-    const files = await this.findCoverageFiles(lcovfileName);
+    const files = await this.findCoverageFiles(lcovFileName);
     const dataFiles = await this.loadDataFiles(files);
     const dataCoverage = await this.filesToLcovFiles(dataFiles);
     return new FileCoverage(dataCoverage);
   }
 
   private static async findCoverageFiles(
-    lcovfileName: string
+    lcovFileName: string
   ): Promise<Set<string>> {
-    const files = await this.findCoverageInWorkspace(lcovfileName);
+    const files = await this.findCoverageInWorkspace(lcovFileName);
 
     if (!files.size) {
       window.showWarningMessage(
-        "Could not find a Coverage file! Searched for " + lcovfileName
+        "Could not find a Coverage file! Searched for " + lcovFileName
       );
       return new Set();
     }

@@ -121,7 +121,7 @@ export class ExtensionOrchestrationService {
       this.actualProjectConfiguration.lcovFileName !==
         FileCoverage.DEFAULT_LCOV_FILE_NAME
     ) {
-      this.fileCoverageService.AddFileCoverageWatcher(
+      this.fileCoverageService.addFileCoverageWatcher(
         this.actualProjectConfiguration.lcovFileName
       );
     }
