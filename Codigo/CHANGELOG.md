@@ -6,6 +6,12 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+## [1.2.2] - 2022-10-07
+
+### Added
+
+- Created parameter on project configuration to find files different from `lcov.info` to render coverage data.
+
 ## [1.2.1] - 2022-10-07
 
 ### Added
