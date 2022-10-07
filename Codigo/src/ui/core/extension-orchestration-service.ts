@@ -75,13 +75,6 @@ export class ExtensionOrchestrationService {
     );
 
     this.context.subscriptions.push(generateProjectConfigurationFileDisposable);
-
-    const refreshExtensionDisposable = commands.registerCommand(
-      "covering.refresh-extension",
-      () => commands.executeCommand("workbench.action.reloadWindow")
-    );
-
-    this.context.subscriptions.push(refreshExtensionDisposable);
   }
 
   private registerViews() {
