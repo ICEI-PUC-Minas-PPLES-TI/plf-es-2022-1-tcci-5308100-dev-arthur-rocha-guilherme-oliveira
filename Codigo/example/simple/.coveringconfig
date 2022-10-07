@@ -1,5 +1,6 @@
 {
   "minCoverage": 0.9,
   "refBranch": "master",
-  "usePrePushValidation": true
+  "usePrePushValidation": false,
+  "lcovFileName": "shulambs.info"
 }

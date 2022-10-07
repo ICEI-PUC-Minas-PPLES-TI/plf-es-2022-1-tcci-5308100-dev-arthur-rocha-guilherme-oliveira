@@ -10,7 +10,7 @@ export class ProjectConfiguration {
   public static readonly DEFAULT_FILE_NAME = ".coveringconfig";
   public static readonly MINIMUM_COVERAGE_DEFAULT_VALUE = 0.8;
 
-  public readonly lcovFilePath?: string;
+  public readonly lcovFileName?: string;
   public readonly minCoverage: number;
   public readonly refBranch?: string;
   public readonly runTestCoverage?: string;
@@ -18,7 +18,7 @@ export class ProjectConfiguration {
   public readonly usePrePushValidation: boolean;
 
   constructor(data: any = {}) {
-    this.lcovFilePath = data["lcovFilePath"];
+    this.lcovFileName = data["lcovFileName"];
 
     this.minCoverage = this.validateNullableValueWithDefault<number>(
       data["minCoverage"],

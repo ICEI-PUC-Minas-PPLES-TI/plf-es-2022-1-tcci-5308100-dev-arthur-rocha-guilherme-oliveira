@@ -36,8 +36,20 @@ export class FileCoverageService {
     return this.fileCoverageSubject.asObservable();
   }
 
-  private async fileChanged(): Promise<void> {
-    const newFileCoverage = await FileCoverage.createNewCoverageFile();
+  public AddFileCoverageWatcher(lcovFileName: string): void {
+    this.onFileCoverageFileChange = this.vscode.getFileWatcher(lcovFileName);
+
+    this.onFileCoverageFileChange.subscribe(() => {
+      this.fileChanged(lcovFileName);
+    });
+
+    this.fileChanged(lcovFileName);
+  }
+
+  private async fileChanged(lcovFileName?: string): Promise<void> {
+    const newFileCoverage = lcovFileName
+      ? await FileCoverage.createNewCoverageFileWithFilename(lcovFileName)
+      : await FileCoverage.createNewCoverageFileWithDefaultFile();
     this.fileCoverageSubject.next(newFileCoverage);
   }
 }

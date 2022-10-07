@@ -1,15 +1,7 @@
 import { readFile } from "fs";
 import * as glob from "glob";
 import { LcovBranch, LcovFile, LcovLine, source } from "lcov-parse";
-import { Subject } from "rxjs";
-import {
-  FileSystemWatcher,
-  TextEditor,
-  Uri,
-  window,
-  workspace,
-  WorkspaceFolder,
-} from "vscode";
+import { TextEditor, Uri, window, workspace, WorkspaceFolder } from "vscode";
 import { appInjector } from "../../inversify.config";
 import { RangeLine } from "../../utils/models/range-line";
 import { GitService } from "../../version-control/core/git-service";
@@ -182,21 +174,33 @@ export class FileCoverage {
     };
   }
 
-  public static async createNewCoverageFile(): Promise<FileCoverage> {
-    const files = await this.findCoverageFiles();
+  public static async createNewCoverageFileWithDefaultFile() {
+    return FileCoverage.createNewCoverageFile(
+      FileCoverage.DEFAULT_LCOV_FILE_NAME
+    );
+  }
+
+  public static async createNewCoverageFileWithFilename(lcovFileName: string) {
+    return FileCoverage.createNewCoverageFile(lcovFileName);
+  }
+
+  private static async createNewCoverageFile(
+    lcovfileName: string
+  ): Promise<FileCoverage> {
+    const files = await this.findCoverageFiles(lcovfileName);
     const dataFiles = await this.loadDataFiles(files);
     const dataCoverage = await this.filesToLcovFiles(dataFiles);
     return new FileCoverage(dataCoverage);
   }
 
-  private static async findCoverageFiles(): Promise<Set<string>> {
-    const files = await this.findCoverageInWorkspace(
-      this.DEFAULT_LCOV_FILE_NAME
-    );
+  private static async findCoverageFiles(
+    lcovfileName: string
+  ): Promise<Set<string>> {
+    const files = await this.findCoverageInWorkspace(lcovfileName);
+
     if (!files.size) {
       window.showWarningMessage(
-        "Could not find a Coverage file! Searched for " +
-          this.DEFAULT_LCOV_FILE_NAME
+        "Could not find a Coverage file! Searched for " + lcovfileName
       );
       return new Set();
     }
