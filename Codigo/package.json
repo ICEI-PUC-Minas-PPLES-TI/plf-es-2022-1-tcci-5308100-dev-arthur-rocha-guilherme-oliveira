@@ -5,7 +5,7 @@
   "icon": "resources/logo.jpeg",
   "repository": "https://github.com/ICEI-PUC-Minas-PPLES-TI/plf-es-2022-1-tcci-5308100-dev-arthur-rocha-guilherme-oliveira",
   "publisher": "covering",
-  "version": "1.1.0",
+  "version": "1.2.1",
   "engines": {
     "vscode": "^1.68.0"
   },
@@ -26,6 +26,11 @@
         "command": "covering.generate-project-configuration-file",
         "title": "Generate project configuration file",
         "icon": "$(file-symlink-file)"
+      },
+      {
+        "command": "workbench.action.reloadWindow",
+        "title": "Refresh window",
+        "icon": "$(extensions-refresh)"
       }
     ],
     "viewsContainers": {
@@ -60,6 +65,11 @@
       "view/title": [
         {
           "command": "covering.generate-project-configuration-file",
+          "when": "view == 'covering.config-view'",
+          "group": "navigation"
+        },
+        {
+          "command": "workbench.action.reloadWindow",
           "when": "view == 'covering.config-view'",
           "group": "navigation"
         }

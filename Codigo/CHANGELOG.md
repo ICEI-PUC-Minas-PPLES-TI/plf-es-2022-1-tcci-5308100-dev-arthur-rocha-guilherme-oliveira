@@ -6,6 +6,13 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+## [1.2.1] - 2022-10-07
+
+### Added
+
+- Created command to reload the extension
+- Added icon to reload the extension
+
 ## [1.1.0] - 2022-09-25
 
 ### Added
