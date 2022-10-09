@@ -87,7 +87,8 @@
     "lint": "eslint src --ext ts",
     "lint:fix": "eslint src --ext ts --fix",
     "test": "node ./out/test/runTest.js",
-    "vsce": "vsce"
+    "vsce": "vsce",
+    "vsce:ci": "vsce publish -p"
   },
   "devDependencies": {
     "@types/glob": "^7.2.0",

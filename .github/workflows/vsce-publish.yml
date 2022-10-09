@@ -1,0 +1,24 @@
+on:
+  push:
+    tags:
+      - v*
+
+name: Deploy Extension
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+    defaults:
+      run:
+        working-directory: ./Codigo
+    env:
+      VSCE_TOKEN: ${{ secrets.VSCE_TOKEN }}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+      - run: npm install
+      - run: npm run vsce:ci "$VSCE_TOKEN"
+
