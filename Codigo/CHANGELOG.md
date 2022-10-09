@@ -4,7 +4,11 @@ All notable changes to the "covering" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
-## [Unreleased]
+## [1.2.3] - 2022-10-09
+
+### Changed
+
+- Update parameters descriptions at README.md
 
 ## [1.2.2] - 2022-10-07
 
