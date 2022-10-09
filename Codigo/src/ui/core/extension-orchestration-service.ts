@@ -116,6 +116,16 @@ export class ExtensionOrchestrationService {
   ): void {
     this.actualProjectConfiguration = newProjectConfiguration;
 
+    if (
+      this.actualProjectConfiguration.lcovFileName !== undefined &&
+      this.actualProjectConfiguration.lcovFileName !==
+        FileCoverage.DEFAULT_LCOV_FILE_NAME
+    ) {
+      this.fileCoverageService.addFileCoverageWatcher(
+        this.actualProjectConfiguration.lcovFileName
+      );
+    }
+
     if (this.actualFileCoverage && this.actualConfigurationData) {
       this.coverageService.calculateCoverage(
         this.actualFileCoverage,

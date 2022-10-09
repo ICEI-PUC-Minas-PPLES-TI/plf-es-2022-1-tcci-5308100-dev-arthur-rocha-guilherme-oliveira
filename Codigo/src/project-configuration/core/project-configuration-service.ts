@@ -10,6 +10,7 @@ import { LoggerManager } from "../../utils/logger/logger-manager";
 
 @injectable()
 export class ProjectConfigurationService {
+  private readonly FILE_WATCHER_KEY = "project-configuration-file";
   private vscode = appInjector.get(VisualStudioCode);
 
   private readonly referenceFileName: string;
@@ -27,6 +28,7 @@ export class ProjectConfigurationService {
     this.referenceFileName = ProjectConfiguration.DEFAULT_FILE_NAME;
 
     this.onProjectConfigurationsFileChange = this.vscode.getFileWatcher(
+      this.FILE_WATCHER_KEY,
       this.referenceFileName
     );
     this.logger.info("File watcher initialized");
@@ -54,6 +56,7 @@ export class ProjectConfigurationService {
         minCoverage: 0.8,
         refBranch: "main",
         usePrePushValidation: false,
+        lcovFileName: "lcov.info",
       });
 
       const fileContent = JSON.stringify(sampleProjectConfiguration, null, 2);

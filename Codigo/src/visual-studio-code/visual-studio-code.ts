@@ -1,5 +1,5 @@
 import { injectable } from "inversify";
-import { finalize, Observable, Subject } from "rxjs";
+import { Observable, Subject } from "rxjs";
 import { Disposable, TextEditor, window, workspace } from "vscode";
 import { DefaultConfiguration } from "../config";
 import { ConfigurationData } from "../extension-configuration/models/configuration-data";
@@ -7,13 +7,21 @@ import { CoverageLines } from "../file-coverage/models/coverage-lines";
 import { FileCoverage } from "../file-coverage/models/file-coverage";
 import { appInjector } from "../inversify.config";
 
+type FileWatcherSubject = {
+  subject: Subject<void>;
+  fileName: string;
+  fileWatcher: Disposable;
+};
+
 @injectable()
 export class VisualStudioCode {
   private editorWatcher!: Disposable;
   private actualFileCoverage!: FileCoverage;
   private actualExtensionConfiguration!: ConfigurationData;
 
-  private fileWatchers: { [key: string]: Observable<void> } = {};
+  private fileWatchers: {
+    [key: string]: FileWatcherSubject
+  } = {};
 
   constructor() {
     this.observeEditorFocusChange();
@@ -117,36 +125,41 @@ export class VisualStudioCode {
     });
   }
 
-  public getFileWatcher(fileName: string): Observable<void> {
-    const fileWatcher = this.fileWatchers[fileName];
+  public getFileWatcher(key: string, fileName: string): Observable<void> {
+    const fileWatcher = this.fileWatchers[key];
 
-    if (!fileWatcher) {
-      const newFileSubject = new Subject<void>();
-
-      let baseDir = "**";
-      if (workspace.workspaceFolders) {
-        const workspaceFolders = workspace.workspaceFolders.map(
-          (wf) => wf.uri.fsPath
-        );
-        baseDir = `{${workspaceFolders}}/${baseDir}`;
-      }
-      const blobPattern = `${baseDir}/${fileName}`;
-
-      const newFileWatcher = workspace.createFileSystemWatcher(blobPattern);
-      newFileWatcher.onDidChange(() => newFileSubject.next());
-      newFileWatcher.onDidCreate(() => newFileSubject.next());
-      newFileWatcher.onDidDelete(() => newFileSubject.next());
-
-      this.fileWatchers[fileName] = newFileSubject.asObservable().pipe(
-        finalize(() => {
-          newFileWatcher.dispose();
-          delete this.fileWatchers[fileName];
-        })
-      );
-
-      return this.fileWatchers[fileName];
+    if (fileWatcher && fileWatcher.fileName === fileName) {
+      return fileWatcher.subject.asObservable();
     }
 
-    return fileWatcher;
+    if (fileWatcher) {
+      fileWatcher.subject.complete();
+      fileWatcher.fileWatcher.dispose();
+    }
+
+    const newFileSubject = new Subject<void>();
+
+    let baseDir = "**";
+    if (workspace.workspaceFolders) {
+      const workspaceFolders = workspace.workspaceFolders.map(
+        (wf) => wf.uri.fsPath
+      );
+      baseDir = `{${workspaceFolders}}/${baseDir}`;
+    }
+    const blobPattern = `${baseDir}/${fileName}`;
+
+    const newFileWatcher = workspace.createFileSystemWatcher(blobPattern);
+    newFileWatcher.onDidChange(() => newFileSubject.next());
+    newFileWatcher.onDidCreate(() => newFileSubject.next());
+    newFileWatcher.onDidDelete(() => newFileSubject.next());
+
+    const newFileWatcherSubject = {
+      subject: newFileSubject,
+      fileWatcher: newFileWatcher,
+      fileName,
+      };
+
+      this.fileWatchers[key] = newFileWatcherSubject;
+      return newFileWatcherSubject.subject.asObservable();
   }
 }
