@@ -16,8 +16,14 @@ You can set your own configuration crating a file called `.coveringconfig` in th
 {
   "minCoverage": 0.9,
   "refBranch": "master",
-  "usePrePushValidation": true
+  "usePrePushValidation": true,
+  "lcovFileName": "lcov.info"
 }
 ```
+
+- `minCoverage`: The minimum coverage percentage to pass in pre-push validation. Default: `0.9`
+- `refBranch`: The branch to compare with the current branch in pre-push validation. Default: `main`
+- `usePrePushValidation`: If the extension will use the pre-push validation. Default: `true`
+- `lcovFileName`: The name of the lcov file to watch. Default: `lcov.info`
 
 After change this file, the repository will automatically refresh the values of your coverage status base on your last generated `lcov.info` file.
