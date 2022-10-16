@@ -8,6 +8,7 @@ import { GitService } from "../../version-control/core/git-service";
 import { BranchDiff } from "../../version-control/models/branch-diff";
 import { LcovFileFinder } from "../../utils/functions/lcov-file-finder";
 import { CoverageLines } from "./coverage-lines";
+import { ConfigurationData } from "../../extension-configuration/models/configuration-data";
 
 export type CompleteCoverageLines = {
   fileName: Uri;
@@ -23,19 +24,35 @@ export class FileCoverage {
   constructor(private readonly lcovFiles: Map<string, LcovFile>) {}
 
   public async getAllCoverageLines(
-    useGitDiff: boolean,
-    referenceBranch: string
+    extensionConfiguration: ConfigurationData
   ): Promise<CompleteCoverageLines[]> {
-    const lcovFiles = this.getLcovFiles();
+    const lcovFiles = this.getLcovFiles().filter((lcovFile) => {
+      if (extensionConfiguration.isJustForFileInFocus) {
+        const activeTextEditor = window.activeTextEditor;
 
-    const allFilesCoverageLines = [];
+        if (activeTextEditor) {
+          const lcovFileFsPath = Uri.file(lcovFile.file).fsPath;
+          const activeTextEditorFsPath = activeTextEditor.document.uri.fsPath;
+
+          return activeTextEditorFsPath.length > lcovFileFsPath.length
+            ? activeTextEditorFsPath.includes(lcovFileFsPath)
+            : lcovFileFsPath.includes(activeTextEditorFsPath);
+        }
+
+        return false;
+      }
+
+      return true;
+    });
+
+    const allFilesCoverageLines: CompleteCoverageLines[] = [];
 
     for (const lcovFile of lcovFiles) {
       const coverageLines = await this.getCoverageLinesForAFile(
         [lcovFile],
         lcovFile.file,
-        useGitDiff,
-        referenceBranch
+        extensionConfiguration.isBasedOnBranchChange,
+        extensionConfiguration.referenceBranch
       );
       allFilesCoverageLines.push({
         fileName: Uri.file(lcovFile.file),

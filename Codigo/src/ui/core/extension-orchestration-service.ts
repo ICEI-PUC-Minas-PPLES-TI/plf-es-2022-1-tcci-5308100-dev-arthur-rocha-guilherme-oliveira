@@ -17,6 +17,7 @@ import { TestType } from "../enums/test-type";
 import { GitService } from "../../version-control/core/git-service";
 import { LoggerManager } from "../../utils/logger/logger-manager";
 import { Observable, Subject } from "rxjs";
+import { CoverageData } from "../../coverage/models/coverage-data";
 
 export class ExtensionOrchestrationService {
   private coverageService = appInjector.get(CoverageService);
@@ -50,7 +51,11 @@ export class ExtensionOrchestrationService {
     this.startProjectConfigurationObserver().subscribe(() => {
       this.startExtensionConfigurationObserver().subscribe(() => {
         this.startCoverageFileObserver().subscribe(() => {
-          this.startCoverageDataObserver();
+          this.startCoverageDataObserver().subscribe(() => {
+            this.vsCode.getActiveEditorChange().subscribe(() => {
+              this.fileFocusChange();
+            });
+          });
         });
       });
     });
@@ -149,7 +154,7 @@ export class ExtensionOrchestrationService {
     let isFirstInteraction = true;
 
     this.coverageService.getCoverageData().subscribe((coverageData) => {
-      this.gitService.updateGitHookParams(coverageData);
+      this.emitNewCoverageData(coverageData);
 
       if (isFirstInteraction) {
         isFirstInteraction = false;
@@ -159,6 +164,10 @@ export class ExtensionOrchestrationService {
     });
 
     return subject;
+  }
+
+  private emitNewCoverageData(coverageData: CoverageData): void {
+    this.gitService.updateGitHookParams(coverageData);
   }
 
   public emitNewProjectConfiguration(
@@ -257,7 +266,30 @@ export class ExtensionOrchestrationService {
 
   public runTest(testType: TestType): void {}
 
-  public fileFocusChange(): void {}
+  public fileFocusChange(): void {
+    if (!this.actualConfigurationData.isJustForFileInFocus) {
+      return;
+    }
+
+    if (
+      this.actualFileCoverage &&
+      this.actualProjectConfiguration &&
+      this.actualConfigurationData
+    ) {
+      this.coverageService.calculateCoverage(
+        this.actualFileCoverage,
+        this.actualProjectConfiguration,
+        this.actualConfigurationData
+      );
+    }
+
+    if (this.actualFileCoverage && this.actualConfigurationData) {
+      this.uncoveredLinesService.setCurrentUncoveredLines(
+        this.actualFileCoverage,
+        this.actualConfigurationData
+      );
+    }
+  }
 
   public changeDefaultTestExecution(testType: TestType): void {}
 }

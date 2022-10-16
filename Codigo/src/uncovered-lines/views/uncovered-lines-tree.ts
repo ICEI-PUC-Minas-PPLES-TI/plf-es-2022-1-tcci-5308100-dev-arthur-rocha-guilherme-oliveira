@@ -151,7 +151,7 @@ export class UncoveredLinesTree
   private getFolderTreeItem(selfData: Folder): TreeItem {
     const folderTree = new TreeItem(
       selfData.folderName,
-      TreeItemCollapsibleState.Collapsed
+      TreeItemCollapsibleState.Expanded
     );
     folderTree.resourceUri = selfData.uri;
     return folderTree;

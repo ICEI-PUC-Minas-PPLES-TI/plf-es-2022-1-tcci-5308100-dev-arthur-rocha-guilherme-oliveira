@@ -26,7 +26,12 @@ export class ExtensionConfigurationService {
   }
 
   public toggleCoveragePercentageMode(): void {
-    window.showErrorMessage("not implemented yet");
+    const newConfig = ConfigurationData.updateConfigurationData(
+      this.actualState,
+      { isJustForFileInFocus: !this.actualState.isJustForFileInFocus }
+    );
+
+    this.emitNewConfiguration(newConfig);
   }
 
   public toggleCoverageBaseReferenceMode(): void {
