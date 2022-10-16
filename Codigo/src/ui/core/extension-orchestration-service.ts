@@ -16,6 +16,7 @@ import { VisualStudioCode } from "../../visual-studio-code/visual-studio-code";
 import { TestType } from "../enums/test-type";
 import { GitService } from "../../version-control/core/git-service";
 import { LoggerManager } from "../../utils/logger/logger-manager";
+import { Observable, Subject } from "rxjs";
 
 export class ExtensionOrchestrationService {
   private coverageService = appInjector.get(CoverageService);
@@ -42,13 +43,17 @@ export class ExtensionOrchestrationService {
     this.registerCommands();
     this.registerViews();
 
-    this.startProjectConfigurationObserver();
+    this.initObservers();
+  }
 
-    this.startExtensionConfigurationObserver();
-
-    this.startCoverageFileObserver();
-
-    this.startCoverageDataObserver();
+  private initObservers() {
+    this.startProjectConfigurationObserver().subscribe(() => {
+      this.startExtensionConfigurationObserver().subscribe(() => {
+        this.startCoverageFileObserver().subscribe(() => {
+          this.startCoverageDataObserver();
+        });
+      });
+    });
   }
 
   private registerCommands() {
@@ -83,32 +88,77 @@ export class ExtensionOrchestrationService {
     UncoveredLinesTree.createView();
   }
 
-  private startProjectConfigurationObserver() {
+  private startProjectConfigurationObserver(): Observable<void> {
+    const subject = new Subject<void>();
+    let isFirstInteraction = true;
+
     this.projectConfigurationService
       .getProjectConfigurationData()
       .subscribe((configurationData) => {
         this.emitNewProjectConfiguration(configurationData);
+
+        if (isFirstInteraction) {
+          isFirstInteraction = false;
+          subject.next();
+          subject.complete();
+        }
       });
+    return subject;
   }
 
-  private startExtensionConfigurationObserver() {
+  private startExtensionConfigurationObserver(): Observable<void> {
+    const subject = new Subject<void>();
+    let isFirstInteraction = true;
+
     this.extensionConfigurationService
       .getConfigurationData()
       .subscribe((configurationData) => {
         this.emitNewConfigurationData(configurationData);
+
+        if (isFirstInteraction) {
+          isFirstInteraction = false;
+          subject.next();
+          subject.complete();
+        }
       });
+
+    return subject;
   }
 
-  private startCoverageFileObserver() {
-    this.fileCoverageService.getFileCoverage().subscribe((fileCoverage) => {
-      this.emitNewFileCoverage(fileCoverage);
-    });
+  private startCoverageFileObserver(): Observable<void> {
+    const subject = new Subject<void>();
+    let isFirstInteraction = true;
+
+    this.fileCoverageService
+      .getFileCoverage(this.actualProjectConfiguration?.lcovFileName)
+      .subscribe((fileCoverage) => {
+        this.emitNewFileCoverage(fileCoverage);
+
+        if (isFirstInteraction) {
+          isFirstInteraction = false;
+          subject.next();
+          subject.complete();
+        }
+      });
+
+    return subject;
   }
 
-  private startCoverageDataObserver() {
+  private startCoverageDataObserver(): Observable<void> {
+    const subject = new Subject<void>();
+    let isFirstInteraction = true;
+
     this.coverageService.getCoverageData().subscribe((coverageData) => {
       this.gitService.updateGitHookParams(coverageData);
+
+      if (isFirstInteraction) {
+        isFirstInteraction = false;
+        subject.next();
+        subject.complete();
+      }
     });
+
+    return subject;
   }
 
   public emitNewProjectConfiguration(

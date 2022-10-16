@@ -26,13 +26,13 @@ export class FileCoverageService {
     );
   }
 
-  public getFileCoverage(): Observable<FileCoverage> {
+  public getFileCoverage(lcovFileName?: string): Observable<FileCoverage> {
     if (!this.fileCoverageSubject) {
       this.fileCoverageSubject = new ReplaySubject<FileCoverage>();
 
-      this.SetFileChangeSubscribe();
+      this.setFileChangeSubscribe(lcovFileName);
 
-      this.fileChanged();
+      this.fileChanged(lcovFileName);
     }
 
     return this.fileCoverageSubject.asObservable();
@@ -48,12 +48,14 @@ export class FileCoverageService {
       lcovFileName
     );
 
-    this.SetFileChangeSubscribe(lcovFileName);
+    this.setFileChangeSubscribe(lcovFileName);
 
-    this.fileChanged(lcovFileName);
+    if (this.fileCoverageSubject) {
+      this.fileChanged(lcovFileName);
+    }
   }
 
-  private SetFileChangeSubscribe(lcovFileName?: string) {
+  private setFileChangeSubscribe(lcovFileName?: string) {
     this.onFileCoverageChangeSubscription =
       this.onFileCoverageFileChange.subscribe(() => {
         this.fileChanged(lcovFileName);
