@@ -1,5 +1,5 @@
 import { injectable } from "inversify";
-import { Observable, ReplaySubject, startWith } from "rxjs";
+import { Observable, ReplaySubject } from "rxjs";
 import { window } from "vscode";
 import { appInjector } from "../../inversify.config";
 import { GitService } from "../../version-control/core/git-service";
@@ -13,7 +13,7 @@ export class ExtensionConfigurationService {
   private actualState = new ConfigurationData(true, false, "", false);
 
   public getConfigurationData(): Observable<ConfigurationData> {
-    return this.configurationData.pipe(startWith(this.actualState));
+    return this.configurationData.asObservable();
   }
 
   public toggleLineStatusVisibility(): void {
@@ -26,7 +26,12 @@ export class ExtensionConfigurationService {
   }
 
   public toggleCoveragePercentageMode(): void {
-    window.showErrorMessage("not implemented yet");
+    const newConfig = ConfigurationData.updateConfigurationData(
+      this.actualState,
+      { isJustForFileInFocus: !this.actualState.isJustForFileInFocus }
+    );
+
+    this.emitNewConfiguration(newConfig);
   }
 
   public toggleCoverageBaseReferenceMode(): void {

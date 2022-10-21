@@ -20,8 +20,9 @@ export class VisualStudioCode {
   private actualExtensionConfiguration!: ConfigurationData;
 
   private fileWatchers: {
-    [key: string]: FileWatcherSubject
+    [key: string]: FileWatcherSubject;
   } = {};
+  private activeEditorChangeSubject: Subject<void> = new Subject<void>();
 
   constructor() {
     this.observeEditorFocusChange();
@@ -34,7 +35,17 @@ export class VisualStudioCode {
       return;
     }
 
-    const textEditors = window.visibleTextEditors;
+    let textEditors: readonly TextEditor[] = [];
+
+    if (this.actualExtensionConfiguration.isJustForFileInFocus) {
+      const activeTextEditor = window.activeTextEditor;
+
+      if (activeTextEditor) {
+        textEditors = [activeTextEditor];
+      }
+    } else {
+      textEditors = window.visibleTextEditors;
+    }
 
     textEditors.forEach(async (textEditor) => {
       const coverageLines =
@@ -82,9 +93,14 @@ export class VisualStudioCode {
   public observeEditorFocusChange(): void {
     this.cancelEditorFocusChangeObservation();
 
-    this.editorWatcher = window.onDidChangeActiveTextEditor(() =>
-      this.render()
-    );
+    this.editorWatcher = window.onDidChangeActiveTextEditor(() => {
+      this.render();
+      this.activeEditorChangeSubject.next();
+    });
+  }
+
+  public getActiveEditorChange(): Observable<void> {
+    return this.activeEditorChangeSubject.asObservable();
   }
 
   public criaNaRaizDoProjetoUmArquivoDeConfiguração(): void {}
@@ -157,9 +173,9 @@ export class VisualStudioCode {
       subject: newFileSubject,
       fileWatcher: newFileWatcher,
       fileName,
-      };
+    };
 
-      this.fileWatchers[key] = newFileWatcherSubject;
-      return newFileWatcherSubject.subject.asObservable();
+    this.fileWatchers[key] = newFileWatcherSubject;
+    return newFileWatcherSubject.subject.asObservable();
   }
 }

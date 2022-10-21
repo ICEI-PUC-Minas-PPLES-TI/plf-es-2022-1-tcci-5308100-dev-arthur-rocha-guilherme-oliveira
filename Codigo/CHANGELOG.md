@@ -4,6 +4,12 @@ All notable changes to the "covering" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.3.0] - 2022-10-20
+
+### Added
+
+- Add view coverage only for activity edit in extension configuration view.
+
 ## [1.2.3] - 2022-10-09
 
 ### Changed

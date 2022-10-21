@@ -16,6 +16,8 @@ import { VisualStudioCode } from "../../visual-studio-code/visual-studio-code";
 import { TestType } from "../enums/test-type";
 import { GitService } from "../../version-control/core/git-service";
 import { LoggerManager } from "../../utils/logger/logger-manager";
+import { Observable, Subject } from "rxjs";
+import { CoverageData } from "../../coverage/models/coverage-data";
 
 export class ExtensionOrchestrationService {
   private coverageService = appInjector.get(CoverageService);
@@ -42,13 +44,21 @@ export class ExtensionOrchestrationService {
     this.registerCommands();
     this.registerViews();
 
-    this.startProjectConfigurationObserver();
+    this.initObservers();
+  }
 
-    this.startExtensionConfigurationObserver();
-
-    this.startCoverageFileObserver();
-
-    this.startCoverageDataObserver();
+  private initObservers() {
+    this.startProjectConfigurationObserver().subscribe(() => {
+      this.startExtensionConfigurationObserver().subscribe(() => {
+        this.startCoverageFileObserver().subscribe(() => {
+          this.startCoverageDataObserver().subscribe(() => {
+            this.vsCode.getActiveEditorChange().subscribe(() => {
+              this.fileFocusChange();
+            });
+          });
+        });
+      });
+    });
   }
 
   private registerCommands() {
@@ -83,32 +93,81 @@ export class ExtensionOrchestrationService {
     UncoveredLinesTree.createView();
   }
 
-  private startProjectConfigurationObserver() {
+  private startProjectConfigurationObserver(): Observable<void> {
+    const subject = new Subject<void>();
+    let isFirstInteraction = true;
+
     this.projectConfigurationService
       .getProjectConfigurationData()
       .subscribe((configurationData) => {
         this.emitNewProjectConfiguration(configurationData);
+
+        if (isFirstInteraction) {
+          isFirstInteraction = false;
+          subject.next();
+          subject.complete();
+        }
       });
+    return subject;
   }
 
-  private startExtensionConfigurationObserver() {
+  private startExtensionConfigurationObserver(): Observable<void> {
+    const subject = new Subject<void>();
+    let isFirstInteraction = true;
+
     this.extensionConfigurationService
       .getConfigurationData()
       .subscribe((configurationData) => {
         this.emitNewConfigurationData(configurationData);
+
+        if (isFirstInteraction) {
+          isFirstInteraction = false;
+          subject.next();
+          subject.complete();
+        }
       });
+
+    return subject;
   }
 
-  private startCoverageFileObserver() {
-    this.fileCoverageService.getFileCoverage().subscribe((fileCoverage) => {
-      this.emitNewFileCoverage(fileCoverage);
-    });
+  private startCoverageFileObserver(): Observable<void> {
+    const subject = new Subject<void>();
+    let isFirstInteraction = true;
+
+    this.fileCoverageService
+      .getFileCoverage(this.actualProjectConfiguration?.lcovFileName)
+      .subscribe((fileCoverage) => {
+        this.emitNewFileCoverage(fileCoverage);
+
+        if (isFirstInteraction) {
+          isFirstInteraction = false;
+          subject.next();
+          subject.complete();
+        }
+      });
+
+    return subject;
   }
 
-  private startCoverageDataObserver() {
+  private startCoverageDataObserver(): Observable<void> {
+    const subject = new Subject<void>();
+    let isFirstInteraction = true;
+
     this.coverageService.getCoverageData().subscribe((coverageData) => {
-      this.gitService.updateGitHookParams(coverageData);
+      this.emitNewCoverageData(coverageData);
+
+      if (isFirstInteraction) {
+        isFirstInteraction = false;
+        subject.next();
+        subject.complete();
+      }
     });
+
+    return subject;
+  }
+
+  private emitNewCoverageData(coverageData: CoverageData): void {
+    this.gitService.updateGitHookParams(coverageData);
   }
 
   public emitNewProjectConfiguration(
@@ -207,7 +266,30 @@ export class ExtensionOrchestrationService {
 
   public runTest(testType: TestType): void {}
 
-  public fileFocusChange(): void {}
+  public fileFocusChange(): void {
+    if (!this.actualConfigurationData.isJustForFileInFocus) {
+      return;
+    }
+
+    if (
+      this.actualFileCoverage &&
+      this.actualProjectConfiguration &&
+      this.actualConfigurationData
+    ) {
+      this.coverageService.calculateCoverage(
+        this.actualFileCoverage,
+        this.actualProjectConfiguration,
+        this.actualConfigurationData
+      );
+    }
+
+    if (this.actualFileCoverage && this.actualConfigurationData) {
+      this.uncoveredLinesService.setCurrentUncoveredLines(
+        this.actualFileCoverage,
+        this.actualConfigurationData
+      );
+    }
+  }
 
   public changeDefaultTestExecution(testType: TestType): void {}
 }

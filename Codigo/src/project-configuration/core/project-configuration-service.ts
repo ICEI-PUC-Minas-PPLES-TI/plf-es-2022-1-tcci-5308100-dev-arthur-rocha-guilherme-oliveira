@@ -7,6 +7,7 @@ import { injectable } from "inversify";
 import { fileSystemHelper } from "../../utils/functions/file-system-helper";
 import { Uri, workspace } from "vscode";
 import { LoggerManager } from "../../utils/logger/logger-manager";
+import { FileCoverage } from "../../file-coverage/models/file-coverage";
 
 @injectable()
 export class ProjectConfigurationService {
@@ -56,7 +57,7 @@ export class ProjectConfigurationService {
         minCoverage: 0.8,
         refBranch: "main",
         usePrePushValidation: false,
-        lcovFileName: "lcov.info",
+        lcovFileName: FileCoverage.DEFAULT_LCOV_FILE_NAME,
       });
 
       const fileContent = JSON.stringify(sampleProjectConfiguration, null, 2);
