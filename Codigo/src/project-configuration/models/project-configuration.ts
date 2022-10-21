@@ -14,7 +14,6 @@ export class ProjectConfiguration {
   public readonly minCoverage: number;
   public readonly refBranch?: string;
   public readonly runTestCoverage?: string;
-  public readonly runTestCoverageWatchMode?: string;
   public readonly usePrePushValidation: boolean;
 
   constructor(data: any = {}) {
@@ -28,7 +27,6 @@ export class ProjectConfiguration {
 
     this.refBranch = data["refBranch"] || "main";
     this.runTestCoverage = data["runTestCoverage"];
-    this.runTestCoverageWatchMode = data["runTestCoverageWatchMode"];
 
     this.usePrePushValidation = this.validateNullableValueWithDefault<boolean>(
       data["usePrePushValidation"],

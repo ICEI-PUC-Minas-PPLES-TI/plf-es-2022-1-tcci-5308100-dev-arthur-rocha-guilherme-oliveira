@@ -6,7 +6,9 @@ export class ConfigurationData {
 
     public referenceBranch: string,
 
-    public isJustForFileInFocus: boolean
+    public isJustForFileInFocus: boolean,
+
+    public runTestCoverage: string
   ) {}
 
   public static updateConfigurationData(
@@ -18,6 +20,7 @@ export class ConfigurationData {
       isBasedOnBranchChange,
       referenceBranch,
       isJustForFileInFocus,
+      runTestCoverage,
     } = actual;
 
     const {
@@ -25,6 +28,7 @@ export class ConfigurationData {
       isBasedOnBranchChange: newIsBasedOnBranchChange,
       referenceBranch: newReferenceBranch,
       isJustForFileInFocus: newIsJustForFileInFocus,
+      runTestCoverage: newRunTestCoverage,
     } = newFields;
 
     return new ConfigurationData(
@@ -38,7 +42,9 @@ export class ConfigurationData {
 
       newIsJustForFileInFocus !== undefined
         ? newIsJustForFileInFocus
-        : isJustForFileInFocus
+        : isJustForFileInFocus,
+
+      newRunTestCoverage !== undefined ? newRunTestCoverage : runTestCoverage
     );
   }
 }
