@@ -16,7 +16,7 @@ You can set your own configuration crating a file called `.coveringconfig` in th
 {
   "minCoverage": 0.9,
   "refBranch": "master",
-  "usePrePushValidation": true,
+  "usePrePushValidation": false,
   "lcovFileName": "lcov.info"
 }
 ```
@@ -28,7 +28,7 @@ You can set your own configuration crating a file called `.coveringconfig` in th
   - Default: `main`.
   - Valid values: any local branch name.
 - `usePrePushValidation`: If the extension will use the pre-push validation.
-  - Default: `true`.
+  - Default: `false`.
   - Valid values: `true` or `false`.
 - `lcovFileName`: The name of the lcov file to watch.
   - Default: `lcov.info` .
