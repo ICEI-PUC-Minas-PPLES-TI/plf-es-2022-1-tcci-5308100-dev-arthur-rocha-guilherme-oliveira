@@ -1,4 +1,4 @@
-import { commands, ExtensionContext, window } from "vscode";
+import { commands, ExtensionContext } from "vscode";
 import { CoverageService } from "../../coverage/core/coverage-service";
 import { CoverageView } from "../../coverage/views/coverage-view";
 import { ExtensionConfigurationService } from "../../extension-configuration/core/extension-configuration-service";
@@ -281,17 +281,9 @@ export class ExtensionOrchestrationService {
       return;
     }
 
-    if (window.terminals.length) {
-      window.terminals[0].sendText(
-        this.actualProjectConfiguration.runTestCoverage
-      );
-    } else {
-      window
-        .createTerminal("covering")
-        .sendText(this.actualProjectConfiguration.runTestCoverage);
-    }
-
-    window.terminals[0].show();
+    this.vsCode.runScriptOnTerminal(
+      this.actualProjectConfiguration.runTestCoverage
+    );
   }
 
   public fileFocusChange(): void {
