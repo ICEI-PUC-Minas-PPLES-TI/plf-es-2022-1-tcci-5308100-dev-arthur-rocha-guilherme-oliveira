@@ -34,7 +34,7 @@
       },
       {
         "command": "covering.run-teste",
-        "title": "Run test script (seted in .coveringconfig file)",
+        "title": "Run test script (setted in .coveringconfig file)",
         "icon": "$(debug-start)"
       }
     ],
