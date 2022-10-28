@@ -82,7 +82,15 @@ export class VisualStudioCode {
 
   public changeToCoveringTab(): void {}
 
-  public runScriptOnTerminal(command: string): void {}
+  public runScriptOnTerminal(command: string): void {
+    if (window.terminals.length) {
+      window.terminals[0].sendText(command);
+    } else {
+      window.createTerminal("covering").sendText(command);
+    }
+
+    window.terminals[0].show();
+  }
 
   public cancelEditorFocusChangeObservation(): void {
     if (this.editorWatcher) {

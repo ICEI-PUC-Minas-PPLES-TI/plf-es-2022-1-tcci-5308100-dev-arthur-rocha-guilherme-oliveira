@@ -31,6 +31,11 @@
         "command": "workbench.action.reloadWindow",
         "title": "Refresh window",
         "icon": "$(extensions-refresh)"
+      },
+      {
+        "command": "covering.run-teste",
+        "title": "Run test script (setted in .coveringconfig file)",
+        "icon": "$(debug-start)"
       }
     ],
     "viewsContainers": {
@@ -71,6 +76,11 @@
         {
           "command": "workbench.action.reloadWindow",
           "when": "view == 'covering.config-view'",
+          "group": "navigation"
+        },
+        {
+          "command": "covering.run-teste",
+          "when": "view == 'covering.coverage-view'",
           "group": "navigation"
         }
       ]

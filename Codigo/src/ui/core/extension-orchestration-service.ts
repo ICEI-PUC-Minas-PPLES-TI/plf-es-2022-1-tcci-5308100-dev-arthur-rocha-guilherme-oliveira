@@ -13,7 +13,6 @@ import { UncoveredLinesService } from "../../uncovered-lines/core/uncovered-line
 import { UncoveredLinesTree } from "../../uncovered-lines/views/uncovered-lines-tree";
 import { Line } from "../../uncovered-lines/models/line";
 import { VisualStudioCode } from "../../visual-studio-code/visual-studio-code";
-import { TestType } from "../enums/test-type";
 import { GitService } from "../../version-control/core/git-service";
 import { LoggerManager } from "../../utils/logger/logger-manager";
 import { Observable, Subject } from "rxjs";
@@ -85,6 +84,15 @@ export class ExtensionOrchestrationService {
     );
 
     this.context.subscriptions.push(generateProjectConfigurationFileDisposable);
+
+    const generateRunTestCoverageDisposable = commands.registerCommand(
+      "covering.run-teste",
+      async () => {
+        this.runTest();
+      }
+    );
+
+    this.context.subscriptions.push(generateRunTestCoverageDisposable);
   }
 
   private registerViews() {
@@ -264,7 +272,19 @@ export class ExtensionOrchestrationService {
 
   public initViewData(): void {}
 
-  public runTest(testType: TestType): void {}
+  public runTest(): void {
+    if (
+      this.actualProjectConfiguration.runTestCoverage === "" ||
+      this.actualProjectConfiguration.runTestCoverage === undefined
+    ) {
+      this.logger.error("Please configure the command to run the tests", true);
+      return;
+    }
+
+    this.vsCode.runScriptOnTerminal(
+      this.actualProjectConfiguration.runTestCoverage
+    );
+  }
 
   public fileFocusChange(): void {
     if (!this.actualConfigurationData.isJustForFileInFocus) {
@@ -290,6 +310,4 @@ export class ExtensionOrchestrationService {
       );
     }
   }
-
-  public changeDefaultTestExecution(testType: TestType): void {}
 }

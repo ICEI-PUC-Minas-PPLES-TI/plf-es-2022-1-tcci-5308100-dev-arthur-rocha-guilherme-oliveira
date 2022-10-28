@@ -10,7 +10,7 @@ export class ExtensionConfigurationService {
   private gitService = appInjector.get(GitService);
 
   private configurationData = new ReplaySubject<ConfigurationData>();
-  private actualState = new ConfigurationData(true, false, "", false);
+  private actualState = new ConfigurationData(true, false, "", false, "");
 
   public getConfigurationData(): Observable<ConfigurationData> {
     return this.configurationData.asObservable();
