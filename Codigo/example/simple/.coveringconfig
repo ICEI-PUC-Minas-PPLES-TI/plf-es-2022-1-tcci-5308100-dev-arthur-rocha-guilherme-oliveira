@@ -2,6 +2,5 @@
   "minCoverage": 0.9,
   "refBranch": "master",
   "usePrePushValidation": false,
-  "lcovFileName": "shulambs.info",
   "runTestCoverage": "npm run test"
 }
