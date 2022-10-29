@@ -35,7 +35,7 @@ export class Logger {
     this.sendMessage(MessageType.SUCCESS, message, showToast);
   }
 
-  public sendMessage(
+  private sendMessage(
     messageType: MessageType,
     message: string,
     showToast = false
