@@ -86,7 +86,7 @@ export class ExtensionOrchestrationService {
     this.context.subscriptions.push(generateProjectConfigurationFileDisposable);
 
     const generateRunTestCoverageDisposable = commands.registerCommand(
-      "covering.run-teste",
+      "covering.run-test",
       async () => {
         this.runTest();
       }
