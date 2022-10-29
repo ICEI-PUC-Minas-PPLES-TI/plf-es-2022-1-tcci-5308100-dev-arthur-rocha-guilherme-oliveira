@@ -4,6 +4,13 @@ All notable changes to the "covering" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.4.0] - 2022-10-27
+
+### Added
+
+- Add command `runTestCoverage` to run test script on covering file.
+- Add icon on coverage-view to run test command.
+
 ## [1.3.0] - 2022-10-20
 
 ### Added
