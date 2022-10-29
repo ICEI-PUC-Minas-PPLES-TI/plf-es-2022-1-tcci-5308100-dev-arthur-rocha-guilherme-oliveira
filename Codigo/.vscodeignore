@@ -1,9 +1,5 @@
 .vscode/**
 .vscode-test/**
-out/**
-node_modules/**
-src/**
-.gitignore
 .yarnrc
 webpack.config.js
 vsc-extension-quickstart.md
@@ -13,3 +9,16 @@ vsc-extension-quickstart.md
 **/*.ts
 astah-export
 example
+
+coverage/
+node_modules/*/*.md
+out/**/*.d.ts
+out/**/*.js.map
+out/*.d.ts
+out/*.js.map
+resources/demo.gif
+src/
+tests/
+web/
+.gitignore
+jest.config.js

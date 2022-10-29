@@ -1,0 +1,6 @@
+{
+  "minCoverage": 0.8,
+  "refBranch": "master",
+  "usePrePushValidation": false,
+  "lcovFileName": "lcov.info"
+}
