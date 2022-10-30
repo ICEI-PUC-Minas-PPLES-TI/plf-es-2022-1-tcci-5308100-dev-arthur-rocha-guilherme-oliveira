@@ -1,6 +1,11 @@
 name: Pre-publish
 
-on: [push, pull_request]
+on: 
+  push:
+    tags-ignore:
+      - '*'
+  pull_request:
+
 
 jobs:
   lint:
