@@ -1,9 +1,11 @@
-name: Deploy Extension
+name: Pre-publish
 
-on:
+on: 
   push:
-    tags:
-      - v*
+    tags-ignore:
+      - '*'
+  pull_request:
+
 
 jobs:
   lint:
@@ -70,20 +72,3 @@ jobs:
         with:
           path: |
             **/covering-*.vsix
-
-  deploy:
-    runs-on: ubuntu-latest
-    needs: tests
-    environment: production
-    defaults:
-      run:
-        working-directory: ./Codigo
-    env:
-      VSCE_TOKEN: ${{ secrets.VSCE_TOKEN }}
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v3
-        with:
-          node-version: "18"
-      - run: npm ci
-      - run: npm run vsce:ci "$VSCE_TOKEN"
