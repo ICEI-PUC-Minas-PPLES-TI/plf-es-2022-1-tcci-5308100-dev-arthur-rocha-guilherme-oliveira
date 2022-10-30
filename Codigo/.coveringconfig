@@ -1,6 +1,6 @@
 {
-  "minCoverage": 0.9,
+  "minCoverage": 0.8,
   "refBranch": "master",
   "usePrePushValidation": false,
-  "runTestCoverage": "npm run test"
+  "lcovFileName": "lcov.info"
 }

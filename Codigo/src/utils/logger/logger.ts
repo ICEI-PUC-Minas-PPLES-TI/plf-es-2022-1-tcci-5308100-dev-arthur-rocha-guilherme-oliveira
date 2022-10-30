@@ -1,6 +1,6 @@
 import { OutputChannel, window } from "vscode";
 
-enum MessageType {
+export enum MessageType {
   INFO = "INFO",
   ERROR = "ERROR",
   SUCCESS = "SUCCESS",
@@ -15,19 +15,23 @@ export class Logger {
     );
   }
 
-  public info(message: string, showToast = false): void {
+  public dispose() {
+    this.outputChannel.dispose();
+  }
+
+  public info(message: string, showToast?: boolean): void {
     this.sendMessage(MessageType.INFO, message, showToast);
   }
 
-  public warn(message: string, showToast = false): void {
+  public warn(message: string, showToast?: boolean): void {
     this.sendMessage(MessageType.WARNING, message, showToast);
   }
 
-  public error(message: string, showToast = false): void {
+  public error(message: string, showToast?: boolean): void {
     this.sendMessage(MessageType.ERROR, message, showToast);
   }
 
-  public success(message: string, showToast = false): void {
+  public success(message: string, showToast?: boolean): void {
     this.sendMessage(MessageType.SUCCESS, message, showToast);
   }
 
