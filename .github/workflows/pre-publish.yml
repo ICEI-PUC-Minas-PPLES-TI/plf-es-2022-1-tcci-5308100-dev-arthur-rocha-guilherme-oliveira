@@ -9,6 +9,6 @@ jobs:
       run:
         working-directory: ./Codigo
     steps:
-      - uses: ICEI-PUC-Minas-PPLES-TI/plf-es-2022-1-tcci-5308100-dev-arthur-rocha-guilherme-oliveira/blob/master/.github/workflows/lint.yml
-      - uses: ICEI-PUC-Minas-PPLES-TI/plf-es-2022-1-tcci-5308100-dev-arthur-rocha-guilherme-oliveira/blob/master/.github/workflows/tests.yml
-      - uses: ICEI-PUC-Minas-PPLES-TI/plf-es-2022-1-tcci-5308100-dev-arthur-rocha-guilherme-oliveira/blob/master/.github/workflows/upload-package.yml
+      - uses: ICEI-PUC-Minas-PPLES-TI/plf-es-2022-1-tcci-5308100-dev-arthur-rocha-guilherme-oliveira/.github/workflows/lint.yml@main
+      - uses: ICEI-PUC-Minas-PPLES-TI/plf-es-2022-1-tcci-5308100-dev-arthur-rocha-guilherme-oliveira/.github/workflows/tests.yml@main
+      - uses: ICEI-PUC-Minas-PPLES-TI/plf-es-2022-1-tcci-5308100-dev-arthur-rocha-guilherme-oliveira/.github/workflows/upload-package.yml@main
