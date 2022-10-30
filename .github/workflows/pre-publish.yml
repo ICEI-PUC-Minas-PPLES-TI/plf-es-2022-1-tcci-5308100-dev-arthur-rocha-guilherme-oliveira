@@ -4,8 +4,9 @@ on: [push, pull_request]
 
 jobs:
   lint:
-    uses: ./.github/workflows/lint.yaml
+    uses: ICEI-PUC-Minas-PPLES-TI/plf-es-2022-1-tcci-5308100-dev-arthur-rocha-guilherme-oliveira/.github/workflows/lint.yaml@main
   tests:
-    uses: ./.github/workflows/tests.yaml
+    uses: ICEI-PUC-Minas-PPLES-TI/plf-es-2022-1-tcci-5308100-dev-arthur-rocha-guilherme-oliveira/.github/workflows/tests.yaml@main
   upload-package:
-    uses: ./.github/workflows/upload-package.yaml
+    needs: tests
+    uses: ICEI-PUC-Minas-PPLES-TI/plf-es-2022-1-tcci-5308100-dev-arthur-rocha-guilherme-oliveira/.github/workflows/upload-package.yaml@main
