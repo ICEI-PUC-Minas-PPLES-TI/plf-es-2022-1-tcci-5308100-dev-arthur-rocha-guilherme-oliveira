@@ -10,7 +10,7 @@ vsc-extension-quickstart.md
 astah-export
 example
 
-coverage/
+coverage-report/
 node_modules/
 out/
 src/

@@ -4,4 +4,4 @@ node_modules
 .vscode-test/
 *.vsix
 astah-export
-./coverage
+coverage-report/

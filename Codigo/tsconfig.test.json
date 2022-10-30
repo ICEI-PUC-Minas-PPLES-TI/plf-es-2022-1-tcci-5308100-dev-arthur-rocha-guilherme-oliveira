@@ -7,15 +7,10 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "sourceMap": true,
-    "rootDir": ".",
     "strict": true,
     "noImplicitReturns": true,
     "declaration": true,
-    "noFallthroughCasesInSwitch": true,
-    "noImplicitAny": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "removeComments": true,
-    "types": ["jest", "node", "vscode"]
+    "types": ["reflect-metadata", "jest", "node", "vscode"],
+    "rootDir": "."
   }
 }
