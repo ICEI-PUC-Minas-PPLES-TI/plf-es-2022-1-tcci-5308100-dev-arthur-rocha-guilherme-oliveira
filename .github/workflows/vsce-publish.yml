@@ -22,4 +22,3 @@ jobs:
           node-version: "18"
       - run: npm ci
       - run: npm run vsce:ci "$VSCE_TOKEN"
-

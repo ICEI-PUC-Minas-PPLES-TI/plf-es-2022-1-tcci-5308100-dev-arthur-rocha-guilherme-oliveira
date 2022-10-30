@@ -96,7 +96,7 @@
     "vsce": "vsce",
     "vsce:ci": "vsce publish -p",
     "test": "jest --verbose",
-    "test-and-report-coverage": "jest --verbose --coverage"
+    "test:cov": "jest --verbose --coverage"
   },
   "devDependencies": {
     "@types/glob": "^7.2.0",
