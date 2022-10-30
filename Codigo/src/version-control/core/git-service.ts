@@ -1,8 +1,8 @@
+import { appInjector } from "../../inversify.config";
 import { exec } from "child_process";
 import { injectable } from "inversify";
 import { ExtensionContext, Uri, workspace } from "vscode";
 import { CoverageData } from "../../coverage/models/coverage-data";
-import { appInjector } from "../../inversify.config";
 import { fileSystemHelper } from "../../utils/functions/file-system-helper";
 import { normalizeFileName } from "../../utils/functions/helpers";
 

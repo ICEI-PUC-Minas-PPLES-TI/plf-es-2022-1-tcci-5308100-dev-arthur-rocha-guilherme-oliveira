@@ -1,3 +1,4 @@
+import { appInjector } from "../../inversify.config";
 import { commands, ExtensionContext } from "vscode";
 import { CoverageService } from "../../coverage/core/coverage-service";
 import { CoverageView } from "../../coverage/views/coverage-view";
@@ -6,7 +7,6 @@ import { ConfigurationData } from "../../extension-configuration/models/configur
 import { ConfigurationView } from "../../extension-configuration/views/configuration-view";
 import { FileCoverageService } from "../../file-coverage/core/file-coverage-service";
 import { FileCoverage } from "../../file-coverage/models/file-coverage";
-import { appInjector } from "../../inversify.config";
 import { ProjectConfigurationService } from "../../project-configuration/core/project-configuration-service";
 import { ProjectConfiguration } from "../../project-configuration/models/project-configuration";
 import { UncoveredLinesService } from "../../uncovered-lines/core/uncovered-lines-service";
@@ -39,14 +39,18 @@ export class ExtensionOrchestrationService {
   private actualConfigurationData!: ConfigurationData;
   private actualProjectConfiguration!: ProjectConfiguration;
 
-  public initApp() {
+  public initApp(): void {
     this.registerCommands();
     this.registerViews();
 
     this.initObservers();
   }
 
-  private initObservers() {
+  public finishApp(): void {
+    this.gitService.disablePreCommitHook();
+  }
+
+  private initObservers(): void {
     this.startProjectConfigurationObserver().subscribe(() => {
       this.startExtensionConfigurationObserver().subscribe(() => {
         this.startCoverageFileObserver().subscribe(() => {
@@ -60,7 +64,7 @@ export class ExtensionOrchestrationService {
     });
   }
 
-  private registerCommands() {
+  private registerCommands(): void {
     const openFileDisposable = commands.registerCommand(
       "covering.open-file",
       (line: Line) => this.uncoveredLinesService.selectUncoveredLine(line)

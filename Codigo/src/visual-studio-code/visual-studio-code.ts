@@ -1,3 +1,4 @@
+import { appInjector } from "../inversify.config";
 import { injectable } from "inversify";
 import { Observable, Subject } from "rxjs";
 import { Disposable, TextEditor, window, workspace } from "vscode";
@@ -5,7 +6,6 @@ import { DefaultConfiguration } from "../config";
 import { ConfigurationData } from "../extension-configuration/models/configuration-data";
 import { CoverageLines } from "../file-coverage/models/coverage-lines";
 import { FileCoverage } from "../file-coverage/models/file-coverage";
-import { appInjector } from "../inversify.config";
 
 type FileWatcherSubject = {
   subject: Subject<void>;

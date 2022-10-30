@@ -1,10 +1,10 @@
+import { appInjector } from "../../inversify.config";
 import {
   ExtensionContext,
   WebviewView,
   WebviewViewProvider,
   window,
 } from "vscode";
-import { appInjector } from "../../inversify.config";
 import { getCoverageHtmlForWebview } from "../core/coverage";
 import { CoverageService } from "../core/coverage-service";
 import { CoverageData } from "../models/coverage-data";

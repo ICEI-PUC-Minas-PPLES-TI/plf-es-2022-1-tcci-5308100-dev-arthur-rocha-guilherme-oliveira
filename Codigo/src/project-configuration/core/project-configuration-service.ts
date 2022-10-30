@@ -1,5 +1,5 @@
-import { Observable, ReplaySubject } from "rxjs";
 import { appInjector } from "../../inversify.config";
+import { Observable, ReplaySubject } from "rxjs";
 import { File } from "../../uncovered-lines/models/file";
 import { VisualStudioCode } from "../../visual-studio-code/visual-studio-code";
 import { ProjectConfiguration } from "../models/project-configuration";

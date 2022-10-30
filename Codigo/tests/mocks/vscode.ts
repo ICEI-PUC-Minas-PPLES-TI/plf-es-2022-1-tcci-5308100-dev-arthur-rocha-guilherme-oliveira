@@ -97,6 +97,7 @@ export const env = {
 export const EventEmitter = jest.fn(() => ({
   dispose: jest.fn(),
   event: jest.fn(),
+  fire: jest.fn(),
 }));
 
 export class Uri implements vscode.Uri {
@@ -169,6 +170,8 @@ export enum StatusBarAlignment {
   Right = 2,
 }
 
+export class Range {}
+
 export let version = "1.51.0";
 
 export enum ViewColumn {
@@ -197,6 +200,10 @@ export const window = {
   showOpenDialog: jest.fn(),
   showQuickPick: jest.fn(),
   showSaveDialog: jest.fn(),
+
+  onDidChangeActiveTextEditor: jest.fn(),
+  registerWebviewViewProvider: jest.fn(),
+  createTreeView: jest.fn(),
 };
 
 export const workspace = {

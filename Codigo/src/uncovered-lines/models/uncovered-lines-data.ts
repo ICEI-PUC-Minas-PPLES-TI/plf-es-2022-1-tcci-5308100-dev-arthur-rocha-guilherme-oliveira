@@ -1,8 +1,8 @@
+import { appInjector } from "../../inversify.config";
 import { Uri, workspace } from "vscode";
 import { ConfigurationData } from "../../extension-configuration/models/configuration-data";
 import { CoverageLines } from "../../file-coverage/models/coverage-lines";
 import { FileCoverage } from "../../file-coverage/models/file-coverage";
-import { appInjector } from "../../inversify.config";
 import { LoggerManager } from "../../utils/logger/logger-manager";
 import { Folder } from "./folder";
 

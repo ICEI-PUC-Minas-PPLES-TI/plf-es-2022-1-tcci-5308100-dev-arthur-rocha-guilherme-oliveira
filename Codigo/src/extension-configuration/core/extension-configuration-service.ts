@@ -1,7 +1,7 @@
+import { appInjector } from "../../inversify.config";
 import { injectable } from "inversify";
 import { Observable, ReplaySubject } from "rxjs";
 import { window } from "vscode";
-import { appInjector } from "../../inversify.config";
 import { GitService } from "../../version-control/core/git-service";
 import { ConfigurationData } from "../models/configuration-data";
 
