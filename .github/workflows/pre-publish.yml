@@ -50,12 +50,14 @@ jobs:
           name: code-coverage-report
           path: |
             **/coverage-report/lcov-report
-
+      
+      - run: ls coverage-report
+      
       - name: Code Coverage Summary Report
         uses: irongut/CodeCoverageSummary@v1.3.0
         with:
           filename: | 
-            **/coverage-report/**/clover.xml
+            **/coverage-report/clover.xml
 
   upload-package:
     runs-on: ubuntu-latest
