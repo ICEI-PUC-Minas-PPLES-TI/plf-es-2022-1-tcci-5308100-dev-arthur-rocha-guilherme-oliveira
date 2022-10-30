@@ -9,22 +9,13 @@ export class FileCoverageService {
   private readonly FILE_WATCHER_KEY = "coverage_file";
   private vscode = appInjector.get(VisualStudioCode);
 
-  private readonly referenceFileName: string;
-
-  private onFileCoverageFileChange: Observable<void>;
+  private onFileCoverageFileChange!: Observable<void>;
 
   private fileCoverageSubject!: ReplaySubject<FileCoverage>;
 
   private onFileCoverageChangeSubscription?: Subscription;
 
-  constructor() {
-    this.referenceFileName = FileCoverage.DEFAULT_LCOV_FILE_NAME;
-
-    this.onFileCoverageFileChange = this.vscode.getFileWatcher(
-      this.FILE_WATCHER_KEY,
-      this.referenceFileName
-    );
-  }
+  constructor() {}
 
   public getFileCoverage(lcovFileName?: string): Observable<FileCoverage> {
     if (!this.fileCoverageSubject) {

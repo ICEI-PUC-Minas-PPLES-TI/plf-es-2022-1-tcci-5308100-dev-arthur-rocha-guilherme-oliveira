@@ -1,5 +1,6 @@
 import { readFile } from "fs";
 import { Uri, window, workspace } from "vscode";
+import { FileCoverage } from "../../file-coverage/models/file-coverage";
 
 interface ValidationResult {
   isValid: boolean;
@@ -9,15 +10,18 @@ interface ValidationResult {
 export class ProjectConfiguration {
   public static readonly DEFAULT_FILE_NAME = ".coveringconfig";
   public static readonly MINIMUM_COVERAGE_DEFAULT_VALUE = 0.8;
+  public static readonly DEFAULT_LCOV_FILE_NAME =
+    FileCoverage.DEFAULT_LCOV_FILE_NAME;
 
-  public readonly lcovFileName?: string;
+  public readonly lcovFileName: string;
   public readonly minCoverage: number;
   public readonly refBranch?: string;
   public readonly runTestCoverage?: string;
   public readonly usePrePushValidation: boolean;
 
   constructor(data: any = {}) {
-    this.lcovFileName = data["lcovFileName"];
+    this.lcovFileName =
+      data["lcovFileName"] || ProjectConfiguration.DEFAULT_LCOV_FILE_NAME;
 
     this.minCoverage = this.validateNullableValueWithDefault<number>(
       data["minCoverage"],
