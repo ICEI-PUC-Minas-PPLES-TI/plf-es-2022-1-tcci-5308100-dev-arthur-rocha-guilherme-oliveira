@@ -1,0 +1,14 @@
+name: Pre-publish
+
+on: [push, pull_request, workflow_call]
+
+jobs:
+  pre-publish:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./Codigo
+    steps:
+      - uses: ICEI-PUC-Minas-PPLES-TI/plf-es-2022-1-tcci-5308100-dev-arthur-rocha-guilherme-oliveira/blob/master/.github/workflows/lint.yml
+      - uses: ICEI-PUC-Minas-PPLES-TI/plf-es-2022-1-tcci-5308100-dev-arthur-rocha-guilherme-oliveira/blob/master/.github/workflows/tests.yml
+      - uses: ICEI-PUC-Minas-PPLES-TI/plf-es-2022-1-tcci-5308100-dev-arthur-rocha-guilherme-oliveira/blob/master/.github/workflows/upload-package.yml
