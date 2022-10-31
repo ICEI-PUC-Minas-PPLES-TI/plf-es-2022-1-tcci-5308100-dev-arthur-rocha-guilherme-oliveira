@@ -14,8 +14,6 @@ export class ProjectConfigurationService {
   private readonly FILE_WATCHER_KEY = "project-configuration-file";
   private vscode = appInjector.get(VisualStudioCode);
 
-  private readonly referenceFileName: string;
-
   private onProjectConfigurationsFileChange: Observable<void>;
 
   private projectConfigurationSubject!: ReplaySubject<ProjectConfiguration>;
@@ -26,11 +24,10 @@ export class ProjectConfigurationService {
 
   constructor() {
     this.logger.info("ProjectConfigurationService initialized");
-    this.referenceFileName = ProjectConfiguration.DEFAULT_FILE_NAME;
 
     this.onProjectConfigurationsFileChange = this.vscode.getFileWatcher(
       this.FILE_WATCHER_KEY,
-      this.referenceFileName
+      ProjectConfiguration.DEFAULT_FILE_NAME
     );
     this.logger.info("File watcher initialized");
   }
@@ -64,7 +61,7 @@ export class ProjectConfigurationService {
 
       const filePath = Uri.joinPath(
         workspaceFolder.uri,
-        this.referenceFileName
+        ProjectConfiguration.DEFAULT_FILE_NAME
       ).fsPath;
       await fileSystemHelper.writeStringFile(filePath, fileContent);
       this.logger.success("Config file created", true);

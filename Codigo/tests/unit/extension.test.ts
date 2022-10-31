@@ -4,13 +4,14 @@ jest.mock("vscode", () => vscode, { virtual: true });
 
 import * as Extension from "../../src/extension";
 import { ExtensionOrchestrationService } from "../../src/ui/core/extension-orchestration-service";
-import appInjector from "../mocks/inversify";
+import * as inversify from "../mocks/inversify";
+import { Observable } from "rxjs";
 
 const extensionContext = vscode.mocks.extensionContext;
 describe("Extension", () => {
   beforeEach(() => {
-    if (appInjector.isBound("ExtensionContext")) {
-      appInjector.unbind("ExtensionContext");
+    if (inversify.appInjector.isBound("ExtensionContext")) {
+      inversify.appInjector.unbind("ExtensionContext");
     }
   });
 
@@ -19,7 +20,7 @@ describe("Extension", () => {
 
     const initAppSpy = jest
       .spyOn(ExtensionOrchestrationService.prototype, "initApp")
-      .mockReturnValue();
+      .mockReturnValue(new Observable());
 
     Extension.activate(extensionContext as any);
 
@@ -31,7 +32,7 @@ describe("Extension", () => {
 
     const initAppSpy = jest
       .spyOn(ExtensionOrchestrationService.prototype, "initApp")
-      .mockReturnValue();
+      .mockReturnValue(new Observable());
     const finishAppSpy = jest
       .spyOn(ExtensionOrchestrationService.prototype, "finishApp")
       .mockReturnValue();

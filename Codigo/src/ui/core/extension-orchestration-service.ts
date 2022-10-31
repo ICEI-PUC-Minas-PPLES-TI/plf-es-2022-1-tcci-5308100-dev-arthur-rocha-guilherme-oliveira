@@ -11,11 +11,10 @@ import { ProjectConfigurationService } from "../../project-configuration/core/pr
 import { ProjectConfiguration } from "../../project-configuration/models/project-configuration";
 import { UncoveredLinesService } from "../../uncovered-lines/core/uncovered-lines-service";
 import { UncoveredLinesTree } from "../../uncovered-lines/views/uncovered-lines-tree";
-import { Line } from "../../uncovered-lines/models/line";
 import { VisualStudioCode } from "../../visual-studio-code/visual-studio-code";
 import { GitService } from "../../version-control/core/git-service";
 import { LoggerManager } from "../../utils/logger/logger-manager";
-import { Observable, Subject } from "rxjs";
+import { Observable, ReplaySubject } from "rxjs";
 import { CoverageData } from "../../coverage/models/coverage-data";
 
 export class ExtensionOrchestrationService {
@@ -39,18 +38,25 @@ export class ExtensionOrchestrationService {
   private actualConfigurationData!: ConfigurationData;
   private actualProjectConfiguration!: ProjectConfiguration;
 
-  public initApp(): void {
+  public initApp(): Observable<void> {
+    const subject = new ReplaySubject<void>();
     this.registerCommands();
     this.registerViews();
 
-    this.initObservers();
+    this.initObservers().subscribe(() => {
+      subject.next();
+      subject.complete();
+    });
+
+    return subject;
   }
 
   public finishApp(): void {
     this.gitService.disablePreCommitHook();
   }
 
-  private initObservers(): void {
+  private initObservers(): Observable<void> {
+    const subject = new ReplaySubject<void>();
     this.startProjectConfigurationObserver().subscribe(() => {
       this.startExtensionConfigurationObserver().subscribe(() => {
         this.startCoverageFileObserver().subscribe(() => {
@@ -58,42 +64,34 @@ export class ExtensionOrchestrationService {
             this.vsCode.getActiveEditorChange().subscribe(() => {
               this.fileFocusChange();
             });
+
+            subject.next();
+            subject.complete();
           });
         });
       });
     });
+    return subject;
   }
 
   private registerCommands(): void {
     const openFileDisposable = commands.registerCommand(
       "covering.open-file",
-      (line: Line) => this.uncoveredLinesService.selectUncoveredLine(line)
+      this.uncoveredLinesService.selectUncoveredLine
     );
 
     this.context.subscriptions.push(openFileDisposable);
 
     const generateProjectConfigurationFileDisposable = commands.registerCommand(
       "covering.generate-project-configuration-file",
-      async () => {
-        const result =
-          await this.projectConfigurationService.requireConfigFileGeneration();
-
-        if (!result.created) {
-          this.logger.error(
-            "Project configuration file generation error: " + result.error,
-            true
-          );
-        }
-      }
+      this.generateProjectConfigurationFileCommand
     );
 
     this.context.subscriptions.push(generateProjectConfigurationFileDisposable);
 
     const generateRunTestCoverageDisposable = commands.registerCommand(
       "covering.run-test",
-      async () => {
-        this.runTest();
-      }
+      this.runTest
     );
 
     this.context.subscriptions.push(generateRunTestCoverageDisposable);
@@ -106,7 +104,7 @@ export class ExtensionOrchestrationService {
   }
 
   private startProjectConfigurationObserver(): Observable<void> {
-    const subject = new Subject<void>();
+    const subject = new ReplaySubject<void>();
     let isFirstInteraction = true;
 
     this.projectConfigurationService
@@ -124,7 +122,7 @@ export class ExtensionOrchestrationService {
   }
 
   private startExtensionConfigurationObserver(): Observable<void> {
-    const subject = new Subject<void>();
+    const subject = new ReplaySubject<void>();
     let isFirstInteraction = true;
 
     this.extensionConfigurationService
@@ -143,7 +141,7 @@ export class ExtensionOrchestrationService {
   }
 
   private startCoverageFileObserver(): Observable<void> {
-    const subject = new Subject<void>();
+    const subject = new ReplaySubject<void>();
     let isFirstInteraction = true;
 
     this.fileCoverageService
@@ -162,7 +160,7 @@ export class ExtensionOrchestrationService {
   }
 
   private startCoverageDataObserver(): Observable<void> {
-    const subject = new Subject<void>();
+    const subject = new ReplaySubject<void>();
     let isFirstInteraction = true;
 
     this.coverageService.getCoverageData().subscribe((coverageData) => {
@@ -312,5 +310,19 @@ export class ExtensionOrchestrationService {
         this.actualConfigurationData
       );
     }
+  }
+
+  public async generateProjectConfigurationFileCommand(): Promise<void> {
+    const result =
+      await this.projectConfigurationService.requireConfigFileGeneration();
+
+    if (!result.created) {
+      this.logger.warn(
+        "Project configuration file generation error: " + result.error,
+        true
+      );
+    }
+
+    this.vsCode.redirectEditorTo(ProjectConfiguration.DEFAULT_FILE_NAME);
   }
 }

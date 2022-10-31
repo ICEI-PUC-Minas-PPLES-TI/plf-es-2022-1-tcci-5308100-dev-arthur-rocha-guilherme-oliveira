@@ -1,7 +1,7 @@
 import { appInjector } from "../inversify.config";
 import { injectable } from "inversify";
 import { Observable, Subject } from "rxjs";
-import { Disposable, TextEditor, window, workspace } from "vscode";
+import { Disposable, TextEditor, Uri, window, workspace } from "vscode";
 import { DefaultConfiguration } from "../config";
 import { ConfigurationData } from "../extension-configuration/models/configuration-data";
 import { CoverageLines } from "../file-coverage/models/coverage-lines";
@@ -59,7 +59,16 @@ export class VisualStudioCode {
     });
   }
 
-  public redirectEditorTo(configFilePath: string): void {}
+  public redirectEditorTo(configFilePath: string): void {
+    const workspaceFolders = workspace.workspaceFolders;
+
+    if (!workspaceFolders) {
+      return;
+    }
+
+    const workspaceFolder = workspaceFolders[0];
+    window.showTextDocument(Uri.joinPath(workspaceFolder.uri, configFilePath));
+  }
 
   public requestFileGeneration(): void {}
 

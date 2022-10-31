@@ -1,44 +1,92 @@
-// import * as date from "../../../mocks/date";
 import * as vscode from "../../../mocks/vscode";
 jest.mock("vscode", () => vscode, { virtual: true });
 
 import { ExtensionOrchestrationService } from "../../../../src/ui/core/extension-orchestration-service";
-import "../../../mocks/inversify";
+import * as inversify from "../../../mocks/inversify";
+import { ConfigurationView } from "../../../../src/extension-configuration/views/configuration-view";
+import { CoverageView } from "../../../../src/coverage/views/coverage-view";
+import { UncoveredLinesTree } from "../../../../src/uncovered-lines/views/uncovered-lines-tree";
+import { ProjectConfiguration } from "../../../../src/project-configuration/models/project-configuration";
+import { Writeable } from "../../../utils/types";
 
-// const extensionContext = vscode.mocks.extensionContext;
-describe("Extension", () => {
+describe("ExtensionOrchestrationService", () => {
   let extensionOrchestrationService: ExtensionOrchestrationService;
 
   beforeEach(() => {
     extensionOrchestrationService = new ExtensionOrchestrationService();
   });
 
-  fit("should initiate app", () => {
+  it("should initiate app", (done) => {
     expect(extensionOrchestrationService.initApp).toBeDefined();
 
-    extensionOrchestrationService.initApp();
+    const spyConfigurationViewCreateView = jest.spyOn(
+      ConfigurationView,
+      "createView"
+    );
+    const spyCoverageViewCreateView = jest.spyOn(CoverageView, "createView");
+    const spyUncoveredLinesTreeCreateView = jest.spyOn(
+      UncoveredLinesTree,
+      "createView"
+    );
+    extensionOrchestrationService.initApp().subscribe(() => {
+      expect(vscode.commands.registerCommand).toHaveBeenCalledTimes(3);
 
-    expect(vscode.commands.registerCommand).toHaveBeenCalledTimes(3);
-    //   const initAppSpy = jest
-    //     .spyOn(ExtensionOrchestrationService.prototype, "initApp")
-    //     .mockReturnValue();
-    //   Extension.activate(extensionContext as any);
-    //   expect(initAppSpy).toHaveBeenCalled();
+      expect(spyConfigurationViewCreateView).toHaveBeenCalledTimes(1);
+      expect(spyCoverageViewCreateView).toHaveBeenCalledTimes(1);
+      expect(spyUncoveredLinesTreeCreateView).toHaveBeenCalledTimes(1);
+
+      expect(
+        inversify.mocks.ProjectConfigurationService.getProjectConfigurationData
+      ).toHaveBeenCalledTimes(1);
+      expect(
+        inversify.mocks.ExtensionConfigurationService.getConfigurationData
+      ).toHaveBeenCalledTimes(1);
+      expect(
+        inversify.mocks.FileCoverageService.getFileCoverage
+      ).toHaveBeenCalledTimes(1);
+      expect(
+        inversify.mocks.CoverageService.getCoverageData
+      ).toHaveBeenCalledTimes(1);
+      expect(
+        inversify.mocks.VisualStudioCode.getActiveEditorChange
+      ).toHaveBeenCalledTimes(1);
+
+      done();
+    });
   });
-  // it("should activate2", () => {
-  //   expect(Extension.activate).toBeDefined();
-  //   const initAppSpy = jest
-  //     .spyOn(ExtensionOrchestrationService.prototype, "initApp")
-  //     .mockReturnValue();
-  //   Extension.activate(extensionContext as any);
-  //   expect(initAppSpy).toHaveBeenCalled();
-  // });
-  // it("should deactivate", () => {
-  //   expect(Extension.deactivate).toBeDefined();
-  //   const finishAppSpy = jest
-  //     .spyOn(ExtensionOrchestrationService.prototype, "finishApp")
-  //     .mockReturnValue();
-  //   Extension.deactivate();
-  //   expect(finishAppSpy).toHaveBeenCalled();
-  // });
+
+  it("should finish app", () => {
+    expect(extensionOrchestrationService.finishApp).toBeDefined();
+
+    extensionOrchestrationService.finishApp();
+
+    expect(
+      inversify.mocks.GitService.disablePreCommitHook
+    ).toHaveBeenCalledTimes(1);
+  });
+
+  it("should generate project configuration file", async () => {
+    await extensionOrchestrationService.generateProjectConfigurationFileCommand();
+
+    expect(
+      inversify.mocks.ProjectConfigurationService.requireConfigFileGeneration
+    ).toHaveBeenCalledTimes(1);
+    expect(inversify.mocks.Logger.warn).not.toHaveBeenCalled();
+    expect(
+      inversify.mocks.VisualStudioCode.redirectEditorTo
+    ).toHaveBeenNthCalledWith(1, ProjectConfiguration.DEFAULT_FILE_NAME);
+  });
+
+  it("should ", () => {
+    const mocked: Writeable<ProjectConfiguration> = {
+      lcovFileName: "lcov.info",
+      minCoverage: 0.9,
+      usePrePushValidation: true,
+      refBranch: "master",
+      runTestCoverage: "npm t",
+    };
+    extensionOrchestrationService.emitNewProjectConfiguration(
+      mocked as ProjectConfiguration
+    );
+  });
 });
