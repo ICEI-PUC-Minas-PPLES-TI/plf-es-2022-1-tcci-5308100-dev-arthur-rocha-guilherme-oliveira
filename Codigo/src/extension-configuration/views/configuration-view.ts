@@ -22,8 +22,7 @@ export class ConfigurationView implements WebviewViewProvider {
     false,
     false,
     "",
-    false,
-    ""
+    false
   );
 
   public static createView(): void {

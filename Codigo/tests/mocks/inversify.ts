@@ -62,7 +62,6 @@ const mockConfigurationData: Writeable<ConfigurationData> = {
   isGutterActive: true,
   isJustForFileInFocus: false,
   referenceBranch: "master",
-  runTestCoverage: "npm t",
 };
 const mockCoverageData: Writeable<CoverageData> = {
   minCoveragePercentage: 0.8,

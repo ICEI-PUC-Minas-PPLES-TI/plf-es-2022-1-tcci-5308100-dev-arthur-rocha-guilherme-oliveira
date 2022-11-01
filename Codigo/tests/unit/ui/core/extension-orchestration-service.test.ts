@@ -83,7 +83,6 @@ describe("ExtensionOrchestrationService", () => {
       minCoverage: 0.9,
       usePrePushValidation: true,
       refBranch: "master",
-      runTestCoverage: "npm t",
     };
     extensionOrchestrationService.emitNewProjectConfiguration(
       mocked as ProjectConfiguration
