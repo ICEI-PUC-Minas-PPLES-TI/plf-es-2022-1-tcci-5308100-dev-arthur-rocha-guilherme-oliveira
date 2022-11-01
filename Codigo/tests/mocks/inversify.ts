@@ -1,5 +1,5 @@
-import { LcovFile } from "lcov-parse";
 import { appInjector } from "../../src/inversify.config";
+import { LcovFile } from "lcov-parse";
 import { CoverageService } from "../../src/coverage/core/coverage-service";
 import { FileCoverageService } from "../../src/file-coverage/core/file-coverage-service";
 import { LcovFileFinder } from "../../src/utils/functions/lcov-file-finder";
@@ -155,6 +155,8 @@ beforeEach(() => {
     return;
   }
 
+  jest.clearAllMocks();
+
   if (appInjector.isBound("ExtensionContext")) {
     appInjector
       .rebind("ExtensionContext")
@@ -201,8 +203,6 @@ beforeEach(() => {
     .toConstantValue(mocks.UncoveredLinesService as any);
 
   appInjector.rebind(LoggerManager).toConstantValue(mocks.LoggerManager as any);
-
-  jest.clearAllMocks();
 });
 
 export { appInjector };

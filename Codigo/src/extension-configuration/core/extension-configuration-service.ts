@@ -61,9 +61,9 @@ export class ExtensionConfigurationService {
 
       this.emitNewConfiguration(newConfig);
     } else {
-      window.showWarningMessage(
-        `The branch "${refBranch}" does not exist in the repository`
-      );
+      const erroMsg = `The branch "${refBranch}" does not exist in the repository`;
+      window.showWarningMessage(erroMsg);
+      this.configurationData.error(erroMsg);
     }
   }
 }

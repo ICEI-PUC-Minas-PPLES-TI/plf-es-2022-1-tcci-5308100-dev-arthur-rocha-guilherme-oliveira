@@ -106,15 +106,25 @@ describe("extensionConfigurationService", () => {
   });
 
   it("should change ref branch undefined", (done) => {
-    extensionConfigurationService.getConfigurationData().subscribe((data) => {
-      expect(data.isGutterActive).toBe(true);
-      expect(data.isJustForFileInFocus).toBe(false);
-      expect(data.isBasedOnBranchChange).toBe(false);
+    inversify.mocks.GitService.getIsBranch.mockResolvedValue(undefined);
 
-      expect(data.referenceBranch).toBe("");
-      done();
+    extensionConfigurationService.getConfigurationData().subscribe({
+      error: (data) => {
+        expect(inversify.mocks.GitService.getIsBranch).toHaveBeenNthCalledWith(
+          1,
+          "master"
+        );
+
+        const errorMsg = `The branch "master" does not exist in the repository`;
+        expect(vscode.window.showWarningMessage).toHaveBeenNthCalledWith(
+          1,
+          errorMsg
+        );
+        expect(data).toBe(errorMsg);
+        done();
+      },
     });
 
-    extensionConfigurationService.changeRefBranch(undefined);
+    extensionConfigurationService.changeRefBranch("master");
   });
 });
