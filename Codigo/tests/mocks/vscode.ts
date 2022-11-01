@@ -67,6 +67,9 @@ export const mocks = {
       globalValue: mockedExtensionSettingValues[section],
     })),
   },
+  webview: {
+    asWebviewUri: jest.fn(),
+  },
 };
 
 /* Visual Studio Code API Mocks */
@@ -162,6 +165,17 @@ export class Uri implements vscode.Uri {
   public static parse(path: string) {
     const comps = path.match(/([a-z]+):\/\/([^?#]+)(\?([^#]+)|())(#(.+)|())/)!;
     return new Uri(comps[1], "", comps[2], comps[4], comps[6]);
+  }
+
+  public static joinPath(
+    base: vscode.Uri,
+    ...pathSegments: string[]
+  ): vscode.Uri {
+    return new Uri(
+      base.scheme,
+      base.authority,
+      base.path + "/" + pathSegments.join("/")
+    );
   }
 }
 

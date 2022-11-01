@@ -3,5 +3,5 @@
   "refBranch": "master",
   "usePrePushValidation": false,
   "lcovFileName": "coverage-report/lcov.info",
-  "runTestCoverage": "npm run test:cov -- --watch"
+  "runTestCoverage": "npm run test:cov"
 }
