@@ -99,9 +99,15 @@ export const mocks = {
     addFileCoverageWatcher: jest.fn(),
   },
   ProjectConfigurationService: {
-    requireConfigFileGeneration: jest.fn(async () => ({
-      created: true,
-    })),
+    requireConfigFileGeneration: jest
+      .fn()
+      .mockReturnValueOnce({
+        created: true,
+      })
+      .mockReturnValueOnce({
+        created: false,
+        error: "error",
+      }),
     emitNewConfigurationFileCreated: jest.fn(),
     getProjectConfigurationData: jest.fn(
       () =>
