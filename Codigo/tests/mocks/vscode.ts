@@ -70,6 +70,11 @@ export const mocks = {
   webview: {
     asWebviewUri: jest.fn(),
   },
+  textEditor: {
+    document: {
+      fileName: "mocked-file.ts",
+    },
+  } as vscode.TextEditor,
 };
 
 /* Visual Studio Code API Mocks */
@@ -184,7 +189,30 @@ export enum StatusBarAlignment {
   Right = 2,
 }
 
-export class Range {}
+export class Range {
+  readonly start: vscode.Position;
+
+  constructor(
+    public startLine: number,
+    public startCharacter: number,
+    public endLine: number,
+    public endCharacter: number
+  ) {
+    this.start = {
+      line: startLine,
+      character: startCharacter,
+    } as vscode.Position;
+  }
+
+  public isEqual(other: Range): boolean {
+    return (
+      this.startLine === other.startLine &&
+      this.startCharacter === other.startCharacter &&
+      this.endLine === other.endLine &&
+      this.endCharacter === other.endCharacter
+    );
+  }
+}
 
 export let version = "1.51.0";
 
