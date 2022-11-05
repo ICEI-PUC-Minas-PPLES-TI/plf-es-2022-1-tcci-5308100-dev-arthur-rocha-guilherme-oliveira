@@ -26,10 +26,7 @@ describe("FileCoverage", () => {
           startCharacter: 0,
           endLine: 0,
           endCharacter: 0,
-          start: {
-            line: 0,
-            character: 0,
-          },
+          start: { line: 0, character: 0 },
           lineNumber: 1,
         },
         {
@@ -37,10 +34,7 @@ describe("FileCoverage", () => {
           startCharacter: 0,
           endLine: 1,
           endCharacter: 0,
-          start: {
-            line: 1,
-            character: 0,
-          },
+          start: { line: 1, character: 0 },
           lineNumber: 2,
         },
         {
@@ -48,22 +42,24 @@ describe("FileCoverage", () => {
           startCharacter: 0,
           endLine: 2,
           endCharacter: 0,
-          start: {
-            line: 2,
-            character: 0,
-          },
+          start: { line: 2, character: 0 },
           lineNumber: 3,
         },
         {
-          startLine: 14,
+          startLine: 13,
           startCharacter: 0,
-          endLine: 14,
+          endLine: 13,
           endCharacter: 0,
-          start: {
-            line: 14,
-            character: 0,
-          },
-          lineNumber: 15,
+          start: { line: 13, character: 0 },
+          lineNumber: 14,
+        },
+        {
+          startLine: 15,
+          startCharacter: 0,
+          endLine: 15,
+          endCharacter: 0,
+          start: { line: 15, character: 0 },
+          lineNumber: 16,
         },
       ],
       partial: [
@@ -72,22 +68,16 @@ describe("FileCoverage", () => {
           startCharacter: 0,
           endLine: 5,
           endCharacter: 0,
-          start: {
-            line: 5,
-            character: 0,
-          },
+          start: { line: 5, character: 0 },
           lineNumber: 6,
         },
         {
-          startLine: 10,
+          startLine: 9,
           startCharacter: 0,
-          endLine: 10,
+          endLine: 9,
           endCharacter: 0,
-          start: {
-            line: 10,
-            character: 0,
-          },
-          lineNumber: 11,
+          start: { line: 9, character: 0 },
+          lineNumber: 10,
         },
       ],
       none: [
@@ -96,40 +86,20 @@ describe("FileCoverage", () => {
           startCharacter: 0,
           endLine: 6,
           endCharacter: 0,
-          start: {
-            line: 6,
-            character: 0,
-          },
+          start: { line: 6, character: 0 },
           lineNumber: 7,
         },
         {
-          startLine: 7,
+          startLine: 10,
           startCharacter: 0,
-          endLine: 7,
+          endLine: 10,
           endCharacter: 0,
-          start: {
-            line: 7,
-            character: 0,
-          },
-          lineNumber: 8,
-        },
-        {
-          startLine: 11,
-          startCharacter: 0,
-          endLine: 11,
-          endCharacter: 0,
-          start: {
-            line: 11,
-            character: 0,
-          },
-          lineNumber: 12,
+          start: { line: 10, character: 0 },
+          lineNumber: 11,
         },
       ],
     });
 
-    expect(
-      inversify.mocks.LcovFileFinder.findLcovFilesForEditor
-    ).toHaveBeenCalledTimes(1);
     expect(
       inversify.mocks.GitService.getIsCurrentFilesBranchDiff
     ).not.toHaveBeenCalledTimes(1);
@@ -164,13 +134,269 @@ describe("FileCoverage", () => {
     });
 
     expect(
-      inversify.mocks.LcovFileFinder.findLcovFilesForEditor
-    ).toHaveBeenCalledTimes(1);
-    expect(
       inversify.mocks.GitService.getIsCurrentFilesBranchDiff
     ).toHaveBeenCalledTimes(1);
     expect(
       inversify.mocks.GitService.getCurrentBranchDiff
     ).toHaveBeenCalledTimes(1);
+  });
+
+  it("should getAllCoverageLines in default behavior", async () => {
+    const extensionConfiguration = inversify.mocks.getConfigurationData();
+
+    const coverageLines = await fileCoverage.getAllCoverageLines(
+      extensionConfiguration
+    );
+
+    expect(coverageLines).toEqual([
+      {
+        fileName: {
+          scheme: "file",
+          authority: "",
+          path: "mocked-file.ts",
+          query: "",
+          fragment: "",
+        },
+        coverageLines: {
+          full: [
+            {
+              startLine: 0,
+              startCharacter: 0,
+              endLine: 0,
+              endCharacter: 0,
+              start: { line: 0, character: 0 },
+              lineNumber: 1,
+            },
+            {
+              startLine: 1,
+              startCharacter: 0,
+              endLine: 1,
+              endCharacter: 0,
+              start: { line: 1, character: 0 },
+              lineNumber: 2,
+            },
+            {
+              startLine: 2,
+              startCharacter: 0,
+              endLine: 2,
+              endCharacter: 0,
+              start: { line: 2, character: 0 },
+              lineNumber: 3,
+            },
+            {
+              startLine: 13,
+              startCharacter: 0,
+              endLine: 13,
+              endCharacter: 0,
+              start: { line: 13, character: 0 },
+              lineNumber: 14,
+            },
+            {
+              startLine: 15,
+              startCharacter: 0,
+              endLine: 15,
+              endCharacter: 0,
+              start: { line: 15, character: 0 },
+              lineNumber: 16,
+            },
+          ],
+          partial: [
+            {
+              startLine: 5,
+              startCharacter: 0,
+              endLine: 5,
+              endCharacter: 0,
+              start: { line: 5, character: 0 },
+              lineNumber: 6,
+            },
+            {
+              startLine: 9,
+              startCharacter: 0,
+              endLine: 9,
+              endCharacter: 0,
+              start: { line: 9, character: 0 },
+              lineNumber: 10,
+            },
+          ],
+          none: [
+            {
+              startLine: 6,
+              startCharacter: 0,
+              endLine: 6,
+              endCharacter: 0,
+              start: { line: 6, character: 0 },
+              lineNumber: 7,
+            },
+            {
+              startLine: 10,
+              startCharacter: 0,
+              endLine: 10,
+              endCharacter: 0,
+              start: { line: 10, character: 0 },
+              lineNumber: 11,
+            },
+          ],
+        },
+      },
+    ]);
+  });
+
+  it("should getAllCoverageLines just for file in focus", async () => {
+    const extensionConfiguration = inversify.mocks.getConfigurationData();
+    extensionConfiguration.isJustForFileInFocus = true;
+
+    const coverageLines = await fileCoverage.getAllCoverageLines(
+      extensionConfiguration
+    );
+
+    expect(coverageLines).toEqual([
+      {
+        fileName: {
+          scheme: "file",
+          authority: "",
+          path: "mocked-file.ts",
+          query: "",
+          fragment: "",
+        },
+        coverageLines: {
+          full: [
+            {
+              startLine: 0,
+              startCharacter: 0,
+              endLine: 0,
+              endCharacter: 0,
+              start: { line: 0, character: 0 },
+              lineNumber: 1,
+            },
+            {
+              startLine: 1,
+              startCharacter: 0,
+              endLine: 1,
+              endCharacter: 0,
+              start: { line: 1, character: 0 },
+              lineNumber: 2,
+            },
+            {
+              startLine: 2,
+              startCharacter: 0,
+              endLine: 2,
+              endCharacter: 0,
+              start: { line: 2, character: 0 },
+              lineNumber: 3,
+            },
+            {
+              startLine: 13,
+              startCharacter: 0,
+              endLine: 13,
+              endCharacter: 0,
+              start: { line: 13, character: 0 },
+              lineNumber: 14,
+            },
+            {
+              startLine: 15,
+              startCharacter: 0,
+              endLine: 15,
+              endCharacter: 0,
+              start: { line: 15, character: 0 },
+              lineNumber: 16,
+            },
+          ],
+          partial: [
+            {
+              startLine: 5,
+              startCharacter: 0,
+              endLine: 5,
+              endCharacter: 0,
+              start: { line: 5, character: 0 },
+              lineNumber: 6,
+            },
+            {
+              startLine: 9,
+              startCharacter: 0,
+              endLine: 9,
+              endCharacter: 0,
+              start: { line: 9, character: 0 },
+              lineNumber: 10,
+            },
+          ],
+          none: [
+            {
+              startLine: 6,
+              startCharacter: 0,
+              endLine: 6,
+              endCharacter: 0,
+              start: { line: 6, character: 0 },
+              lineNumber: 7,
+            },
+            {
+              startLine: 10,
+              startCharacter: 0,
+              endLine: 10,
+              endCharacter: 0,
+              start: { line: 10, character: 0 },
+              lineNumber: 11,
+            },
+          ],
+        },
+      },
+    ]);
+  });
+
+  it("should getAllCoverageLines just for file in focus with nothing to cover", async () => {
+    vscode.window.activeTextEditor = {
+      document: {
+        uri: vscode.Uri.file("active-file.txt"),
+      },
+      viewColumn: vscode.ViewColumn.One,
+    };
+
+    const extensionConfiguration = inversify.mocks.getConfigurationData();
+    extensionConfiguration.isJustForFileInFocus = true;
+
+    const coverageLines = await fileCoverage.getAllCoverageLines(
+      extensionConfiguration
+    );
+
+    expect(coverageLines).toEqual([]);
+  });
+
+  it("should getAllCoverageLines just for file without active editor", async () => {
+    vscode.window.activeTextEditor = undefined;
+    const extensionConfiguration = inversify.mocks.getConfigurationData();
+    extensionConfiguration.isJustForFileInFocus = true;
+
+    const coverageLines = await fileCoverage.getAllCoverageLines(
+      extensionConfiguration
+    );
+
+    expect(coverageLines).toEqual([]);
+  });
+
+  it("should createNewCoverageFile for default file", async () => {
+    const createdFileCoverage = await FileCoverage.createNewCoverageFile();
+
+    const foundedLcovFiles = createdFileCoverage.getLcovFiles();
+
+    expect(foundedLcovFiles).toEqual([inversify.mocks.LcovFile]);
+  });
+
+  it("should createNewCoverageFile for an inexistent file", async () => {
+    const createdFileCoverage = await FileCoverage.createNewCoverageFile(
+      "lcov-inexistent-file.info"
+    );
+
+    expect(createdFileCoverage).toEqual(
+      inversify.mocks.getFileCoverage("empty")
+    );
+  });
+
+  it("should createNewCoverageFile for an file with lcov syntax error", async () => {
+    const createdFileCoverage = await FileCoverage.createNewCoverageFile(
+      "lcov-with-error.info"
+    );
+
+    expect(createdFileCoverage).toEqual(
+      inversify.mocks.getFileCoverage("empty")
+    );
   });
 });

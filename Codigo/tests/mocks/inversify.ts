@@ -2,7 +2,7 @@ import { appInjector } from "../../src/inversify.config";
 import { LcovFile } from "lcov-parse";
 import { CoverageService } from "../../src/coverage/core/coverage-service";
 import { FileCoverageService } from "../../src/file-coverage/core/file-coverage-service";
-import { LcovFileFinder } from "../../src/utils/functions/lcov-file-finder";
+// import { LcovFileFinder } from "../../src/utils/functions/lcov-file-finder";
 import { VisualStudioCode } from "../../src/visual-studio-code/visual-studio-code";
 import { DefaultConfiguration } from "../../src/config";
 import { ExtensionConfigurationService } from "../../src/extension-configuration/core/extension-configuration-service";
@@ -22,35 +22,35 @@ import { CoverageData } from "../../src/coverage/models/coverage-data";
 
 const mockedLcovFile: LcovFile = {
   lines: {
-    found: 33,
-    hit: 26,
+    found: 9,
+    hit: 7,
     details: [
       { line: 1, hit: 1 },
       { line: 2, hit: 6 },
       { line: 3, hit: 1 },
       { line: 6, hit: 5 },
       { line: 7, hit: 0 },
-      { line: 8, hit: 0 },
-      { line: 11, hit: 5 },
-      { line: 12, hit: 0 },
-      { line: 15, hit: 5 },
+      { line: 10, hit: 5 },
+      { line: 11, hit: 0 },
+      { line: 14, hit: 5 },
+      { line: 16, hit: 5 },
     ],
   },
   functions: {
-    hit: 3,
-    found: 3,
+    hit: 1,
+    found: 1,
     details: [{ name: "test", line: 1, hit: 6 }],
   },
   branches: {
-    hit: 19,
-    found: 29,
+    hit: 4,
+    found: 6,
     details: [
       { line: 2, block: 1, branch: 0, taken: 1 },
       { line: 2, block: 1, branch: 1, taken: 5 },
       { line: 6, block: 2, branch: 0, taken: 0 },
       { line: 6, block: 2, branch: 1, taken: 5 },
-      { line: 11, block: 3, branch: 0, taken: 0 },
-      { line: 11, block: 3, branch: 1, taken: 5 },
+      { line: 10, block: 3, branch: 0, taken: 0 },
+      { line: 10, block: 3, branch: 1, taken: 5 },
     ],
   },
   title: "",
@@ -107,7 +107,7 @@ export const mocks = {
       () =>
         new Observable((resolver) => {
           const mapMock = new Map<string, LcovFile>();
-          mapMock.set("file1", mockedLcovFiles[0]);
+          mapMock.set("mocked-file.ts", mockedLcovFiles[0]);
 
           const mockFileCoverage = new FileCoverage(mapMock);
           resolver.next(mockFileCoverage);
@@ -179,6 +179,27 @@ export const mocks = {
     mocked_lcov_files_map.set("mocked-file.ts", mockedLcovFile);
     return mocked_lcov_files_map;
   },
+  getFileCoverage: (type?: "empty") => {
+    const mocked_lcov_files_map = new Map();
+
+    if (type !== "empty") {
+      mocked_lcov_files_map.set("mocked-file.ts", mockedLcovFile);
+    }
+
+    return new FileCoverage(mocked_lcov_files_map);
+  },
+  getProjectConfiguration: () => {
+    return new ProjectConfiguration({
+      minCoverage: 0.5,
+      refBranch: "master",
+      usePrePushValidation: false,
+      lcovFileName: "lcov.info",
+      runTestCoverage: "npm t",
+    });
+  },
+  getConfigurationData: () => {
+    return new ConfigurationData(true, false, "master", false);
+  },
 };
 
 beforeEach(() => {
@@ -214,9 +235,9 @@ beforeEach(() => {
     .rebind(ProjectConfigurationService)
     .toConstantValue(mocks.ProjectConfigurationService as any);
 
-  appInjector
-    .rebind(LcovFileFinder)
-    .toConstantValue(mocks.LcovFileFinder as any);
+  // appInjector
+  //   .rebind(LcovFileFinder)
+  //   .toConstantValue(mocks.LcovFileFinder as any);
 
   appInjector
     .rebind(VisualStudioCode)

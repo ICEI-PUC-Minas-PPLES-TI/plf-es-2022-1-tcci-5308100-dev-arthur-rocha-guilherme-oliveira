@@ -6,77 +6,6 @@ import { RequestMessage, ResponseMessage, Writeable } from "../utils/types";
 const mockedExtensionSettingValues: { [section: string]: any } = {};
 const mockedCommands: { [command: string]: (...args: any[]) => any } = {};
 
-interface WebviewPanelMocks {
-  messages: ResponseMessage[];
-  panel: {
-    onDidChangeViewState: (
-      e: vscode.WebviewPanelOnDidChangeViewStateEvent
-    ) => any;
-    onDidDispose: (e: void) => any;
-    setVisibility: (visible: boolean) => void;
-    webview: {
-      onDidReceiveMessage: (msg: RequestMessage) => void;
-    };
-  };
-}
-
-let mockedWebviews: { panel: vscode.WebviewPanel; mocks: WebviewPanelMocks }[] =
-  [];
-
-export const mocks = {
-  extensionContext: {
-    asAbsolutePath: jest.fn(),
-    extensionPath: "/path/to/extension",
-    globalState: {
-      get: jest.fn(),
-      update: jest.fn(),
-    },
-    globalStoragePath: "/path/to/globalStorage",
-    logPath: "/path/to/logs",
-    storagePath: "/path/to/storage",
-    subscriptions: [],
-    workspaceState: {
-      get: jest.fn(),
-      update: jest.fn(),
-    },
-  },
-  outputChannel: {
-    appendLine: jest.fn(),
-    dispose: jest.fn(),
-  },
-  statusBarItem: {
-    text: "",
-    tooltip: "",
-    command: "",
-    show: jest.fn(),
-    hide: jest.fn(),
-    dispose: jest.fn(),
-  },
-  terminal: {
-    sendText: jest.fn(),
-    show: jest.fn(),
-  },
-  workspaceConfiguration: {
-    get: jest.fn((section: string, defaultValue?: any) => {
-      return typeof mockedExtensionSettingValues[section] !== "undefined"
-        ? mockedExtensionSettingValues[section]
-        : defaultValue;
-    }),
-    inspect: jest.fn((section: string) => ({
-      workspaceValue: mockedExtensionSettingValues[section],
-      globalValue: mockedExtensionSettingValues[section],
-    })),
-  },
-  webview: {
-    asWebviewUri: jest.fn(),
-  },
-  textEditor: {
-    document: {
-      fileName: "mocked-file.ts",
-    },
-  } as vscode.TextEditor,
-};
-
 /* Visual Studio Code API Mocks */
 
 export const commands = {
@@ -260,6 +189,10 @@ export const workspace = {
     dispose: jest.fn(),
   })),
   onDidCloseTextDocument: jest.fn((_: () => void) => ({ dispose: jest.fn() })),
+  getWorkspaceFolder: jest.fn((_: vscode.Uri) => ({
+    uri: Uri.file("tests/mocks/workspace"),
+    index: 0,
+  })),
   workspaceFolders: <{ uri: Uri; index: number }[] | undefined>undefined,
 };
 
@@ -329,17 +262,89 @@ function createWebviewPanel(
   return webviewPanel;
 }
 
+interface WebviewPanelMocks {
+  messages: ResponseMessage[];
+  panel: {
+    onDidChangeViewState: (
+      e: vscode.WebviewPanelOnDidChangeViewStateEvent
+    ) => any;
+    onDidDispose: (e: void) => any;
+    setVisibility: (visible: boolean) => void;
+    webview: {
+      onDidReceiveMessage: (msg: RequestMessage) => void;
+    };
+  };
+}
+
+let mockedWebviews: { panel: vscode.WebviewPanel; mocks: WebviewPanelMocks }[] =
+  [];
+
+export const mocks = {
+  extensionContext: {
+    asAbsolutePath: jest.fn(),
+    extensionPath: "/path/to/extension",
+    globalState: {
+      get: jest.fn(),
+      update: jest.fn(),
+    },
+    globalStoragePath: "/path/to/globalStorage",
+    logPath: "/path/to/logs",
+    storagePath: "/path/to/storage",
+    subscriptions: [],
+    workspaceState: {
+      get: jest.fn(),
+      update: jest.fn(),
+    },
+  },
+  outputChannel: {
+    appendLine: jest.fn(),
+    dispose: jest.fn(),
+  },
+  statusBarItem: {
+    text: "",
+    tooltip: "",
+    command: "",
+    show: jest.fn(),
+    hide: jest.fn(),
+    dispose: jest.fn(),
+  },
+  terminal: {
+    sendText: jest.fn(),
+    show: jest.fn(),
+  },
+  workspaceConfiguration: {
+    get: jest.fn((section: string, defaultValue?: any) => {
+      return typeof mockedExtensionSettingValues[section] !== "undefined"
+        ? mockedExtensionSettingValues[section]
+        : defaultValue;
+    }),
+    inspect: jest.fn((section: string) => ({
+      workspaceValue: mockedExtensionSettingValues[section],
+      globalValue: mockedExtensionSettingValues[section],
+    })),
+  },
+  webview: {
+    asWebviewUri: jest.fn(),
+  },
+  textEditor: {
+    document: {
+      uri: Uri.file("tests/mocks/workspace/mocked-file.ts"),
+      fileName: "tests/mocks/workspace/mocked-file.ts",
+    },
+    viewColumn: ViewColumn.One,
+  } as vscode.TextEditor,
+};
+
 /* Utilities */
 
 beforeEach(() => {
   jest.clearAllMocks();
 
-  window.activeTextEditor = {
-    document: {
-      uri: Uri.file("/path/to/workspace-folder/active-file.txt"),
-    },
-    viewColumn: ViewColumn.One,
-  };
+  window.activeTextEditor = mocks.textEditor;
+
+  workspace.workspaceFolders = [
+    { uri: Uri.file("tests/mocks/workspace"), index: 0 },
+  ];
 
   // Clear any mocked extension setting values before each test
   Object.keys(mockedExtensionSettingValues).forEach((section) => {

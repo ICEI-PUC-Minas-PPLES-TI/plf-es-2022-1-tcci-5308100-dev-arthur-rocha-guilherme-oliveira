@@ -1,35 +1,55 @@
-import "reflect-metadata";
+import * as vscode from "../../../mocks/vscode";
+jest.mock("vscode", () => vscode, { virtual: true });
+
+import * as inversify from "../../../mocks/inversify";
 
 import { CoverageService } from "../../../../src/coverage/core/coverage-service";
 import { CoverageData } from "../../../../src/coverage/models/coverage-data";
 
 describe("coverageService", () => {
-  const coverageService = new CoverageService();
+  let coverageService: CoverageService;
+
+  beforeEach(() => {
+    coverageService = new CoverageService();
+  });
 
   it("should get coverage data", (done) => {
-    const mockedCoverageData = new CoverageData(0, 0);
-    const spyUpdateCoverageData = jest
-      .spyOn(CoverageData, "updateCoverageData")
-      .mockResolvedValue(mockedCoverageData);
+    const mockedCoverageData = new CoverageData(0.5, 7 / 9);
 
-    const fileCoverage = {};
-    const projectConfiguration = {};
-    const extensionConfiguration = {};
+    const fileCoverage = inversify.mocks.getFileCoverage();
+    const projectConfiguration = inversify.mocks.getProjectConfiguration();
+    const extensionConfiguration = inversify.mocks.getConfigurationData();
 
-    const coverageData = coverageService.getCoverageData();
-
-    coverageData.subscribe((data) => {
-      expect(data).toBe(mockedCoverageData);
+    coverageService.getCoverageData().subscribe((data) => {
+      expect(data).toEqual(mockedCoverageData);
 
       done();
     });
 
     coverageService.calculateCoverage(
-      fileCoverage as any,
-      projectConfiguration as any,
-      extensionConfiguration as any
+      fileCoverage,
+      projectConfiguration,
+      extensionConfiguration
     );
+  });
 
-    expect(spyUpdateCoverageData).toHaveBeenCalledTimes(1);
+  it("should get empty coverage data", (done) => {
+    const mockedCoverageData = new CoverageData(0.5, undefined);
+
+    const fileCoverage = inversify.mocks.getFileCoverage("empty");
+    const projectConfiguration = inversify.mocks.getProjectConfiguration();
+    const extensionConfiguration = inversify.mocks.getConfigurationData();
+
+    coverageService.getCoverageData().subscribe((data) => {
+      expect(data).toEqual(mockedCoverageData);
+
+      done();
+    });
+
+    coverageService.calculateCoverage(
+      fileCoverage,
+      projectConfiguration,
+      extensionConfiguration
+    );
   });
 });

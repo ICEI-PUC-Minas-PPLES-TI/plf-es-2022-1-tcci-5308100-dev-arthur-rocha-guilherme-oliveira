@@ -89,26 +89,6 @@ export class LcovFileFinder {
     };
   }
 
-  private calculateRelativePath(
-    fsPath: string
-  ): { relativePath: string; workspaceFolder: string } | undefined {
-    const fileName = fsPath;
-    const editorFileUri = Uri.file(fileName);
-    const workspaceFolder = workspace.getWorkspaceFolder(editorFileUri);
-    if (!workspaceFolder) {
-      return;
-    }
-    const workspaceFsPath = workspaceFolder.uri.fsPath;
-    const editorFileAbs = normalizeFileName(fileName);
-    const workspaceFile = normalizeFileName(workspaceFsPath);
-    const editorFileRelative = editorFileAbs.substring(workspaceFile.length);
-    const workspaceFolderName = normalizeFileName(basename(workspaceFsPath));
-    return {
-      relativePath: editorFileRelative,
-      workspaceFolder: workspaceFolderName,
-    };
-  }
-
   private checkLcovFileRelative(
     lcovFileFileName: string,
     editorFileRelative: string
