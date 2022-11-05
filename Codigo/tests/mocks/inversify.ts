@@ -200,6 +200,13 @@ export const mocks = {
   getConfigurationData: () => {
     return new ConfigurationData(true, false, "master", false);
   },
+  getCoverageData: (): CoverageData => {
+    return {
+      minCoveragePercentage: 0.8,
+      coveragePercentage: 0.9,
+      minCoverageReached: true,
+    };
+  },
 };
 
 beforeEach(() => {

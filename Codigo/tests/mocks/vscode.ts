@@ -97,8 +97,7 @@ export class Uri implements vscode.Uri {
   }
 
   public static parse(path: string) {
-    const comps = path.match(/([a-z]+):\/\/([^?#]+)(\?([^#]+)|())(#(.+)|())/)!;
-    return new Uri(comps[1], "", comps[2], comps[4], comps[6]);
+    return new Uri("file", "", path);
   }
 
   public static joinPath(
@@ -283,6 +282,7 @@ export const mocks = {
   extensionContext: {
     asAbsolutePath: jest.fn(),
     extensionPath: "/path/to/extension",
+    extensionUri: Uri.file("/path/to/extension"),
     globalState: {
       get: jest.fn(),
       update: jest.fn(),
