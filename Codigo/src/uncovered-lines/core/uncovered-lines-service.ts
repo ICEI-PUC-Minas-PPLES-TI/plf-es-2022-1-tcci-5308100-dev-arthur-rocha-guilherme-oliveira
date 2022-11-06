@@ -62,7 +62,7 @@ export class UncoveredLinesService {
 
     this.logger.error(
       "Something went wrong while generating new uncovered lines data.\n" +
-        `${{ extensionConfiguration, fileCoverage }}`
+        `${JSON.stringify({ extensionConfiguration, fileCoverage }, null, 2)}`
     );
   }
 }

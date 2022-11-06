@@ -117,6 +117,13 @@ export enum StatusBarAlignment {
   Right = 2,
 }
 
+export enum FileType {
+  Unknown = 0,
+  File = 1,
+  Directory = 2,
+  SymbolicLink = 64,
+}
+
 export class Range {
   readonly start: vscode.Position;
 
@@ -170,7 +177,7 @@ export const window = {
   showOpenDialog: jest.fn(),
   showQuickPick: jest.fn(),
   showSaveDialog: jest.fn(),
-
+  showTextDocument: jest.fn(),
   onDidChangeActiveTextEditor: jest.fn(),
   registerWebviewViewProvider: jest.fn(),
   createTreeView: jest.fn(),

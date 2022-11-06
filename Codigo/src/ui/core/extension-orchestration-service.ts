@@ -144,17 +144,15 @@ export class ExtensionOrchestrationService {
     const subject = new ReplaySubject<void>();
     let isFirstInteraction = true;
 
-    this.fileCoverageService
-      .getFileCoverage(this.actualProjectConfiguration?.lcovFileName)
-      .subscribe((fileCoverage) => {
-        this.emitNewFileCoverage(fileCoverage);
+    this.fileCoverageService.getFileCoverage().subscribe((fileCoverage) => {
+      this.emitNewFileCoverage(fileCoverage);
 
-        if (isFirstInteraction) {
-          isFirstInteraction = false;
-          subject.next();
-          subject.complete();
-        }
-      });
+      if (isFirstInteraction) {
+        isFirstInteraction = false;
+        subject.next();
+        subject.complete();
+      }
+    });
 
     return subject;
   }

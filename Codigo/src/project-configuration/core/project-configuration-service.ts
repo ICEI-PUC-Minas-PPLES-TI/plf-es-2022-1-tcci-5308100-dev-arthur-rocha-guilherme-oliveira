@@ -1,6 +1,5 @@
 import { appInjector } from "../../inversify.config";
 import { Observable, ReplaySubject } from "rxjs";
-import { File } from "../../uncovered-lines/models/file";
 import { VisualStudioCode } from "../../visual-studio-code/visual-studio-code";
 import { ProjectConfiguration } from "../models/project-configuration";
 import { injectable } from "inversify";
@@ -73,8 +72,6 @@ export class ProjectConfigurationService {
     this.logger.error(error);
     return { created: false, error };
   }
-
-  public emitNewConfigurationFileCreated(newFile: File): void {}
 
   public getProjectConfigurationData(): Observable<ProjectConfiguration> {
     if (!this.projectConfigurationSubject) {

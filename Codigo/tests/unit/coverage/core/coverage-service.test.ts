@@ -16,9 +16,10 @@ describe("coverageService", () => {
   it("should get coverage data", (done) => {
     const mockedCoverageData = new CoverageData(0.5, 7 / 9);
 
-    const fileCoverage = inversify.mocks.getFileCoverage();
-    const projectConfiguration = inversify.mocks.getProjectConfiguration();
-    const extensionConfiguration = inversify.mocks.getConfigurationData();
+    const fileCoverage = inversify.mocks.stubs.getFileCoverage();
+    const projectConfiguration =
+      inversify.mocks.stubs.getProjectConfiguration();
+    const extensionConfiguration = inversify.mocks.stubs.getConfigurationData();
 
     coverageService.getCoverageData().subscribe((data) => {
       expect(data).toEqual(mockedCoverageData);
@@ -36,9 +37,10 @@ describe("coverageService", () => {
   it("should get empty coverage data", (done) => {
     const mockedCoverageData = new CoverageData(0.5, undefined);
 
-    const fileCoverage = inversify.mocks.getFileCoverage("empty");
-    const projectConfiguration = inversify.mocks.getProjectConfiguration();
-    const extensionConfiguration = inversify.mocks.getConfigurationData();
+    const fileCoverage = inversify.mocks.stubs.getFileCoverage("empty");
+    const projectConfiguration =
+      inversify.mocks.stubs.getProjectConfiguration();
+    const extensionConfiguration = inversify.mocks.stubs.getConfigurationData();
 
     coverageService.getCoverageData().subscribe((data) => {
       expect(data).toEqual(mockedCoverageData);

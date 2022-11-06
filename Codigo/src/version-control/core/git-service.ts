@@ -83,21 +83,17 @@ export class GitService {
 
   private async execCommand(
     cmd: string,
-    options?: Array<string>,
-    data?: Array<string>,
-    useCustomCwd?: string
+    options: Array<string>,
+    data?: Array<string>
   ): Promise<String> {
-    const stringOptions = Array.isArray(options) ? options.join(" ") : "";
-    const stringData = Array.isArray(data) ? data.join(" ") : "";
+    const stringOptions = options.join(" ");
+    const stringData = data ? data.join(" ") : "";
 
     if (!workspace.workspaceFolders) {
       return "";
     }
 
-    const cwd =
-      useCustomCwd || workspace.workspaceFolders
-        ? workspace.workspaceFolders[0].uri.fsPath
-        : __dirname;
+    const cwd = workspace.workspaceFolders[0].uri.fsPath;
 
     return await new Promise((resolve): any => {
       exec(

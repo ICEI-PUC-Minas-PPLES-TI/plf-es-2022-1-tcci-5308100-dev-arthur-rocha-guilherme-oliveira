@@ -9,7 +9,7 @@ describe("FileCoverage", () => {
   let fileCoverage: FileCoverage;
 
   beforeEach(() => {
-    fileCoverage = new FileCoverage(inversify.mocks.getLcovFileMap());
+    fileCoverage = new FileCoverage(inversify.mocks.stubs.getLcovFileMap());
   });
 
   it("should getCoverageLinesForEditor default", async () => {
@@ -142,7 +142,7 @@ describe("FileCoverage", () => {
   });
 
   it("should getAllCoverageLines in default behavior", async () => {
-    const extensionConfiguration = inversify.mocks.getConfigurationData();
+    const extensionConfiguration = inversify.mocks.stubs.getConfigurationData();
 
     const coverageLines = await fileCoverage.getAllCoverageLines(
       extensionConfiguration
@@ -242,7 +242,7 @@ describe("FileCoverage", () => {
   });
 
   it("should getAllCoverageLines just for file in focus", async () => {
-    const extensionConfiguration = inversify.mocks.getConfigurationData();
+    const extensionConfiguration = inversify.mocks.stubs.getConfigurationData();
     extensionConfiguration.isJustForFileInFocus = true;
 
     const coverageLines = await fileCoverage.getAllCoverageLines(
@@ -350,7 +350,7 @@ describe("FileCoverage", () => {
       viewColumn: vscode.ViewColumn.One,
     };
 
-    const extensionConfiguration = inversify.mocks.getConfigurationData();
+    const extensionConfiguration = inversify.mocks.stubs.getConfigurationData();
     extensionConfiguration.isJustForFileInFocus = true;
 
     const coverageLines = await fileCoverage.getAllCoverageLines(
@@ -362,7 +362,7 @@ describe("FileCoverage", () => {
 
   it("should getAllCoverageLines just for file without active editor", async () => {
     vscode.window.activeTextEditor = undefined;
-    const extensionConfiguration = inversify.mocks.getConfigurationData();
+    const extensionConfiguration = inversify.mocks.stubs.getConfigurationData();
     extensionConfiguration.isJustForFileInFocus = true;
 
     const coverageLines = await fileCoverage.getAllCoverageLines(
@@ -386,7 +386,7 @@ describe("FileCoverage", () => {
     );
 
     expect(createdFileCoverage).toEqual(
-      inversify.mocks.getFileCoverage("empty")
+      inversify.mocks.stubs.getFileCoverage("empty")
     );
   });
 
@@ -396,7 +396,7 @@ describe("FileCoverage", () => {
     );
 
     expect(createdFileCoverage).toEqual(
-      inversify.mocks.getFileCoverage("empty")
+      inversify.mocks.stubs.getFileCoverage("empty")
     );
   });
 });

@@ -12,7 +12,7 @@ import { UncoveredLinesService } from "../../src/uncovered-lines/core/uncovered-
 import { LoggerManager } from "../../src/utils/logger/logger-manager";
 import { ExtensionContext } from "vscode";
 import * as vscode from "./vscode";
-import { Observable } from "rxjs";
+import { startWith, Subject } from "rxjs";
 import { Logger } from "../../src/utils/logger/logger";
 import { ProjectConfiguration } from "../../src/project-configuration/models/project-configuration";
 import { Writeable } from "../utils/types";
@@ -86,16 +86,73 @@ const mockCoverageData: Writeable<CoverageData> = {
   minCoverageReached: true,
 };
 
+const triggers = {
+  CoverageService: {
+    getCoverageData: new Subject(),
+  },
+  ExtensionConfigurationService: {
+    getConfigurationData: new Subject(),
+  },
+  FileCoverageService: {
+    getFileCoverage: new Subject(),
+  },
+  ProjectConfigurationService: {
+    getProjectConfigurationData: new Subject(),
+  },
+  LcovFileFinder: {},
+  VisualStudioCode: {
+    getActiveEditorChange: new Subject(),
+    getFileWatcher: new Subject(),
+  },
+  GitService: {},
+  UncoveredLinesService: {
+    getUncoveredLinesData: new Subject(),
+  },
+  LoggerManager: {},
+};
+
+const getLcovFileMap = (type?: "empty") => {
+  const mocked_lcov_files_map = new Map();
+
+  if (type !== "empty") {
+    mocked_lcov_files_map.set("mocked-file.ts", mockedLcovFile);
+  }
+
+  return mocked_lcov_files_map;
+};
+
+const stubs = {
+  getLcovFileMap,
+  getFileCoverage: (type?: "empty") => new FileCoverage(getLcovFileMap(type)),
+  getProjectConfiguration: () =>
+    new ProjectConfiguration({
+      minCoverage: 0.5,
+      refBranch: "master",
+      usePrePushValidation: false,
+      lcovFileName: "lcov.info",
+      runTestCoverage: "npm t",
+    }),
+  getConfigurationData: () =>
+    new ConfigurationData(true, false, "master", false),
+  getCoverageData: (): CoverageData => ({
+    minCoveragePercentage: 0.8,
+    coveragePercentage: 0.9,
+    minCoverageReached: true,
+  }),
+};
+
 export const mocks = {
   CoverageService: {
-    getCoverageData: jest.fn(
-      () => new Observable((resolver) => resolver.next(mockCoverageData))
+    getCoverageData: jest.fn(() =>
+      triggers.CoverageService.getCoverageData.pipe(startWith(mockCoverageData))
     ),
     calculateCoverage: jest.fn(),
   },
   ExtensionConfigurationService: {
-    getConfigurationData: jest.fn(
-      () => new Observable((resolver) => resolver.next(mockConfigurationData))
+    getConfigurationData: jest.fn(() =>
+      triggers.ExtensionConfigurationService.getConfigurationData.pipe(
+        startWith(mockConfigurationData)
+      )
     ),
     toggleLineStatusVisibility: jest.fn(),
     toggleCoveragePercentageMode: jest.fn(),
@@ -103,15 +160,10 @@ export const mocks = {
     changeRefBranch: jest.fn(),
   },
   FileCoverageService: {
-    getFileCoverage: jest.fn(
-      () =>
-        new Observable((resolver) => {
-          const mapMock = new Map<string, LcovFile>();
-          mapMock.set("mocked-file.ts", mockedLcovFiles[0]);
-
-          const mockFileCoverage = new FileCoverage(mapMock);
-          resolver.next(mockFileCoverage);
-        })
+    getFileCoverage: jest.fn(() =>
+      triggers.FileCoverageService.getFileCoverage.pipe(
+        startWith(stubs.getFileCoverage())
+      )
     ),
     addFileCoverageWatcher: jest.fn(),
   },
@@ -126,9 +178,10 @@ export const mocks = {
         error: "error",
       }),
     emitNewConfigurationFileCreated: jest.fn(),
-    getProjectConfigurationData: jest.fn(
-      () =>
-        new Observable((resolver) => resolver.next(mockProjectConfiguration))
+    getProjectConfigurationData: jest.fn(() =>
+      triggers.ProjectConfigurationService.getProjectConfigurationData.pipe(
+        startWith(mockProjectConfiguration)
+      )
     ),
     fileChanged: jest.fn(),
   },
@@ -143,12 +196,12 @@ export const mocks = {
     runScriptOnTerminal: jest.fn(),
     cancelEditorFocusChangeObservation: jest.fn(),
     observeEditorFocusChange: jest.fn(),
-    getActiveEditorChange: jest.fn(
-      () => new Observable((resolver) => resolver.next())
+    getActiveEditorChange: jest.fn(() =>
+      triggers.VisualStudioCode.getActiveEditorChange.pipe(startWith())
     ),
     criaNaRaizDoProjetoUmArquivoDeConfiguração: jest.fn(),
     alterarOArquivoDeConfiguraçãoActivateDev: jest.fn(),
-    getFileWatcher: jest.fn(),
+    getFileWatcher: jest.fn(() => triggers.VisualStudioCode.getFileWatcher),
   },
   GitService: {
     getCurrentBranchDiff: jest.fn(() => [
@@ -164,8 +217,8 @@ export const mocks = {
   },
   UncoveredLinesService: {
     selectUncoveredLine: jest.fn(),
-    getUncoveredLinesData: jest.fn(
-      () => new Observable((resolver) => resolver.next())
+    getUncoveredLinesData: jest.fn(() =>
+      triggers.UncoveredLinesService.getUncoveredLinesData.pipe(startWith())
     ),
     setCurrentUncoveredLines: jest.fn(),
   },
@@ -174,39 +227,8 @@ export const mocks = {
   },
   Logger: mockedLogger,
   LcovFile: mockedLcovFile,
-  getLcovFileMap: () => {
-    const mocked_lcov_files_map = new Map();
-    mocked_lcov_files_map.set("mocked-file.ts", mockedLcovFile);
-    return mocked_lcov_files_map;
-  },
-  getFileCoverage: (type?: "empty") => {
-    const mocked_lcov_files_map = new Map();
-
-    if (type !== "empty") {
-      mocked_lcov_files_map.set("mocked-file.ts", mockedLcovFile);
-    }
-
-    return new FileCoverage(mocked_lcov_files_map);
-  },
-  getProjectConfiguration: () => {
-    return new ProjectConfiguration({
-      minCoverage: 0.5,
-      refBranch: "master",
-      usePrePushValidation: false,
-      lcovFileName: "lcov.info",
-      runTestCoverage: "npm t",
-    });
-  },
-  getConfigurationData: () => {
-    return new ConfigurationData(true, false, "master", false);
-  },
-  getCoverageData: (): CoverageData => {
-    return {
-      minCoveragePercentage: 0.8,
-      coveragePercentage: 0.9,
-      minCoverageReached: true,
-    };
-  },
+  stubs,
+  triggers,
 };
 
 beforeEach(() => {

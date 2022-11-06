@@ -1,13 +1,14 @@
 import * as vscode from "../../../mocks/vscode";
 jest.mock("vscode", () => vscode, { virtual: true });
 
+import { ExecException } from "child_process";
+
 const mockChildProcess = { exec: jest.fn() };
 jest.mock("child_process", () => mockChildProcess, { virtual: true });
 
 import * as inversify from "../../../mocks/inversify";
 
 import { GitService } from "../../../../src/version-control/core/git-service";
-import { ExecException } from "child_process";
 import { fileSystemHelper } from "../../../../src/utils/functions/file-system-helper";
 
 describe("GitService", () => {
@@ -193,7 +194,7 @@ describe("GitService", () => {
       .spyOn(fileSystemHelper, "writeStringFile")
       .mockResolvedValue();
 
-    const coverageData = inversify.mocks.getCoverageData();
+    const coverageData = inversify.mocks.stubs.getCoverageData();
     await gitService.updateGitHookParams(coverageData);
 
     expect(writeFileSpy).toHaveBeenNthCalledWith(
@@ -212,6 +213,30 @@ describe("GitService", () => {
       "git rev-parse --absolute-git-dir ",
       { cwd: "tests/mocks/workspace" },
       secondCallbackParam
+    );
+  });
+
+  it("should updateGitHookParams when is not a git repo", async () => {
+    let callbackParam!: ExecCallback;
+    mockChildProcess.exec.mockImplementationOnce(
+      (cmd, opt, callback: ExecCallback) => {
+        callbackParam = callback;
+        callback(null, "false\n", "");
+      }
+    );
+
+    const writeFileSpy = jest.spyOn(fileSystemHelper, "writeStringFile");
+
+    const coverageData = inversify.mocks.stubs.getCoverageData();
+    await gitService.updateGitHookParams(coverageData);
+
+    expect(writeFileSpy).not.toHaveBeenCalled();
+
+    expect(mockChildProcess.exec).nthCalledWith(
+      1,
+      "git rev-parse --is-inside-work-tree ",
+      { cwd: "tests/mocks/workspace" },
+      callbackParam
     );
   });
 
@@ -420,6 +445,38 @@ describe("GitService", () => {
     );
   });
 
+  it("should disablePreCommitHook when is not a git repo", async () => {
+    let callbackParam!: ExecCallback;
+    mockChildProcess.exec.mockImplementationOnce(
+      (cmd, opt, callback: ExecCallback) => {
+        callbackParam = callback;
+        callback(null, "false\n", "");
+      }
+    );
+
+    const existsSpy = jest.spyOn(fileSystemHelper, "exists");
+
+    const readFileSpy = jest.spyOn(fileSystemHelper, "readFile");
+
+    const deleteFileSpy = jest.spyOn(fileSystemHelper, "deleteFile");
+
+    const writeStringFileSpy = jest.spyOn(fileSystemHelper, "writeStringFile");
+
+    await gitService.disablePreCommitHook();
+
+    expect(existsSpy).not.toHaveBeenCalled();
+    expect(readFileSpy).not.toHaveBeenCalled();
+    expect(deleteFileSpy).not.toHaveBeenCalled();
+    expect(writeStringFileSpy).not.toHaveBeenCalled();
+
+    expect(mockChildProcess.exec).nthCalledWith(
+      1,
+      "git rev-parse --is-inside-work-tree ",
+      { cwd: "tests/mocks/workspace" },
+      callbackParam
+    );
+  });
+
   it("should enablePreCommitHook when file exist", async () => {
     let firstCallbackParam!: ExecCallback;
     let secondCallbackParam!: ExecCallback;
@@ -624,6 +681,41 @@ describe("GitService", () => {
       "git rev-parse --absolute-git-dir ",
       { cwd: "tests/mocks/workspace" },
       secondCallbackParam
+    );
+  });
+
+  it("should enablePreCommitHook when is not a git repo", async () => {
+    let callbackParam!: ExecCallback;
+    mockChildProcess.exec.mockImplementationOnce(
+      (cmd, opt, callback: ExecCallback) => {
+        callbackParam = callback;
+        callback(null, "false\n", "");
+      }
+    );
+
+    const existsSpy = jest.spyOn(fileSystemHelper, "exists");
+
+    const readFileSpy = jest.spyOn(fileSystemHelper, "readFile");
+
+    const deleteFileSpy = jest.spyOn(fileSystemHelper, "deleteFile");
+
+    const chmodSpy = jest.spyOn(fileSystemHelper, "chmod");
+
+    const writeStringFileSpy = jest.spyOn(fileSystemHelper, "writeStringFile");
+
+    await gitService.enablePreCommitHook();
+
+    expect(existsSpy).not.toHaveBeenCalled();
+    expect(readFileSpy).not.toHaveBeenCalled();
+    expect(deleteFileSpy).not.toHaveBeenCalled();
+    expect(chmodSpy).not.toHaveBeenCalled();
+    expect(writeStringFileSpy).not.toHaveBeenCalled();
+
+    expect(mockChildProcess.exec).nthCalledWith(
+      1,
+      "git rev-parse --is-inside-work-tree ",
+      { cwd: "tests/mocks/workspace" },
+      callbackParam
     );
   });
 });

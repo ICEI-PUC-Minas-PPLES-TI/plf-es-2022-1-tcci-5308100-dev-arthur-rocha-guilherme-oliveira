@@ -11,46 +11,30 @@ export class FileCoverageService {
 
   private onFileCoverageFileChange!: Observable<void>;
 
-  private fileCoverageSubject!: ReplaySubject<FileCoverage>;
+  private fileCoverageSubject = new ReplaySubject<FileCoverage>();
 
   private onFileCoverageChangeSubscription?: Subscription;
 
-  constructor() {}
-
-  public getFileCoverage(lcovFileName?: string): Observable<FileCoverage> {
-    if (!this.fileCoverageSubject) {
-      this.fileCoverageSubject = new ReplaySubject<FileCoverage>();
-
-      this.setFileChangeSubscribe(lcovFileName);
-
-      this.fileChanged(lcovFileName);
-    }
-
+  public getFileCoverage(): Observable<FileCoverage> {
     return this.fileCoverageSubject.asObservable();
   }
 
-  public addFileCoverageWatcher(lcovFileName: string): void {
-    if (this.onFileCoverageChangeSubscription) {
-      this.onFileCoverageChangeSubscription.unsubscribe();
-    }
-
+  public async addFileCoverageWatcher(lcovFileName: string): Promise<void> {
     this.onFileCoverageFileChange = this.vscode.getFileWatcher(
       this.FILE_WATCHER_KEY,
       lcovFileName
     );
 
-    this.setFileChangeSubscribe(lcovFileName);
-
-    if (this.fileCoverageSubject) {
-      this.fileChanged(lcovFileName);
+    if (this.onFileCoverageChangeSubscription) {
+      this.onFileCoverageChangeSubscription.unsubscribe();
     }
-  }
 
-  private setFileChangeSubscribe(lcovFileName?: string) {
     this.onFileCoverageChangeSubscription =
       this.onFileCoverageFileChange.subscribe(() => {
         this.fileChanged(lcovFileName);
       });
+
+    await this.fileChanged(lcovFileName);
   }
 
   private async fileChanged(lcovFileName?: string): Promise<void> {
