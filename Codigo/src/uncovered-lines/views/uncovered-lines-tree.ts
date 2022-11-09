@@ -84,7 +84,7 @@ export class UncoveredLinesTree
     }
 
     return new TreeItem(
-      this.actualUncoveredLinesData.root.hasSomethingToCover
+      this.actualUncoveredLinesData?.root.hasSomethingToCover
         ? "Todas as linhas estão cobertas"
         : "Nenhuma linha para cobrir",
       TreeItemCollapsibleState.None
@@ -112,7 +112,7 @@ export class UncoveredLinesTree
       return [];
     }
 
-    if (this.actualUncoveredLinesData.root) {
+    if (this.actualUncoveredLinesData?.root) {
       const rootChildren = this.getFolderChildren(
         this.actualUncoveredLinesData.root
       );

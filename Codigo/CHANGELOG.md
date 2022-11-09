@@ -4,6 +4,12 @@ All notable changes to the "covering" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.4.1] - 2022-10-27
+
+### Fixed
+
+- Add undefined root verification when application start up.
+
 ## [1.4.0] - 2022-10-27
 
 ### Added
