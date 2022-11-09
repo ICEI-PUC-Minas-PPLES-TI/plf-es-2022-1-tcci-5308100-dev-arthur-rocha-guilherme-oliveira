@@ -1,3 +1,4 @@
+import { appInjector } from "./inversify.config";
 import { injectable } from "inversify";
 import {
   DecorationRenderOptions,
@@ -6,7 +7,6 @@ import {
   TextEditorDecorationType,
   window,
 } from "vscode";
-import { appInjector } from "./inversify.config";
 
 interface DecorationConfig {
   readonly noCoverageDecorationType: TextEditorDecorationType;

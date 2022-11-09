@@ -1,10 +1,10 @@
+import { appInjector } from "../../inversify.config";
 import {
   ExtensionContext,
   WebviewView,
   WebviewViewProvider,
   window,
 } from "vscode";
-import { appInjector } from "../../inversify.config";
 import { GitService } from "../../version-control/core/git-service";
 import { getExtensionConfigurationHtmlForWebview } from "../core/extension-configuration";
 import { ExtensionConfigurationService } from "../core/extension-configuration-service";
@@ -22,8 +22,7 @@ export class ConfigurationView implements WebviewViewProvider {
     false,
     false,
     "",
-    false,
-    ""
+    false
   );
 
   public static createView(): void {

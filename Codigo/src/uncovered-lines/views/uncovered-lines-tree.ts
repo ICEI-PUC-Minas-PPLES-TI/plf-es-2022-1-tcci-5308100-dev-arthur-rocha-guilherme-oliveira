@@ -1,3 +1,4 @@
+import { appInjector } from "../../inversify.config";
 import {
   Event,
   EventEmitter,
@@ -10,7 +11,6 @@ import {
   Uri,
   window,
 } from "vscode";
-import { appInjector } from "../../inversify.config";
 import { LoggerManager } from "../../utils/logger/logger-manager";
 import { UncoveredLinesService } from "../core/uncovered-lines-service";
 import { File } from "../models/file";

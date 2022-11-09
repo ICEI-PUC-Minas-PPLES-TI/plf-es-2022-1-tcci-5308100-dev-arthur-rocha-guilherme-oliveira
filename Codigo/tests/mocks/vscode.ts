@@ -1,74 +1,6 @@
 import * as vscode from "vscode";
 import { RequestMessage, ResponseMessage, Writeable } from "../utils/types";
 
-/* Mocks */
-
-const mockedExtensionSettingValues: { [section: string]: any } = {};
-const mockedCommands: { [command: string]: (...args: any[]) => any } = {};
-
-interface WebviewPanelMocks {
-  messages: ResponseMessage[];
-  panel: {
-    onDidChangeViewState: (
-      e: vscode.WebviewPanelOnDidChangeViewStateEvent
-    ) => any;
-    onDidDispose: (e: void) => any;
-    setVisibility: (visible: boolean) => void;
-    webview: {
-      onDidReceiveMessage: (msg: RequestMessage) => void;
-    };
-  };
-}
-
-let mockedWebviews: { panel: vscode.WebviewPanel; mocks: WebviewPanelMocks }[] =
-  [];
-
-export const mocks = {
-  extensionContext: {
-    asAbsolutePath: jest.fn(),
-    extensionPath: "/path/to/extension",
-    globalState: {
-      get: jest.fn(),
-      update: jest.fn(),
-    },
-    globalStoragePath: "/path/to/globalStorage",
-    logPath: "/path/to/logs",
-    storagePath: "/path/to/storage",
-    subscriptions: [],
-    workspaceState: {
-      get: jest.fn(),
-      update: jest.fn(),
-    },
-  },
-  outputChannel: {
-    appendLine: jest.fn(),
-    dispose: jest.fn(),
-  },
-  statusBarItem: {
-    text: "",
-    tooltip: "",
-    command: "",
-    show: jest.fn(),
-    hide: jest.fn(),
-    dispose: jest.fn(),
-  },
-  terminal: {
-    sendText: jest.fn(),
-    show: jest.fn(),
-  },
-  workspaceConfiguration: {
-    get: jest.fn((section: string, defaultValue?: any) => {
-      return typeof mockedExtensionSettingValues[section] !== "undefined"
-        ? mockedExtensionSettingValues[section]
-        : defaultValue;
-    }),
-    inspect: jest.fn((section: string) => ({
-      workspaceValue: mockedExtensionSettingValues[section],
-      globalValue: mockedExtensionSettingValues[section],
-    })),
-  },
-};
-
 /* Visual Studio Code API Mocks */
 
 export const commands = {
@@ -97,6 +29,7 @@ export const env = {
 export const EventEmitter = jest.fn(() => ({
   dispose: jest.fn(),
   event: jest.fn(),
+  fire: jest.fn(),
 }));
 
 export class Uri implements vscode.Uri {
@@ -159,14 +92,63 @@ export class Uri implements vscode.Uri {
   }
 
   public static parse(path: string) {
-    const comps = path.match(/([a-z]+):\/\/([^?#]+)(\?([^#]+)|())(#(.+)|())/)!;
-    return new Uri(comps[1], "", comps[2], comps[4], comps[6]);
+    return new Uri("file", "", path);
+  }
+
+  public static joinPath(
+    base: vscode.Uri,
+    ...pathSegments: string[]
+  ): vscode.Uri {
+    return new Uri(
+      base.scheme,
+      base.authority,
+      base.path + "/" + pathSegments.join("/")
+    );
   }
 }
 
 export enum StatusBarAlignment {
   Left = 1,
   Right = 2,
+}
+
+export enum OverviewRulerLane {
+  Left = 1,
+  Center = 2,
+  Right = 4,
+  Full = 7,
+}
+
+export enum FileType {
+  Unknown = 0,
+  File = 1,
+  Directory = 2,
+  SymbolicLink = 64,
+}
+
+export class Range {
+  readonly start: vscode.Position;
+
+  constructor(
+    public startLine: number,
+    public startCharacter: number,
+    public endLine: number,
+    public endCharacter: number
+  ) {
+    this.start = {
+      line: startLine,
+      character: startCharacter,
+    } as vscode.Position;
+  }
+
+  public isEqual(other: Range): boolean {
+    return (
+      this.startLine === other.startLine &&
+      this.startCharacter === other.startCharacter &&
+      this.endLine === other.endLine &&
+      this.endCharacter === other.endCharacter
+    );
+  }
 }
 
 export let version = "1.51.0";
@@ -185,32 +167,176 @@ export enum ViewColumn {
   Nine = 9,
 }
 
+/* Mocks */
+
+const mockedExtensionSettingValues: { [section: string]: any } = {};
+const mockedCommands: { [command: string]: (...args: any[]) => any } = {};
+
+export const mocks = {
+  extensionContext: {
+    asAbsolutePath: jest.fn(),
+    extensionPath: "/path/to/extension",
+    extensionUri: Uri.file("/path/to/extension"),
+    globalState: {
+      get: jest.fn(),
+      update: jest.fn(),
+    },
+    globalStoragePath: "/path/to/globalStorage",
+    logPath: "/path/to/logs",
+    storagePath: "/path/to/storage",
+    subscriptions: [],
+    workspaceState: {
+      get: jest.fn(),
+      update: jest.fn(),
+    },
+  },
+  outputChannel: {
+    appendLine: jest.fn(),
+    dispose: jest.fn(),
+  },
+  statusBarItem: {
+    text: "",
+    tooltip: "",
+    command: "",
+    show: jest.fn(),
+    hide: jest.fn(),
+    dispose: jest.fn(),
+  },
+  terminal: {
+    sendText: jest.fn(),
+    show: jest.fn(),
+  },
+  workspaceConfiguration: {
+    get: jest.fn((section: string, defaultValue?: any) => {
+      return typeof mockedExtensionSettingValues[section] !== "undefined"
+        ? mockedExtensionSettingValues[section]
+        : defaultValue;
+    }),
+    inspect: jest.fn((section: string) => ({
+      workspaceValue: mockedExtensionSettingValues[section],
+      globalValue: mockedExtensionSettingValues[section],
+    })),
+  },
+  webview: {
+    asWebviewUri: jest.fn(),
+  },
+  textEditor: {
+    document: {
+      uri: Uri.file("tests/mocks/workspace/mocked-file.ts"),
+      fileName: "tests/mocks/workspace/mocked-file.ts",
+    },
+    viewColumn: ViewColumn.One,
+    setDecorations: jest.fn(),
+  },
+  fileWatcher: {
+    onDidCreate: (cb: Function) => {
+      triggers.fileWatcher.onDidCreateCallbacks.push(cb);
+    },
+    onDidChange: (cb: Function) => {
+      triggers.fileWatcher.onDidChangeCallbacks.push(cb);
+    },
+    onDidDelete: (cb: Function) => {
+      triggers.fileWatcher.onDidDeleteCallbacks.push(cb);
+    },
+    dispose: () => {},
+  },
+};
+
+/* Mock constants */
+
+export const triggers = {
+  window: {
+    onDidChangeActiveTextEditorCallBacks: [] as Function[],
+    onDidChangeActiveTextEditor: () => {
+      executeCallbacks(triggers.window.onDidChangeActiveTextEditorCallBacks);
+    },
+  },
+
+  fileWatcher: {
+    onDidCreateCallbacks: [] as Function[],
+    onDidCreate: () => {
+      executeCallbacks(triggers.fileWatcher.onDidCreateCallbacks);
+    },
+
+    onDidChangeCallbacks: [] as Function[],
+    onDidChange: () => {
+      executeCallbacks(triggers.fileWatcher.onDidChangeCallbacks);
+    },
+
+    onDidDeleteCallbacks: [] as Function[],
+    onDidDelete: () => {
+      executeCallbacks(triggers.fileWatcher.onDidDeleteCallbacks);
+    },
+
+    dispose: () => {},
+  },
+};
+
+function executeCallbacks(callbacks: Function[]) {
+  callbacks.forEach((cb) => {
+    cb();
+  });
+}
+
+function resetTriggerCallbacks() {
+  triggers.window.onDidChangeActiveTextEditorCallBacks = [];
+  triggers.fileWatcher.onDidCreateCallbacks = [];
+  triggers.fileWatcher.onDidChangeCallbacks = [];
+  triggers.fileWatcher.onDidDeleteCallbacks = [];
+}
+
 export const window = {
   activeTextEditor: undefined as any,
+  visibleTextEditors: [] as any[],
+  terminals: [mocks.terminal],
   createOutputChannel: jest.fn(() => mocks.outputChannel),
   createStatusBarItem: jest.fn(() => mocks.statusBarItem),
   createWebviewPanel: jest.fn(createWebviewPanel),
-  createTerminal: jest.fn(() => mocks.terminal),
+  createTextEditorDecorationType: jest
+    .fn()
+    .mockReturnValueOnce("noCoverageDecorationType")
+    .mockReturnValueOnce("partialCoverageDecorationType")
+    .mockReturnValueOnce("fullCoverageDecorationType"),
+  createTerminal: jest.fn(() => {
+    window.terminals.push(mocks.terminal);
+    return mocks.terminal;
+  }),
   showErrorMessage: jest.fn(),
   showWarningMessage: jest.fn(),
   showInformationMessage: jest.fn(),
   showOpenDialog: jest.fn(),
   showQuickPick: jest.fn(),
   showSaveDialog: jest.fn(),
+  showTextDocument: jest.fn(),
+  onDidChangeActiveTextEditor: jest.fn((cb) => {
+    triggers.window.onDidChangeActiveTextEditorCallBacks.push(cb);
+    return {
+      dispose: () => {
+        triggers.window.onDidChangeActiveTextEditorCallBacks = [];
+      },
+    };
+  }),
+  registerWebviewViewProvider: jest.fn(),
+  createTreeView: jest.fn(),
 };
 
+function resetWindow() {
+  window.activeTextEditor = mocks.textEditor;
+  window.visibleTextEditors = [mocks.textEditor];
+  window.terminals = [mocks.terminal];
+}
+
 export const workspace = {
-  createFileSystemWatcher: jest.fn(() => ({
-    onDidCreate: jest.fn(),
-    onDidChange: jest.fn(),
-    onDidDelete: jest.fn(),
-    dispose: jest.fn(),
-  })),
+  createFileSystemWatcher: jest.fn(() => mocks.fileWatcher),
   getConfiguration: jest.fn(() => mocks.workspaceConfiguration),
   onDidChangeWorkspaceFolders: jest.fn((_: () => Promise<void>) => ({
     dispose: jest.fn(),
   })),
   onDidCloseTextDocument: jest.fn((_: () => void) => ({ dispose: jest.fn() })),
+  getWorkspaceFolder: jest.fn((_: vscode.Uri) => ({
+    uri: Uri.file("tests/mocks/workspace"),
+    index: 0,
+  })),
   workspaceFolders: <{ uri: Uri; index: number }[] | undefined>undefined,
 };
 
@@ -280,17 +406,35 @@ function createWebviewPanel(
   return webviewPanel;
 }
 
+interface WebviewPanelMocks {
+  messages: ResponseMessage[];
+  panel: {
+    onDidChangeViewState: (
+      e: vscode.WebviewPanelOnDidChangeViewStateEvent
+    ) => any;
+    onDidDispose: (e: void) => any;
+    setVisibility: (visible: boolean) => void;
+    webview: {
+      onDidReceiveMessage: (msg: RequestMessage) => void;
+    };
+  };
+}
+
+let mockedWebviews: { panel: vscode.WebviewPanel; mocks: WebviewPanelMocks }[] =
+  [];
+
 /* Utilities */
 
 beforeEach(() => {
   jest.clearAllMocks();
 
-  window.activeTextEditor = {
-    document: {
-      uri: Uri.file("/path/to/workspace-folder/active-file.txt"),
-    },
-    viewColumn: ViewColumn.One,
-  };
+  resetTriggerCallbacks();
+
+  resetWindow();
+
+  workspace.workspaceFolders = [
+    { uri: Uri.file("tests/mocks/workspace"), index: 0 },
+  ];
 
   // Clear any mocked extension setting values before each test
   Object.keys(mockedExtensionSettingValues).forEach((section) => {

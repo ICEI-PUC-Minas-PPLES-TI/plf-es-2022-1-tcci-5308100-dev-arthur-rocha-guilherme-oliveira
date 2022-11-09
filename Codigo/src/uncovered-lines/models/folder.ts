@@ -1,7 +1,7 @@
+import { appInjector } from "../../inversify.config";
 import * as path from "path";
 import { FileStat, FileType, Uri } from "vscode";
 import { CompleteCoverageLines } from "../../file-coverage/models/file-coverage";
-import { appInjector } from "../../inversify.config";
 import { fileSystemHelper } from "../../utils/functions/file-system-helper";
 import { normalizeFileName } from "../../utils/functions/helpers";
 import { LoggerManager } from "../../utils/logger/logger-manager";

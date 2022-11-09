@@ -1,11 +1,11 @@
+import { appInjector } from "../inversify.config";
 import { injectable } from "inversify";
 import { Observable, Subject } from "rxjs";
-import { Disposable, TextEditor, window, workspace } from "vscode";
+import { Disposable, TextEditor, Uri, window, workspace } from "vscode";
 import { DefaultConfiguration } from "../config";
 import { ConfigurationData } from "../extension-configuration/models/configuration-data";
 import { CoverageLines } from "../file-coverage/models/coverage-lines";
 import { FileCoverage } from "../file-coverage/models/file-coverage";
-import { appInjector } from "../inversify.config";
 
 type FileWatcherSubject = {
   subject: Subject<void>;
@@ -28,7 +28,7 @@ export class VisualStudioCode {
     this.observeEditorFocusChange();
   }
 
-  private render(): void {
+  private async render(): Promise<void> {
     this.removeDecorationsForEditors();
 
     if (!this.actualExtensionConfiguration.isGutterActive) {
@@ -47,7 +47,7 @@ export class VisualStudioCode {
       textEditors = window.visibleTextEditors;
     }
 
-    textEditors.forEach(async (textEditor) => {
+    const renderEachEditor = textEditors.map(async (textEditor) => {
       const coverageLines =
         await this.actualFileCoverage.getCoverageLinesForEditor(
           textEditor,
@@ -57,16 +57,27 @@ export class VisualStudioCode {
 
       this.setDecorationsForEditor(textEditor, coverageLines);
     });
+
+    await Promise.all(renderEachEditor);
   }
 
-  public redirectEditorTo(configFilePath: string): void {}
+  public redirectEditorTo(configFilePath: string): void {
+    const workspaceFolders = workspace.workspaceFolders;
+
+    if (!workspaceFolders) {
+      return;
+    }
+
+    const workspaceFolder = workspaceFolders[0];
+    window.showTextDocument(Uri.joinPath(workspaceFolder.uri, configFilePath));
+  }
 
   public requestFileGeneration(): void {}
 
-  public changeEditorDecoration(
+  public async changeEditorDecoration(
     fileCoverage: FileCoverage,
     extensionConfiguration: ConfigurationData
-  ): void {
+  ): Promise<void> {
     if (fileCoverage) {
       this.actualFileCoverage = fileCoverage;
     }
@@ -76,7 +87,7 @@ export class VisualStudioCode {
     }
 
     if (this.actualFileCoverage) {
-      this.render();
+      await this.render();
     }
   }
 
@@ -110,10 +121,6 @@ export class VisualStudioCode {
   public getActiveEditorChange(): Observable<void> {
     return this.activeEditorChangeSubject.asObservable();
   }
-
-  public criaNaRaizDoProjetoUmArquivoDeConfiguração(): void {}
-
-  public alterarOArquivoDeConfiguraçãoActivateDev(): void {}
 
   private setDecorationsForEditor(
     editor: TextEditor,

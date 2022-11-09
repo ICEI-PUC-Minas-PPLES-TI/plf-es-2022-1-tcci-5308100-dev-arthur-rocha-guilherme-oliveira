@@ -1,7 +1,7 @@
+import { appInjector } from "../../inversify.config";
 import { injectable } from "inversify";
 import { Observable, ReplaySubject } from "rxjs";
 import { window } from "vscode";
-import { appInjector } from "../../inversify.config";
 import { GitService } from "../../version-control/core/git-service";
 import { ConfigurationData } from "../models/configuration-data";
 
@@ -10,7 +10,7 @@ export class ExtensionConfigurationService {
   private gitService = appInjector.get(GitService);
 
   private configurationData = new ReplaySubject<ConfigurationData>();
-  private actualState = new ConfigurationData(true, false, "", false, "");
+  private actualState = new ConfigurationData(true, false, "", false);
 
   public getConfigurationData(): Observable<ConfigurationData> {
     return this.configurationData.asObservable();
@@ -61,9 +61,9 @@ export class ExtensionConfigurationService {
 
       this.emitNewConfiguration(newConfig);
     } else {
-      window.showWarningMessage(
-        `The branch "${refBranch}" does not exist in the repository`
-      );
+      const erroMsg = `The branch "${refBranch}" does not exist in the repository`;
+      window.showWarningMessage(erroMsg);
+      this.configurationData.error(erroMsg);
     }
   }
 }

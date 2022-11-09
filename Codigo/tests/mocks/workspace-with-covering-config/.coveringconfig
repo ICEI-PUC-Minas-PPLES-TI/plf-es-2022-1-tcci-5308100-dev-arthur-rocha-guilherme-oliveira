@@ -1,0 +1,6 @@
+{
+  "lcovFileName": "path/to/lcov.info",
+  "minCoverage": 0.9,
+  "refBranch": "master",
+  "usePrePushValidation": true
+}

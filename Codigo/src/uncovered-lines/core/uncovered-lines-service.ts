@@ -1,3 +1,4 @@
+import { appInjector } from "../../inversify.config";
 import { injectable } from "inversify";
 import { window } from "vscode";
 import { Line } from "../models/line";
@@ -6,7 +7,6 @@ import { UncoveredLinesData } from "../models/uncovered-lines-data";
 import { Observable, ReplaySubject } from "rxjs";
 import { ConfigurationData } from "../../extension-configuration/models/configuration-data";
 import { LoggerManager } from "../../utils/logger/logger-manager";
-import { appInjector } from "../../inversify.config";
 
 @injectable()
 export class UncoveredLinesService {
@@ -62,7 +62,7 @@ export class UncoveredLinesService {
 
     this.logger.error(
       "Something went wrong while generating new uncovered lines data.\n" +
-        `${{ extensionConfiguration, fileCoverage }}`
+        `${JSON.stringify({ extensionConfiguration, fileCoverage }, null, 2)}`
     );
   }
 }

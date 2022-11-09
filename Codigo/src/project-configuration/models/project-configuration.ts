@@ -20,20 +20,32 @@ export class ProjectConfiguration {
   public readonly usePrePushValidation: boolean;
 
   constructor(data: any = {}) {
-    this.lcovFileName =
-      data["lcovFileName"] || ProjectConfiguration.DEFAULT_LCOV_FILE_NAME;
+    this.lcovFileName = this.validateNullableValueWithDefault(
+      data,
+      "lcovFileName",
+      ProjectConfiguration.DEFAULT_LCOV_FILE_NAME
+    );
 
     this.minCoverage = this.validateNullableValueWithDefault<number>(
-      data["minCoverage"],
+      data,
+      "minCoverage",
       ProjectConfiguration.MINIMUM_COVERAGE_DEFAULT_VALUE,
       [this.getMinCoverageRangeValidation]
     );
 
-    this.refBranch = data["refBranch"] || "main";
-    this.runTestCoverage = data["runTestCoverage"];
+    this.refBranch = this.validateNullableValueWithDefault<string>(
+      data,
+      "refBranch",
+      "main"
+    );
+
+    this.runTestCoverage = this.validateNullableValueWithoutDefaultValue<
+      string | undefined
+    >(data, "runTestCoverage", "string");
 
     this.usePrePushValidation = this.validateNullableValueWithDefault<boolean>(
-      data["usePrePushValidation"],
+      data,
+      "usePrePushValidation",
       false
     );
   }
@@ -48,11 +60,48 @@ export class ProjectConfiguration {
     return { isValid: true, message: "" };
   }
 
-  private validateNullableValueWithDefault<T extends string | number | boolean>(
-    value: any,
-    defaultValue: T,
-    extraValidations?: Array<(value: T) => ValidationResult>
-  ): T {
+  private validateNullableValueWithoutDefaultValue<
+    V extends ProjectConfiguration[keyof ProjectConfiguration]
+  >(
+    data: ProjectConfiguration,
+    fieldName: keyof ProjectConfiguration,
+    defaultType:
+      | "string"
+      | "number"
+      | "bigint"
+      | "boolean"
+      | "symbol"
+      | "undefined"
+      | "object"
+      | "function"
+  ): V | undefined {
+    const value: any = data[fieldName];
+
+    if (typeof value === defaultType) {
+      return value;
+    }
+
+    if (value !== undefined && value !== null) {
+      window.showErrorMessage(
+        `Invalid value for ${String(fieldName)} in ${
+          ProjectConfiguration.DEFAULT_FILE_NAME
+        }. It must be a ${defaultType} or null.`
+      );
+    }
+
+    return;
+  }
+
+  private validateNullableValueWithDefault<
+    V extends ProjectConfiguration[keyof ProjectConfiguration]
+  >(
+    data: ProjectConfiguration,
+    fieldName: keyof ProjectConfiguration,
+    defaultValue: V,
+    extraValidations?: Array<(value: V) => ValidationResult>
+  ): V {
+    const value: any = data[fieldName];
+
     const defaultType = typeof defaultValue;
     if (typeof value === defaultType) {
       if (extraValidations) {
@@ -73,7 +122,9 @@ export class ProjectConfiguration {
 
     if (value !== undefined && value !== null) {
       window.showErrorMessage(
-        `Invalid value for minCoverage in ${ProjectConfiguration.DEFAULT_FILE_NAME}. It must be a ${defaultType} or null.`
+        `Invalid value for ${String(fieldName)} in ${
+          ProjectConfiguration.DEFAULT_FILE_NAME
+        }. It must be a ${defaultType} or null.`
       );
     }
 
