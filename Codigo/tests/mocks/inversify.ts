@@ -4,7 +4,7 @@ import { CoverageService } from "../../src/coverage/core/coverage-service";
 import { FileCoverageService } from "../../src/file-coverage/core/file-coverage-service";
 // import { LcovFileFinder } from "../../src/utils/functions/lcov-file-finder";
 import { VisualStudioCode } from "../../src/visual-studio-code/visual-studio-code";
-import { DefaultConfiguration } from "../../src/config";
+// import { DefaultConfiguration } from "../../src/config";
 import { ExtensionConfigurationService } from "../../src/extension-configuration/core/extension-configuration-service";
 import { GitService } from "../../src/version-control/core/git-service";
 import { ProjectConfigurationService } from "../../src/project-configuration/core/project-configuration-service";
@@ -272,10 +272,10 @@ beforeEach(() => {
     .rebind(VisualStudioCode)
     .toConstantValue(mocks.VisualStudioCode as any);
 
-  appInjector
-    .rebind(DefaultConfiguration)
-    .to(DefaultConfiguration)
-    .inSingletonScope();
+  // appInjector
+  //   .rebind(DefaultConfiguration)
+  //   .to(DefaultConfiguration)
+  //   .inSingletonScope();
 
   appInjector.rebind(GitService).toConstantValue(mocks.GitService as any);
 

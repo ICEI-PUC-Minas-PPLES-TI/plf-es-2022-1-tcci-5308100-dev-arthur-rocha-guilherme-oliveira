@@ -1,5 +1,5 @@
 {
-  "minCoverage": 0.7,
+  "minCoverage": 0.8,
   "refBranch": "master",
   "usePrePushValidation": false,
   "lcovFileName": "coverage-report/lcov.info",

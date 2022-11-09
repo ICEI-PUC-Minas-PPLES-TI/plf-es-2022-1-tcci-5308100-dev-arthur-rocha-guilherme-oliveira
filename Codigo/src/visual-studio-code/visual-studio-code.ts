@@ -28,7 +28,7 @@ export class VisualStudioCode {
     this.observeEditorFocusChange();
   }
 
-  private render(): void {
+  private async render(): Promise<void> {
     this.removeDecorationsForEditors();
 
     if (!this.actualExtensionConfiguration.isGutterActive) {
@@ -47,7 +47,7 @@ export class VisualStudioCode {
       textEditors = window.visibleTextEditors;
     }
 
-    textEditors.forEach(async (textEditor) => {
+    const renderEachEditor = textEditors.map(async (textEditor) => {
       const coverageLines =
         await this.actualFileCoverage.getCoverageLinesForEditor(
           textEditor,
@@ -57,6 +57,8 @@ export class VisualStudioCode {
 
       this.setDecorationsForEditor(textEditor, coverageLines);
     });
+
+    await Promise.all(renderEachEditor);
   }
 
   public redirectEditorTo(configFilePath: string): void {
@@ -72,10 +74,10 @@ export class VisualStudioCode {
 
   public requestFileGeneration(): void {}
 
-  public changeEditorDecoration(
+  public async changeEditorDecoration(
     fileCoverage: FileCoverage,
     extensionConfiguration: ConfigurationData
-  ): void {
+  ): Promise<void> {
     if (fileCoverage) {
       this.actualFileCoverage = fileCoverage;
     }
@@ -85,7 +87,7 @@ export class VisualStudioCode {
     }
 
     if (this.actualFileCoverage) {
-      this.render();
+      await this.render();
     }
   }
 
@@ -119,10 +121,6 @@ export class VisualStudioCode {
   public getActiveEditorChange(): Observable<void> {
     return this.activeEditorChangeSubject.asObservable();
   }
-
-  public criaNaRaizDoProjetoUmArquivoDeConfiguração(): void {}
-
-  public alterarOArquivoDeConfiguraçãoActivateDev(): void {}
 
   private setDecorationsForEditor(
     editor: TextEditor,

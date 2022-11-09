@@ -14,7 +14,7 @@ describe("FileCoverage", () => {
 
   it("should getCoverageLinesForEditor default", async () => {
     const coverageLines = await fileCoverage.getCoverageLinesForEditor(
-      vscode.mocks.textEditor,
+      vscode.mocks.textEditor as any,
       false,
       "master"
     );
@@ -110,7 +110,7 @@ describe("FileCoverage", () => {
 
   it("should getCoverageLinesForEditor using git diff", async () => {
     const coverageLines = await fileCoverage.getCoverageLinesForEditor(
-      vscode.mocks.textEditor,
+      vscode.mocks.textEditor as any,
       true,
       "master"
     );
