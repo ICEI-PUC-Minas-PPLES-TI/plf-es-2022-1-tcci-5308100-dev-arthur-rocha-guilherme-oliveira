@@ -91,8 +91,6 @@ export class VisualStudioCode {
     }
   }
 
-  public changeToCoveringTab(): void {}
-
   public runScriptOnTerminal(command: string): void {
     if (window.terminals.length) {
       window.terminals[0].sendText(command);
