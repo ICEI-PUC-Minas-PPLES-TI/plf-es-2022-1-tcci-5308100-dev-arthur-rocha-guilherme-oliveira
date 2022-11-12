@@ -84,14 +84,14 @@ export class ExtensionOrchestrationService {
 
     const generateProjectConfigurationFileDisposable = commands.registerCommand(
       "covering.generate-project-configuration-file",
-      this.generateProjectConfigurationFileCommand
+      () => this.generateProjectConfigurationFileCommand()
     );
 
     this.context.subscriptions.push(generateProjectConfigurationFileDisposable);
 
     const generateRunTestCoverageDisposable = commands.registerCommand(
       "covering.run-test",
-      this.runTest
+      () => this.runTest()
     );
 
     this.context.subscriptions.push(generateRunTestCoverageDisposable);

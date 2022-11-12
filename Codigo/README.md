@@ -6,7 +6,7 @@ This repository is distributing the code by domain packages, following the proje
 
 After install the extension you'll can see a new menu item in activity bar with label `Covering`. The extension will watch the workspace looking for a file called `lcov.info`. Every event with this file will be used to rerender the new test coverage status on vs code.
 
-To use the extension, run you test script and generate de `lcov.info` file and you will able to see the coverage status for each line in editor, the actual covered lines percentage and a file tree view with all uncovered lines of your project. To se just what you've changed, click in the option in extendion configuration view: `Avaliar com base na branch: <BRANCH_NAME>`. You just will see this option if you workspace is in a git repo.
+To use the extension, run you test script and generate de `lcov.info` file and you will able to see the coverage status for each line in editor, the actual covered lines percentage and a file tree view with all uncovered lines of your project. To se just what you've changed, click in the option in extension configuration view: `Avaliar com base na branch: <BRANCH_NAME>`. You just will see this option if you workspace is in a git repo.
 
 ## Setting your own project configuration
 
@@ -14,15 +14,16 @@ You can set your own configuration crating a file called `.coveringconfig` in th
 
 ```json
 {
-  "minCoverage": 0.9,
-  "refBranch": "master",
+  "minCoverage": 0.8,
+  "refBranch": "main",
   "usePrePushValidation": false,
-  "lcovFileName": "lcov.info"
+  "lcovFileName": "lcov.info",
+  "runTestCoverage": "npm run test"
 }
 ```
 
 - `minCoverage`: The minimum coverage percentage to pass in pre-push validation.
-  - Default: `0.9`.
+  - Default: `0.8`.
   - Valid values: `0.0` to `1.0`.
 - `refBranch`: The branch to compare with the current branch in pre-push validation.
   - Default: `main`.
@@ -32,6 +33,9 @@ You can set your own configuration crating a file called `.coveringconfig` in th
   - Valid values: `true` or `false`.
 - `lcovFileName`: The name of the lcov file to watch.
   - Default: `lcov.info` .
-  - Valid values: any file name.
+  - Valid values: any file name or glob pattern.
+- `runTestCoverage`: The script that will be executed when click to run the extension interface.
+  - Default: `null` .
+  - Valid values: string value.
 
 After change this file, the repository will automatically refresh the values of your coverage status base on your last generated `lcov.info` file.

@@ -4,6 +4,16 @@ All notable changes to the "covering" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.4.2] - 2022-11-12
+
+### Fixed
+
+- Fix commands functions bind. Add arrow functions to be able to see service attributes at scope.
+
+### Changed
+
+- Update README covering config params description
+
 ## [1.4.1] - 2022-10-27
 
 ### Fixed
