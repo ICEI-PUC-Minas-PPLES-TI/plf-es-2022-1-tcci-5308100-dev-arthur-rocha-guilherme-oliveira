@@ -1,15 +1,10 @@
 {
   "projectConfiguration": {
-    "lcov-file-path": "coverage/lcov.info",
-
-    "min-coverage": 0.8,
-
-    "ref-branch": "main",
-
-    "run-test-with-coverage": "npm run test:coverage -- --watch=false",
-    "run-test-with-coverage-watch-files": "npm run test:coverage",
-
-    "use-pre-push-validation": true
+    "lcovFilePath": "coverage/lcov.info",
+    "minCoverage": 0.8,
+    "refBranch": "main",
+    "runTestCoverage": "npm run test:coverage",
+    "usePrePushValidation": true
   },
   "configurationData": {
     "isGutterActive": true,
@@ -22,37 +17,37 @@
     "coveragePercentage": 0.3333,
     "minCoverageReached": false
   },
-  "uncoveredLinesData": {
-    "path": "./src",
-    "label": "src",
-    "folders": {
-      "path": "./src/app",
-      "label": "app",
+  "uncoveredLinesData": [
+    {
+      "path": "./src",
+      "label": "src",
       "folders": [],
-      "files": {
-        "path": "./src/app/app.componet.ts",
-        "name": "app.component.ts",
-        "lines": [
-          {
-            "number": 24,
-            "status": 1
-          },
-          {
-            "number": 25,
-            "status": 2
-          },
-          {
-            "number": 26,
-            "status": 2
-          },
-          {
-            "number": 27,
-            "status": 2
-          }
-        ]
-      }
-    },
-    "files": []
-  }
+      "files": [
+        {
+          "path": "./src/app",
+          "label": "app",
+          "folders": [],
+          "files": [
+            {
+              "path": "./src/app/app.component.ts",
+              "name": "app.component.ts",
+              "lines": [
+                {
+                  "number": 24,
+                  "status": 1
+                },
+                {
+                  "number": 25,
+                  "status": 2
+                },
+                { "number": 26, "status": 2 },
+                { "number": 27, "status": 2 }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
 }
 

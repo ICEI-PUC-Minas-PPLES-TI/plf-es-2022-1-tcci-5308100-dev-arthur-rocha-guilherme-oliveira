@@ -2,11 +2,22 @@
 
 ## Entrega TCC 1 - Pré Banca
 
-- [Documentação do Projeto](./Projeto-PreBanca_Atividade_A7.pdf): Documentação de projeto para o sistema Covering.
+- [Documentação do Projeto](./TCC%201/Projeto-PreBanca_Atividade_A7.pdf): Documentação de projeto de TCC 1 do sistema Covering, desenvolvido até o dia 22/05/2022.
+- [Correção da Documentação do Projeto](./TCC%201/Correcao-Projeto-PreBanca_Atividade_A8.pdf): Correção da documentação de projeto de TCC 1 do sistema Covering, desenvolvido até o dia 10/06/2022.
 
 ## Entregas parciais TCC 2
 
-- [Vídeo da entrega A1](./Videos/Video%20entrega%20A1.mp4)
+### Vídeos demonstrativos
+
+- [Vídeo da entrega A1](./TCC%202/Videos/Video%20entrega%20A1.mp4)
+- [Vídeo da entrega A2](./TCC%202/Videos/Video%20entrega%20A2.mp4)
+- [Vídeo da entrega A3](./TCC%202/Videos/Video%20entrega%20A3.mp4)
+- [Vídeo da entrega A4](./TCC%202/Videos/Video%20entrega%20A4.mp4)
+
+### Entrega A5 - Banca
+
+- [Documento de Visão](./TCC%202/Documento%20de%20Visao.pdf)
+- [Documentação do Projeto](./TCC%202/Documentacao%20Do%20Projeto.pdf)
 
 ## Artefatos gerais
 
