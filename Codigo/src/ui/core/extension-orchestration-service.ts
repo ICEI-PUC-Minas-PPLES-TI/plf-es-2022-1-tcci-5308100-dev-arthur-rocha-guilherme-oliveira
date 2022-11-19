@@ -77,21 +77,21 @@ export class ExtensionOrchestrationService {
   private registerCommands(): void {
     const openFileDisposable = commands.registerCommand(
       "covering.open-file",
-      this.uncoveredLinesService.selectUncoveredLine
+      this.uncoveredLinesService.selectUncoveredLine.bind(this)
     );
 
     this.context.subscriptions.push(openFileDisposable);
 
     const generateProjectConfigurationFileDisposable = commands.registerCommand(
       "covering.generate-project-configuration-file",
-      () => this.generateProjectConfigurationFileCommand()
+      this.generateProjectConfigurationFileCommand.bind(this)
     );
 
     this.context.subscriptions.push(generateProjectConfigurationFileDisposable);
 
     const generateRunTestCoverageDisposable = commands.registerCommand(
       "covering.run-test",
-      () => this.runTest()
+      this.runTest.bind(this)
     );
 
     this.context.subscriptions.push(generateRunTestCoverageDisposable);
