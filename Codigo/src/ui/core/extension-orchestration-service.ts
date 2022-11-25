@@ -63,6 +63,8 @@ export class ExtensionOrchestrationService {
           this.startCoverageDataObserver().subscribe(() => {
             this.vsCode.getActiveEditorChange().subscribe(() => {
               this.fileFocusChange();
+
+              console.log("hello world!");
             });
 
             subject.next();
