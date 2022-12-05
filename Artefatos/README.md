@@ -7,13 +7,6 @@
 
 ## Entregas parciais TCC 2
 
-### Vídeos demonstrativos
-
-- [Vídeo da entrega A1](./TCC%202/Videos/Video%20entrega%20A1.mp4)
-- [Vídeo da entrega A2](./TCC%202/Videos/Video%20entrega%20A2.mp4)
-- [Vídeo da entrega A3](./TCC%202/Videos/Video%20entrega%20A3.mp4)
-- [Vídeo da entrega A4](./TCC%202/Videos/Video%20entrega%20A4.mp4)
-
 ### Entrega A5 - Banca
 
 - [Documento de Visão](./TCC%202/Documento%20de%20Visao.pdf)
